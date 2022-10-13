@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}Listado del Personal {% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-12">
+		<!-- Custom Tabs -->
+		<div class="card">
+			<div class="card-header d-flex p-0">
+				<h3 class="card-title p-3">Listado del Personal</h3>
+				<ul class="nav nav-pills ml-auto p-2">
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+							Opciones <span class="caret"></span>
+						</a>
+						<div class="dropdown-menu" style="">
+							<a class="dropdown-item" tabindex="-1" href="{% url 'register_personal' %}">Agregar</a>
+						</div>
+					</li>
+				</ul>
+			</div><!-- /.card-header -->
+			<div class="card-body">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_1">
+						<table id="table" class="table" style="width:100%">
+							<thead>
+								<tr>
+									<th>Cédula</th>
+									<th>Nombres</th>
+									<th>Apellidos</th>
+									<th>Dirección</th>
+									<th>Movil</th>
+									<th>Ocupación</th>
+									<th>Sexo</th>
+									<th>Status</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for x in Personal %}
+								<tr>
+									<td>{{x.cedula}}</td>
+									<td>{{x.nombre}}</td>
+									<td>{{x.apellido}}</td>
+									<td>{{x.direccion}}</td>
+									<td>{{x.movil}}</td>
+									<td>{{x.ocupacion}}</td>
+									<td>{{x.sexo}}</td>
+									<td>{{x.status}}</td>
+									<td>
+										<a class="btn btn-dark" href="{% url 'detail_personal' x.pk %}"><i class="fas fa-info"></i></a> 
+										<a href="{% url 'edit_personal' x.pk %}" class="btn btn-dark"><i class="fas fa-edit text-warning"></i></a>
+										<a href="#" class="btn btn-dark"><i class="fas fa-trash text-danger"></i></a>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- /.tab-pane -->
+				</div>
+				<!-- /.tab-content -->
+			</div><!-- /.card-body -->
+		</div>
+		<!-- ./card -->
+	</div>
+	<!-- /.col -->
+</div>
+
+
+
+{% block js %}
+<script>
+		// Call the dataTables jQuery plugin
+		$(document).ready(function() {
+			$('#table').DataTable({
+				responsive: true,
+				autoWidth: false,
+				destroy: true,
+				deferRender: true,
+				ordering:  true,
+				searching: true,
+				paging: true, 
+				"language": {
+					"sProcessing": "Procesando...",
+					"sLengthMenu": "Mostrar _MENU_ registros",
+					"sZeroRecords": "No se encontraron resultados",
+					"sEmptyTable": "Ningún dato disponible en esta tabla",
+					"sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+					"sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+					"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+					"sInfoPostFix": "",
+					"sSearch": "Buscar:",
+					"sUrl": "",
+					"sInfoThousands": ",",
+					"sLoadingRecords": "Cargando...",
+					"oPaginate": {
+						"sFirst": "<span class='fa fa-angle-double-left'></span>",
+						"sLast": "<span class='fa fa-angle-double-right'></span>",
+						"sNext": "<span class='fa fa-angle-right'></span>",
+						"sPrevious": "<span class='fa fa-angle-left'></span>"
+					},
+					"oAria": {
+						"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+					}
+				}
+			});
+		});
+	</script>
+	{% endblock %}
+
+{% endblock %}

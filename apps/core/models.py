@@ -2,6 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+sexo_choice = (
+	('masculino', 'Masculino'),
+	('femenino', 'Femenino'),
+)
+
 class Personal(models.Model):
 	cedula = models.CharField(max_length=10, primary_key=True, null=False, blank=False)
 	nombre = models.CharField(max_length=50, null=False, blank=False)
@@ -9,7 +14,7 @@ class Personal(models.Model):
 	direccion = models.TextField(null=False, blank=False)
 	movil = models.CharField(max_length=11, null=True, blank=True)
 	ocupacion = models.CharField(max_length=50, null=False, blank=False)
-	sexo = models.CharField(max_length=20, null=False, blank=False)
+	sexo = models.CharField(max_length=20, choices=sexo_choice , null=False, blank=False)
 	status = models.CharField(max_length=50, null=False, blank=False)
 
 	def __str__(self):
@@ -20,7 +25,7 @@ class TipoReposo(models.Model):
 	observacion = models.TextField(null=True, blank=True)
 
 	def __str__(self):
-		return (self.id)
+		return (self.tipo_reposo)
 
 class Reposos(models.Model):
 	personal = models.ForeignKey(Personal, on_delete=models.CASCADE, null=False, blank=False)

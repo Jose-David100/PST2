@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %} Editar Personal {% endblock %}
+
+{% block content %}
+
+<div class="card card-default mt-3">
+    <div class="card-header">
+         <h3 class="card-title">Editar datos del Personal</h3>
+    </div>
+    <form action="" method="post"> {% csrf_token %}
+        <div class="card-body">
+            <div class="row">
+                <label>Cédula de Identidad</label>
+                {{form.cedula|add_class:'form-control'}}
+            </div>
+            <!-- /.row -->
+            <div class="row g-2">
+                <div class="col">
+                    <label>Nombres</label>
+                    {{form.nombre|add_class:'form-control'}}
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        {{form.apellido|add_class:'form-control'}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label>Dirección</label>
+                {{form.direccion|add_class:'form-control'}}
+            </div>
+            <div class="row g-2">
+                <div class="col">
+                    <label>Movil</label>
+                    {{form.movil|add_class:'form-control'}}
+                </div>
+                <!-- /.col -->
+                <div class="col">
+                    <label>Ocupación</label>
+                    {{form.ocupacion|add_class:'form-control'}}
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col">
+                    <label>Sexo</label>
+                    {{form.sexo|add_class:'form-control'}}
+                </div>
+                <div class="col">
+                    <label>Estatus</label>
+                    {{form.status|add_class:'form-control'}}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="{% url 'list_personal' %}" class="btn btn-danger">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

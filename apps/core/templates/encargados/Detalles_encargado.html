@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title  %}Detalles del Encargado {% endblock %}
+
+{% block content %}
+
+<div class="card card-default mt-5">
+	<div class="card-header">
+		<h3 class="card-title">Detalles del Encargado</h3>
+	</div>
+	<div class="card-body">
+
+		<div class="row g-2">
+			<div class="col">
+				<h5><strong>Cédula de Identidad</strong></h5>
+				<h5>{{Encargado.cedula}}</h5>
+			</div>
+
+			<div class="col">
+				<h5><strong>Nombres y Apellidos</strong></h5>
+				<h5>{{Encargado.nombre}} {{Encargado.apellido}}</h5>
+			</div>
+		</div>
+		<div class="row g-2 mt-3">
+			<div class="col">
+				<h5><strong>Dirección</strong></h5>
+				<h5>{{Encargado.direccion}}</h5>
+			</div>
+			<div class="col">
+				<h5><strong>Movil</strong></h5>
+				<h5>{{Encargado.movil}}</h5>
+			</div>
+		</div>
+	</div>
+	<div class="card-footer">
+		<a href="{% url 'list_encargados' %}" class="btn btn-warning">Regresar al listado</a>
+	</div>
+</div>
+
+{% endblock %}

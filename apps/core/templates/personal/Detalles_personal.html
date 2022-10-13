@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title  %}Detalles del Personal {% endblock %}
+
+{% block content %}
+
+<div class="card card-default mt-5">
+	<div class="card-header">
+		<h3 class="card-title">Detalles del Personal</h3>
+	</div>
+	<div class="card-body">
+
+		<div class="row g-2">
+			<div class="col">
+				<h5><strong>Cédula de Identidad</strong></h5>
+				<h5>{{Personal.cedula}}</h5>
+			</div>
+
+			<div class="col">
+				<h5><strong>Nombres y Apellidos</strong></h5>
+				<h5>{{Personal.nombre}} {{Personal.apellido}}</h5>
+			</div>
+		</div>
+		<div class="row g-2">
+			<div class="col">
+				<h5><strong>Dirección</strong></h5>
+				<h5>{{Personal.direccion}}</h5>
+			</div>
+			<div class="col">
+				<h5><strong>Movil</strong></h5>
+				<h5>{{Personal.movil}}</h5>
+			</div>
+		</div>
+		<div class="row g-2">
+			<div class="col">
+				<h5><strong>Sexo</strong></h5>
+				<h5>{{Personal.sexo}}</h5>
+			</div>
+			<div class="col">
+				<h5><strong>Ocupación</strong></h5>
+				<h5>{{Personal.ocupacion}}</h5>
+			</div>
+		</div>
+	</div>
+	<div class="card-footer">
+		<a href="{% url 'list_personal' %}" class="btn btn-warning">Regresar al listado</a>
+	</div>
+</div>
+
+{% endblock %}

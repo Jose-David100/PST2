@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Registrar Establecimiento {% endblock %}
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="card card-default mt-3">
+    <div class="card-header">
+         <h3 class="card-title">Registrar Establecimiento</h3>
+    </div>
+    <form action="" method="post"> {% csrf_token %}
+        <div class="card-body">
+            <div class="row">
+                <label>Nombre del Establecimiento</label>
+                {{form.nombre|add_class:'form-control'}}
+            </div>
+            <!-- /.row -->
+            <div class="row mt-2">
+                <div class="col">
+                    <label>Dirección del Establecimiento</label>
+                    {{form.direccion|add_class:'form-control'}}
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <label>Encargado del Establecimiento</label>
+                    {{form.encargado|add_class:'form-control'}}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{% url 'list_establecimientos' %}" class="btn btn-danger">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block js  %}
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+
+<script type="text/javascript">
+    $(function(){
+        $('#id_encargado').select2({
+            placeholder: 'Seleccione el Encargado',
+            theme:'bootstrap4',
+            language: "es",
+            allowClear: true,
+        });
+    });
+</script>
+{% endblock %}
