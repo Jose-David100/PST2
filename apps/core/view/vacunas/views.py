@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView,View
+from django.views.generic import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -9,12 +9,6 @@ from django.urls import reverse_lazy
 # IMPORTACIONES DE LOS MODELS Y FORMULARIOS
 from apps.core.models import Vacunas
 from apps.core.forms import VacunasForm
-
-class EditarVacuna(UpdateView):
-	model = Vacunas
-	form_class = VacunasForm
-	template_name = 'vacunas/Editar_vacunas.html'
-	success_url = reverse_lazy('list_vacunas')
 
 # VACUNAS 
 class VacunasViews(TemplateView):

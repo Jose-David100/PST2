@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView,View
+from django.views.generic import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -9,18 +9,6 @@ from django.urls import reverse_lazy
 # IMPORTACIONES DE LOS MODELS Y FORMULARIOS
 from apps.core.models import Reposos, Personal
 from apps.core.forms import ReposoForm
-
-class EditarReposo(UpdateView):
-	model = Reposos
-	form_class = ReposoForm
-	template_name = 'reposos/Editar_reposo.html'
-	success_url = reverse_lazy('list_reposos')
-
-class DetalleReposo(DetailView):
-	model = Reposos
-	template_name = 'reposos/Detalle_reposo.html'
-	context_object_name = 'Reposos'
-
 
 # REPOSOS 
 class RepososViews(TemplateView):

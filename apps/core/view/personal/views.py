@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView,View
+from django.views.generic import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -12,17 +12,6 @@ from apps.core.forms import PersonalForm
 
 
 # Create your views here.
-
-class EditarPersonal(UpdateView):
-	template_name = 'personal/Editar_personal_form.html'
-	model = Personal
-	form_class = PersonalForm
-	success_url = reverse_lazy('list_personal')
-
-class DetallesPersonal(DetailView):
-	template_name = 'personal/Detalles_personal.html'
-	model = Personal
-	context_object_name = 'Personal'
 
 # ESTABLECIMIENTOS 
 class PersonalViews(TemplateView):

@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView,View
+from django.views.generic import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -9,19 +9,6 @@ from django.urls import reverse_lazy
 # IMPORTACIONES DE MOS MODELS Y LOS FORMUALARIOS
 from apps.core.models import Encargado
 from apps.core.forms import EncargadosForm
-
-
-class EditarEncargado(UpdateView):
-	model = Encargado
-	template_name= 'encargados/Editar_encargados.html'
-	form_class = EncargadosForm
-	success_url = reverse_lazy('list_encargados')
-
-class DetalleEncargados(DetailView):
-	model = Encargado
-	template_name= 'encargados/Detalles_encargado.html'
-	context_object_name= 'Encargado'
-
 
 # ENCARGADOS 
 class EncargadoViews(TemplateView):

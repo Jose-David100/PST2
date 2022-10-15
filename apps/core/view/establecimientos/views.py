@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView,View
+from django.views.generic import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -10,20 +10,6 @@ from django.urls import reverse_lazy
 # IMPORTACIONES DE MODELOS
 from apps.core.models import Establecimiento, Encargado
 from apps.core.forms import EstablecimientoForm
-
-
-class EditarEstablecimiento(UpdateView):
-	model = Establecimiento
-	template_name= 'establecimientos/Editar_establecimiento.html'
-	form_class = EstablecimientoForm
-	success_url = reverse_lazy('list_establecimientos')
-"""
-class DetalleEstablecimiento(DetailView):
-	model = Establecimiento
-	template_name= 'establecimientos/Detalles_encargado.html'
-	context_object_name= 'Establecimiento'
-"""
-
 
 # ESTABLECIMIENTOS 
 class EstablecimientosViews(TemplateView):
