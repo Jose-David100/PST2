@@ -41,10 +41,12 @@ class VacunasViews(TemplateView):
 				vac.existencia = request.POST.get('existencia')
 				vac.save()
 
-			elif action == 'editar_establecimiento':	
-				pass
-			elif action == 'detalles_establecimiento':
-				pass
+			elif action == 'editar_vacuna':	
+				vac = Vacunas.objects.get(id = request.POST.get('id'))
+				vac.nombre = request.POST.get('nombre')
+				vac.presentacion = request.POST.get('presentacion')
+				vac.existencia = request.POST.get('existencia')
+				vac.save()
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

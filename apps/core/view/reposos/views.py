@@ -48,10 +48,13 @@ class RepososViews(TemplateView):
 				rep.fecha_inicio = request.POST.get('fecha_inicio')
 				rep.save()
 
-			elif action == 'editar_establecimiento':	
-				pass
-			elif action == 'detalles_establecimiento':
-				pass
+			elif action == 'editar_reposo':	
+				rep = Reposos.objects.get(id = request.POST.get('id'))
+				rep.motivo_reposo = request.POST.get('motivo_reposo')
+				rep.duracion = request.POST.get('duracion')
+				rep.fecha_inicio = request.POST.get('fecha_inicio')
+				rep.status = request.POST.get('status')
+				rep.save()
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

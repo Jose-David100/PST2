@@ -103,17 +103,98 @@
 			                    <label>Sexo</label>
 			                    {{form.sexo|add_class:'form-control'|attr:'placeholder:Seleccione un genero'}}
 			                </div>
+			                <div class="col">
+			                    <label>Estado</label>
+			                    {{form.status|add_class:'form-control'|attr:'placeholder:Seleccione el estado'}}
+			                </div>
 			            </div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_personal();">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Registrar</button>
+					<button type="submit" class="btn btn-primary">Guardar</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
+
+<!--MODAL DETALLES DEL PERSONAL-->
+<!-- Modal -->
+<div class="modal fade" id="Detalle_personal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles del Personal</h5>
+				<button type="button" class="close" onclick="cerrar_modal_detalle();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-address-card"></i>
+								<label>Cédula de Identidad</label><br>
+							<p> <span id="ci"></span> </p>
+							</div>
+						</div>
+						<!-- /.row -->
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-signature"></i>
+								<label>Nombres y Apellidos</label>
+								<p> <span id="nom"></span> <span id="ape"></span></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-map-marked-alt"></i>
+								<label>Dirección</label>
+								<p id="dir"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-mobile"></i>
+								<label>Movil</label>
+								<p id="mov"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-users"></i>
+								<label>Ocupación</label>
+								<p id="ocu"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-venus-mars"></i>
+								<label>Sexo</label>
+								<p id="sex"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-users-cog"></i>
+								<label>Estado</label>
+								<p id="sta"></p>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
+				</div>
+
+		</div>
+	</div>
+</div>
+
 
 {% endblock %}
 

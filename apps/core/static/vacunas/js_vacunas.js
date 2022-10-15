@@ -56,7 +56,6 @@ function getDataV() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
-				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -81,6 +80,9 @@ function cerrar_modal_vacunas() {
 
 }
 
+function cerrar_modal_detalle() {
+	$("#Detalles_vacunas").modal("hide");
+}
 // REGISTRAR PERSONAL
 /* FORM SUBMIT AJAX*/
 $('#form_vacunas').on('submit', function(e) {
@@ -89,7 +91,39 @@ $('#form_vacunas').on('submit', function(e) {
 	submit_with_ajax(window.location.pathname, 'Notifiación', '¿Estas seguro de realizar esta accion?', parameters, function() {
 		$("#Registrar_vacunas").modal('hide');
 		$("#form_vacunas")[0].reset();
-		toastr.success('Se ha registrado la vacuna correctamente');
+		toastr.success('Se ha registrado correctamente');
 		getDataV();
+	});
+});
+
+$(function() {
+	// EDICION DE LAS VACUNAS
+	modal_title = $('#staticBackdropLabel');
+	$("#table tbody").on('click', 'a[rel="edit"]', function() {
+		modal_title.html('Editar Vacuna');
+		var tr = tablaV.cell($(this).closest('td, li')).index();
+		var data = tablaV.row(tr.row).data();
+
+		$('input[name="nombre"]').attr('readonly', '');
+		$('input[name="existencia"]').attr('readonly', '');
+
+		$('input[name="nombre"]').val(data.nombre);
+		$('input[name="id"]').val(data.id);
+		$('input[name="action"]').val('editar_vacuna');
+		$('input[name="id"]').val(data.id);
+		$('input[name="presentacion"]').val(data.presentacion);
+		$('input[name="existencia"]').val(data.existencia);
+		$("#Registrar_vacunas").modal('show');
+	});
+
+	// DETALLES DE LAS VACUNAS 
+	$('#table tbody').on('click', 'a[rel="detail"]', function() {
+		var tr = tablaV.cell($(this).closest('td, li')).index();
+		var data = tablaV.row(tr.row).data();
+		$("#Detalles_vacunas").modal('show');
+
+		$('#nom').text(data.nombre);
+		$('#pre').text(data.presentacion);
+		$('#exi').text(data.existencia);
 	});
 });

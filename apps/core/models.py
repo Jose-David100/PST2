@@ -4,12 +4,24 @@ from django.forms import model_to_dict
 # Create your models here.
 
 sexo_choice = (
-	('masculino', 'Masculino'),
-	('femenino', 'Femenino'),
+	('Masculino', 'Masculino'),
+	('Femenino', 'Femenino'),
 )
 status_choice = (
 	('Activo', 'Activo'),
 	('Inactivo', 'Inactivo'),
+)
+
+status_reposo = (
+	('Aprobado', 'Aprobado'),
+	('Rechazado', 'Rechazado'),
+)
+
+ocupacion_choice = (
+	('Administrativo', 'Administrativo'),
+	('Enfermero', 'Enfermero'),
+	('Medico', 'Medico'),
+	('Obrero', 'Obrero'),
 )
 
 class Personal(models.Model):
@@ -18,7 +30,7 @@ class Personal(models.Model):
 	apellido = models.CharField(max_length=50, null=False, blank=False)
 	direccion = models.TextField(null=False, blank=False)
 	movil = models.CharField(max_length=11, null=True, blank=True)
-	ocupacion = models.CharField(max_length=50, null=False, blank=False)
+	ocupacion = models.CharField(max_length=50, choices=ocupacion_choice,null=False, blank=False)
 	sexo = models.CharField(max_length=20, choices=sexo_choice , null=False, blank=False)
 	status = models.CharField(max_length=50,choices=status_choice ,null=False, blank=False)
 
@@ -35,6 +47,7 @@ class Reposos(models.Model):
 	motivo_reposo = models.TextField(null=False, blank=False)
 	duracion = models.CharField(max_length=50, null=False, blank=False)
 	fecha_inicio = models.DateField(null=False, blank=False)
+	status = models.CharField(max_length=20, choices=status_reposo, null=False, blank=False )
 
 	def __str__(self):
 		return (self.id)

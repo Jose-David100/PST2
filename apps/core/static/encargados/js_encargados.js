@@ -1,4 +1,5 @@
 var tablaE;
+var modal_title;
 
 // DATA DE ESTABLECIMIENTOS
 function getDataE() {
@@ -60,7 +61,6 @@ function getDataE() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
-				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -97,6 +97,10 @@ function cerrar_modal_encargado() {
 
 }
 
+function cerrar_modal_detalle() {
+	$("#Detalles_encargado").modal("hide");
+}
+
 // REGISTRAR PERSONAL
 /* FORM SUBMIT AJAX*/
 $('#form_personal').on('submit', function(e) {
@@ -105,7 +109,46 @@ $('#form_personal').on('submit', function(e) {
 	submit_with_ajax(window.location.pathname, 'Notifiación', '¿Estas seguro de realizar esta accion?', parameters, function() {
 		$("#Registrar_encargado").modal('hide');
 		$("#form_personal")[0].reset();
-		toastr.success('Se ha registrado el Personal correctamente');
+		toastr.success('Se ha registrado correctamente');
 		getDataE();
+	});
+});
+
+$(function() {
+	// EDICION DE LOS ENCARGADOS
+	modal_title = $('#staticBackdropLabel');
+	$("#table tbody").on('click', 'a[rel="edit"]', function() {
+		modal_title.html('Editar Encargado');
+		var tr = tablaE.cell($(this).closest('td, li')).index();
+		var data = tablaE.row(tr.row).data();
+
+		$('input[name="cedula"]').attr('readonly', '');
+		$('input[name="nombre"]').attr('readonly', '');
+		$('input[name="apellido"]').attr('readonly', '');
+		//$('#id_titular_ben').attr('disabled','disabled');
+
+		$('input[name="cedula"]').val(data.cedula);
+		$('input[name="action"]').val('editar_encargado');
+		$('input[name="nombre"]').val(data.nombre);
+		$('input[name="apellido"]').val(data.apellido);
+		$('input[name="movil"]').val(data.movil);
+		$('textarea[name="direccion"]').val(data.direccion);
+		/*$(".titular_modal").val(data.titular_ben.name);
+	    $(".titular_modal").change();*/
+		$("#Registrar_encargado").modal('show');
+	});
+
+	// DETALLES DE LOS ENCARGADOS 
+	$('#table tbody').on('click', 'a[rel="detail"]', function() {
+		var tr = tablaE.cell($(this).closest('td, li')).index();
+		var data = tablaE.row(tr.row).data();
+		$("#Detalles_encargado").modal('show');
+
+		$('#ci').text(data.cedula);
+		$('#nom').text(data.nombre);
+		$('#ape').text(data.apellido);
+		$('#dir').text(data.direccion);
+		$('#mov').text(data.movil);
+
 	});
 });

@@ -51,13 +51,16 @@ class PersonalViews(TemplateView):
 				per.movil = request.POST.get('movil')
 				per.ocupacion = request.POST.get('ocupacion')
 				per.sexo = request.POST.get('sexo')
-				per.status = "Activo"
+				per.status = request.POST.get('status')
 				per.save()
 
-			elif action == 'editar_establecimiento':	
-				pass
-			elif action == 'detalles_establecimiento':
-				pass
+			elif action == 'editar_personal':	
+				per = Personal.objects.get(cedula = request.POST.get('cedula'))
+				per.direccion = request.POST.get('direccion')
+				per.movil = request.POST.get('movil')
+				per.ocupacion = request.POST.get('ocupacion')
+				per.status = request.POST.get('status')
+				per.save()
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

@@ -92,9 +92,66 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_establecimiento();">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Registrar</button>
+					<button type="submit" class="btn btn-primary">Guardar</button>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+
+
+<!--MODAL DETALLES DEL ESTABLECIMIENTO-->
+<!-- Modal -->
+<div class="modal fade" id="Detalles_establecimiento" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles del Establecimiento</h5>
+				<button type="button" class="close" onclick="cerrar_modal_detalle();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-signature"></i>
+								<label>Nombre del Establecimiento</label><br>
+							<p> <span id="nom"></span> </p>
+							</div>
+						</div>
+						<!-- /.row -->
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-map-marked-alt"></i>
+								<label>Dirección</label>
+								<p id="dir"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-address-card"></i>
+								<label>C.I del Encargado</label>
+								<p id="ci_enc"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-signature"></i>
+								<label>Nombres y Apellidos del Encargado</label>
+								<p> <span id="nom_enc"></span> <span id="ape_enc"></span> </p>
+							</div>
+							<!-- /.col -->
+							
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
+				</div>
+
 		</div>
 	</div>
 </div>

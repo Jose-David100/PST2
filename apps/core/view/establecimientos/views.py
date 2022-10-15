@@ -51,9 +51,11 @@ class EstablecimientosViews(TemplateView):
 				esta.save()
 
 			elif action == 'editar_establecimiento':	
-				pass
-			elif action == 'detalles_establecimiento':
-				pass
+				esta = Establecimiento.objects.get(nombre = request.POST.get('nombre'))
+				esta.direccion = request.POST.get('direccion')
+				esta.encargado = Encargado.objects.get(cedula = request.POST.get('encargado'))
+				esta.save()
+
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

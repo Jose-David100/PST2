@@ -66,7 +66,6 @@ function getDataP() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
-				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -103,6 +102,10 @@ function cerrar_modal_personal() {
 
 }
 
+function cerrar_modal_detalle() {
+	$("#Detalle_personal").modal("hide");
+}
+
 // REGISTRAR PERSONAL
 /* FORM SUBMIT AJAX*/
 $('#form_personal').on('submit', function(e) {
@@ -113,5 +116,51 @@ $('#form_personal').on('submit', function(e) {
 		$("#form_personal")[0].reset();
 		toastr.success('Se ha registrado el Personal correctamente');
 		getDataP();
+	});
+});
+
+$(function() {
+	// EDICION DEL PERSONAL
+	modal_title = $('#staticBackdropLabel');
+	$("#table tbody").on('click', 'a[rel="edit"]', function() {
+		modal_title.html('Editar Personal');
+		var tr = tablaP.cell($(this).closest('td, li')).index();
+		var data = tablaP.row(tr.row).data();
+
+		$('input[name="cedula"]').attr('readonly', '');
+		$('input[name="nombre"]').attr('readonly', '');
+		$('input[name="apellido"]').attr('readonly', '');
+		$('select[name="sexo"]').attr('disabled', 'disabled');
+		//$('#id_titular_ben').attr('disabled','disabled');
+
+		$('input[name="cedula"]').val(data.cedula);
+		$('input[name="action"]').val('editar_personal');
+		$('input[name="nombre"]').val(data.nombre);
+		$('input[name="apellido"]').val(data.apellido);
+		$('input[name="movil"]').val(data.movil);
+		$('textarea[name="direccion"]').val(data.direccion);
+		$('select[name="ocupacion"]').val(data.ocupacion);
+		$('select[name="sexo"]').val(data.sexo);
+		$('select[name="status"]').val(data.status);
+		/*$(".titular_modal").val(data.titular_ben.name);
+	    $(".titular_modal").change();*/
+		$("#Registrar_personal").modal('show');
+	});
+
+	// DETALLES DEL PERSONAL 
+	$('#table tbody').on('click', 'a[rel="detail"]', function() {
+		var tr = tablaP.cell($(this).closest('td, li')).index();
+		var data = tablaP.row(tr.row).data();
+		$("#Detalle_personal").modal('show');
+
+		$('#ci').text(data.cedula);
+		$('#nom').text(data.nombre);
+		$('#ape').text(data.apellido);
+		$('#dir').text(data.direccion);
+		$('#mov').text(data.movil);
+		$('#ocu').text(data.ocupacion);
+		$('#sex').text(data.sexo);
+		$('#sta').text(data.status);
+
 	});
 });

@@ -66,42 +66,98 @@
 				<div class="modal-body">
 					<div class="card-body">
 						<div class="row">
-			                <label>Cédula de Identidad</label>
-			                {{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'}}
-			            </div>
+							<label>Cédula de Identidad</label>
+							{{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'}}
+						</div>
 						<!-- /.row -->
 						<div class="row g-2 mt-2">
-			                <div class="col">
-			                    <label>Nombres</label>
-			                    {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'}}
-			                </div>
-			                <div class="col">
-			                    <div class="form-group">
-			                        <label>Apellidos</label>
-			                        {{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'}}
-			                    </div>
-			                </div>
-			            </div>
+							<div class="col">
+								<label>Nombres</label>
+								{{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'}}
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label>Apellidos</label>
+									{{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'}}
+								</div>
+							</div>
+						</div>
 						<div class="row">
-			                <label>Dirección</label>
-			                {{form.direccion|add_class:'form-control'|attr:'style:resize:none'|attr:'rows:4'|attr:'placeholder:Ingrese Dirección Habitacional'}}
-			            </div>
-			            <div class="row mt-2">
-			                <div class="col">
-			                    <label>Movil</label>
-			                    {{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'}}
-			                </div>
-			                <!-- /.col -->
-			                
-			            </div>
-			            
+							<label>Dirección</label>
+							{{form.direccion|add_class:'form-control'|attr:'style:resize:none'|attr:'rows:4'|attr:'placeholder:Ingrese Dirección Habitacional'}}
+						</div>
+						<div class="row mt-2">
+							<div class="col">
+								<label>Movil</label>
+								{{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'}}
+							</div>
+							<!-- /.col -->
+							
+						</div>
+						
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_encargado();">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Registrar</button>
+					<button type="submit" class="btn btn-primary">Guardar</button>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+
+<!--MODAL DETALLES DEL ENCARGADO-->
+<!-- Modal -->
+<div class="modal fade" id="Detalles_encargado" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles del Encargado</h5>
+				<button type="button" class="close" onclick="cerrar_modal_detalle();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-address-card"></i>
+								<label>Cédula de Identidad</label><br>
+							<p> <span id="ci"></span> </p>
+							</div>
+						</div>
+						<!-- /.row -->
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-signature"></i>
+								<label>Nombres y Apellidos</label>
+								<p> <span id="nom"></span> <span id="ape"></span></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-map-marked-alt"></i>
+								<label>Dirección</label>
+								<p id="dir"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-mobile"></i>
+								<label>Movil</label>
+								<p id="mov"></p>
+							</div>
+							<!-- /.col -->
+							
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
+				</div>
+
 		</div>
 	</div>
 </div>

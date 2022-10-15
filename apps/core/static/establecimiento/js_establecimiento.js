@@ -1,4 +1,5 @@
 var tablaE;
+var modal_title;
 
 // DATA DE ESTABLECIMIENTOS
 function getDataE() {
@@ -60,7 +61,6 @@ function getDataE() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
-				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -109,6 +109,10 @@ function cerrar_modal_establecimiento() {
 
 }
 
+function cerrar_modal_detalle() {
+	$("#Detalles_establecimiento").modal("hide");
+}
+
 // REGISTRAR ESTABLECIMIENTO
 /* FORM SUBMIT AJAX*/
 $('#Form_establecimiento').on('submit', function(e) {
@@ -118,7 +122,40 @@ $('#Form_establecimiento').on('submit', function(e) {
 		$("#Registrar_establecimiento").modal('hide');
 		$("#Form_establecimiento")[0].reset();
 		$('#id_encargado').val(null).trigger('change');
-		toastr.success('Se ha registrado el establecimiento correctamente');
+		toastr.success('Se ha registrado correctamente');
 		getDataE();
+	});
+});
+
+$(function() {
+	// EDICION DE LOS ESTABLECIMIENTOS
+	modal_title = $('#staticBackdropLabel');
+	$("#table tbody").on('click', 'a[rel="edit"]', function() {
+		modal_title.html('Editar Establecimiento');
+		var tr = tablaE.cell($(this).closest('td, li')).index();
+		var data = tablaE.row(tr.row).data();
+
+		$('input[name="nombre"]').attr('readonly', '');
+		//$('#id_titular_ben').attr('disabled','disabled');
+
+		$('input[name="nombre"]').val(data.nombre);
+		$('input[name="action"]').val('editar_establecimiento');
+		$('textarea[name="direccion"]').val(data.direccion);
+		$("#id_encargado").val(data.encargado.ci);
+		$("#id_encargado").change();
+		$("#Registrar_establecimiento").modal('show');
+	});
+
+	// DETALLES DE LOS ESTABLECIMIENTOS 
+	$('#table tbody').on('click', 'a[rel="detail"]', function() {
+		var tr = tablaE.cell($(this).closest('td, li')).index();
+		var data = tablaE.row(tr.row).data();
+		$("#Detalles_establecimiento").modal('show');
+
+		$('#nom').text(data.nombre);
+		$('#dir').text(data.direccion);
+		$('#ci_enc').text(data.encargado.ci);
+		$('#nom_enc').text(data.encargado.nombre);
+		$('#ape_enc').text(data.encargado.apellido);
 	});
 });

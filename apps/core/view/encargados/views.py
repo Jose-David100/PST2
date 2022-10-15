@@ -50,10 +50,12 @@ class EncargadoViews(TemplateView):
 				enc.direccion = request.POST.get('direccion')
 				enc.save()
 
-			elif action == 'editar_establecimiento':	
-				pass
-			elif action == 'detalles_establecimiento':
-				pass
+			elif action == 'editar_encargado':	
+				enc = Encargado.objects.get(cedula = request.POST.get('cedula'))
+				enc.movil = request.POST.get('movil')
+				enc.direccion = request.POST.get('direccion')
+				enc.save()
+
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

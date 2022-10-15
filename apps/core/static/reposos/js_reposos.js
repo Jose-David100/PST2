@@ -52,6 +52,8 @@ function getDataR() {
 		}, {
 			"data": "fecha_inicio"
 		}, {
+			"data": "status"
+		}, {
 			"data": "fecha_inicio"
 		}],
 		columnDefs: [{
@@ -62,7 +64,6 @@ function getDataR() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
-				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -158,6 +159,10 @@ function cerrar_modal_reposos() {
 
 }
 
+function cerrar_modal_detalle() {
+	$("#Detalles_reposo").modal("hide");
+}
+
 // REGISTRAR PERSONAL
 /* FORM SUBMIT AJAX*/
 $('#form_reposos').on('submit', function(e) {
@@ -167,7 +172,46 @@ $('#form_reposos').on('submit', function(e) {
 		$("#Registrar_reposos").modal('hide');
 		$("#form_reposos")[0].reset();
 		$('#id_personal').val(null).trigger('change');
-		toastr.success('Se ha registrado el reposo correctamente');
+		toastr.success('Se ha registrado correctamente');
 		getDataR();
+	});
+});
+
+$(function() {
+	// EDICION DE LOS ESTABLECIMIENTOS
+	modal_title = $('#staticBackdropLabel');
+	$("#table tbody").on('click', 'a[rel="edit"]', function() {
+		modal_title.html('Editar Reposo');
+		var tr = tablaR.cell($(this).closest('td, li')).index();
+		var data = tablaR.row(tr.row).data();
+
+		$('input[name="personal"]').attr('readonly', '');
+		$('#id_personal').attr('disabled', 'disabled');
+
+		$('input[name="personal"]').val(data.personal.ci);
+		$('input[name="action"]').val('editar_reposo');
+		$('input[name="id"]').val(data.id);
+		$('textarea[name="motivo_reposo"]').val(data.motivo_reposo);
+		$('input[name="duracion"]').val(data.duracion);
+		$('input[name="fecha_inicio"]').val(data.fecha_inicio);
+		$('select[name="status"]').val(data.status);
+		$("#id_personal").val(data.personal.ci);
+		$("#id_personal").change();
+		$("#Registrar_reposos").modal('show');
+	});
+
+	// DETALLES DE LOS ESTABLECIMIENTOS 
+	$('#table tbody').on('click', 'a[rel="detail"]', function() {
+		var tr = tablaR.cell($(this).closest('td, li')).index();
+		var data = tablaR.row(tr.row).data();
+		$("#Detalles_reposo").modal('show');
+
+		$('#ci').text(data.personal.ci);
+		$('#nom').text(data.personal.nombre);
+		$('#ape').text(data.personal.apellido);
+		$('#mot').text(data.motivo_reposo);
+		$('#dur').text(data.duracion);
+		$('#fec').text(data.fecha_inicio);
+		$('#est').text(data.status);
 	});
 });

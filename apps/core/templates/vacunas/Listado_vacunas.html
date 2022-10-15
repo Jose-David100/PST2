@@ -61,6 +61,7 @@
 			</div>
 			<form action="" method="post" id="form_vacunas"> {% csrf_token %}
 				<input type="hidden" name="action" value="agregar_vacunas">
+				<input type="hidden" name="id" value="0">
 				<div class="modal-body">
 					<div class="card-body">
 						<div class="row">
@@ -86,12 +87,62 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_vacunas();">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Registrar</button>
+					<button type="submit" class="btn btn-primary">Guardar</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
+
+
+<!--MODAL DETALLES DE LAS VACUNAS -->
+<!-- Modal -->
+<div class="modal fade" id="Detalles_vacunas" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles de la Vacuna</h5>
+				<button type="button" class="close" onclick="cerrar_modal_detalle();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-signature"></i>
+								<label>Nombre de la Vacuna</label><br>
+							<p> <span id="nom"></span></p>
+							</div>
+						</div>
+						<!-- /.row -->
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-vial"></i>
+								<label>Presentación</label>
+								<p> <span id="pre"></span></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-sort-numeric-up"></i>
+								<label>Existencia</label>
+								<p id="exi"></p>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
+				</div>
+
+		</div>
+	</div>
+</div>
+
 
 
 {% endblock %}
