@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!--DATERANGEPICKER-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
+
 {% block title %}Listado de los Reposos {% endblock %}
 {% block content %}
-<div class="row">
+<div class="row mt-5">
 	<div class="col-12">
 		<!-- Custom Tabs -->
-		<div class="card mt-3">
+		<div class="card ">
 			<div class="card-header d-flex p-0">
-				<h3 class="card-title p-3">Listado de los Reposos</h3>
+				<h3 class="card-title p-3"><strong>Listado de los Reposos</strong></h3>
 				<ul class="nav nav-pills ml-auto p-2">
 
-					<li class="nav-item dropdown">
+					<li class="nav-item dropdown mr-5">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
 						<div class="dropdown-menu" style="">
-							<a class="dropdown-item" tabindex="-1" href="{% url 'register_reposo' %}">Agregar</a>
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_reposos();">Agregr</button>
 						</div>
 					</li>
 				</ul>
@@ -26,8 +36,8 @@
 							<thead>
 								<tr>
 									<th>C.I Solicitante</th>
-									<th>Nombres y Apellidos</th>
-									<th>Tipo de Reposo</th>
+									<th>Nombres</th>
+									<th>Apellidos</th>
 									<th>Motivo</th>
 									<th>Duración</th>
 									<th>Fecha Inicio</th>
@@ -35,21 +45,6 @@
 								</tr>
 							</thead>
 							<tbody>
-							{% for x in Reposos %}
-								<tr>
-									<td>{{x.personal.cedula}}</td>
-									<td>{{x.personal.nombre}} {{x.personal.apellido}}</td>
-									<td>{{x.tipo_reposo}}</td>
-									<td>{{x.motivo_reposo}}</td>
-									<td>{{x.duracion}}</td>
-									<td>{{x.fecha_inicio|date:'d/m/Y'}}</td>
-									<td style="text-align: center;">
-										<a href="{% url 'detail_reposos' x.pk %}" class="btn btn-dark"> <i class="fas fa-info"></i> </a>
-										<a href="{% url 'edit_reposos' x.pk %}" class="btn btn-dark"><i class="fas fa-edit text-warning"></i></a>
-										<a href="#" class="btn btn-dark"><i class="fas fa-trash text-danger"></i></a>
-									</td>
-								</tr>
-							{% endfor %}
 							</tbody>
 						</table>
 					</div>
@@ -65,45 +60,71 @@
 
 
 
+<!--MODAL REGISTRAR REPOSOS-->
+<!-- Modal -->
+<div class="modal fade" id="Registrar_reposos" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Registrar Reposos</h5>
+				<button type="button" class="close" onclick="cerrar_modal_reposos();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="" method="post" id="form_reposos"> {% csrf_token %}
+				<input type="hidden" name="action" value="agregar_reposos">
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row ">
+							<div class="col">
+								<label>Solicitante</label>
+								{{form.personal|add_class:'form-control'}}
+							</div>
+						</div>
+						<!-- /.row -->
+						
+						<div class="row g-2 mt-2">
+							<div class="col">
+								<label>Motivo del reposo</label>
+								{{form.motivo_reposo|add_class:'form-control'|attr:'placeholder:Motivo del reposo'|attr:'style:resize:none'|attr:'rows:4'}}
+							</div>
+							
+						</div>
+						<div class="row g-2 mt-2">
+							<div class="col">
+								<label for="">Fecha de inicio</label>
+								{{form.fecha_inicio|add_class:'form-control'|attr:'type:text'|attr:'readonly'}}
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label>Duración del reposo</label>
+									{{form.duracion|add_class:'form-control'|attr:'placeholder:Duración del reposo'}}
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_reposos();">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Registrar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+
 {% block js %}
-<script>
-		// Call the dataTables jQuery plugin
-		$(document).ready(function() {
-			$('#table').DataTable({
-				responsive: true,
-				autoWidth: false,
-				destroy: true,
-				deferRender: true,
-				ordering:  true,
-				searching: true,
-				paging: true, 
-				"language": {
-					"sProcessing": "Procesando...",
-					"sLengthMenu": "Mostrar _MENU_ registros",
-					"sZeroRecords": "No se encontraron resultados",
-					"sEmptyTable": "Ningún dato disponible en esta tabla",
-					"sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-					"sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-					"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-					"sInfoPostFix": "",
-					"sSearch": "Buscar:",
-					"sUrl": "",
-					"sInfoThousands": ",",
-					"sLoadingRecords": "Cargando...",
-					"oPaginate": {
-						"sFirst": "<span class='fa fa-angle-double-left'></span>",
-						"sLast": "<span class='fa fa-angle-double-right'></span>",
-						"sNext": "<span class='fa fa-angle-right'></span>",
-						"sPrevious": "<span class='fa fa-angle-left'></span>"
-					},
-					"oAria": {
-						"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-					}
-				}
-			});
-		});
-	</script>
-	{% endblock %}
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+
+<!--DATERANGEPICKER-->
+<script type="text/javascript" src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'reposos/js_reposos.js' %}"></script>
 
 {% endblock %}

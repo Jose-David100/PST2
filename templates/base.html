@@ -16,7 +16,11 @@
   <link rel="stylesheet" href=" {% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %} ">
   <link rel="stylesheet" href=" {% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %} ">
   <link rel="stylesheet" href=" {% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %} ">
-  
+  <!-- toars -->
+  <link rel="stylesheet" href=" {% static 'plugins/toastr/toastr.min.css' %} ">
+  <!-- jquery confirm -->
+  <link rel="stylesheet" href=" {% static 'plugins/jquery-confirm-v3/jquery-confirm.min.css' %} ">
+  <link rel="stylesheet" href="{% static 'plugins/jquery-ui/jquery-ui.min.css' %}">
   {% block link %}
   {% endblock %}
 </head>
@@ -59,98 +63,58 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
+        
+        <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Vacunas
-                <i class="right fas fa-angle-left"></i>
-              </p>
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                    Personal
+                    <i class="fas fa-angle-left right"></i>
+                </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'list_vacunas' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado de las Vacunas</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Entradas de Vacunas</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Salidas de Vacunas</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                    <a href="{% url 'list_personal' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Listado del Personal</p>
+                    </a>
+                </li>
             </ul>
-          </li>
-          <li class="nav-item">
+        </li>
+
+        <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Personal
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
-              </p>
+                <i class="nav-icon fas fa-syringe"></i>
+                <p>
+                    Vacunas
+                    <i class="fas fa-angle-left right"></i>
+                </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'list_personal' %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado del Personal</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-sidebar-custom.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar <small>+ Custom Area</small></p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-topnav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Navbar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-footer.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Footer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../layout/collapsed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collapsed Sidebar</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                    <a href="{% url 'list_vacunas' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Listado de las Vacunas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Entradas de Vacunas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Salidas de Vacunas</p>
+                    </a>
+                </li>
             </ul>
-          </li>
+        </li>
+        
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+                <i class="nav-icon fas fa-file-medical"></i>
               <p>
                 Reposos
                 <i class="right fas fa-angle-left"></i>
@@ -163,7 +127,7 @@
                   <p>Listado de los Reposos</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="../charts/flot.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Flot</p>
@@ -180,12 +144,13 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>uPlot</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tree"></i>
+                <i class="nav-icon fas fa-warehouse"></i>
+              
               <p>
                 Establecimientos
                 <i class="fas fa-angle-left right"></i>
@@ -199,50 +164,14 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../UI/icons.html" class="nav-link">
+                <a href="{% url 'list_encargados' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../UI/buttons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buttons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../UI/sliders.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sliders</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../UI/modals.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Modals & Alerts</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../UI/navbar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Navbar & Tabs</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../UI/timeline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Timeline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../UI/ribbons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ribbons</p>
+                  <p>Listado de Encargados</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+<!--           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
@@ -276,8 +205,8 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
@@ -305,7 +234,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -346,6 +275,13 @@
 
 <!-- jQuery -->
 <script src=" {% static 'plugins/jquery/jquery.js' %}"></script>
+<!-- toars -->
+<script type="text/javascript" src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<!-- BASE JS -->
+<script src=" {% static 'js/BaseJs.js' %}"></script>
+<!-- jquery confirm -->
+<script type="text/javascript" src="{% static 'plugins/jquery-confirm-v3/jquery-confirm.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
 <!-- Bootstrap 4 -->
 <script src=" {% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE App -->
@@ -357,6 +293,24 @@
 <script src=" {% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %} "></script>
 <script src=" {% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %} "></script>
 <script src=" {% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %} "></script>
+
+<script>
+    {% if messages %}
+      {% for mensaje in messages %}
+      {% if mensaje.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        function mensaje(sms) {
+        toastr.error(sms)
+        }
+        mensaje('{{ mensaje }}')
+      {% else %}
+        function mensaje(sms) {
+        toastr.success(sms)
+        }
+        mensaje('{{ mensaje }}')
+      {% endif %}
+      {% endfor %}
+    {% endif %}
+    </script>
 
 {% block js %}
 

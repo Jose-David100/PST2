@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 {% block title %}Listado de Encargados {% endblock %}
 {% block content %}
-<div class="row">
+<div class="row mt-5">
 	<div class="col-12">
 		<!-- Custom Tabs -->
 		<div class="card">
 			<div class="card-header d-flex p-0">
-				<h3 class="card-title p-3">Listado de Encargados</h3>
+				<h3 class="card-title p-3"><strong>Listado de Encargados</strong></h3>
 				<ul class="nav nav-pills ml-auto p-2">
 
-					<li class="nav-item dropdown">
+					<li class="nav-item dropdown mr-5">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
 						<div class="dropdown-menu" style="">
-							<a class="dropdown-item" tabindex="-1" href="{% url 'register_encargado' %}">Agregar</a>
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_encargado();">Agregar</button>
 						</div>
 					</li>
 				</ul>
@@ -34,20 +36,6 @@
 								</tr>
 							</thead>
 							<tbody>
-							{% for x in Encargado %}
-								<tr>
-									<td>{{x.cedula}}</td>
-									<td>{{x.nombre}}</td>
-									<td>{{x.apellido}}</td>
-									<td>{{x.direccion}}</td>
-									<td>{{x.movil}}</td>
-									<td>
-										<a class="btn btn-dark" href="{% url 'detail_encargados' x.pk %}"><i class="fas fa-info"></i></a> 
-										<a href="{% url 'edit_encargados' x.pk %}" class="btn btn-dark"><i class="fas fa-edit text-warning"></i></a>
-										<a href="#" class="btn btn-dark"><i class="fas fa-trash text-danger"></i></a>
-									</td>
-								</tr>
-							{% endfor %}
 							</tbody>
 						</table>
 					</div>
@@ -62,46 +50,66 @@
 </div>
 
 
+<!--MODAL REGISTRAR ENCARGADO-->
+<!-- Modal -->
+<div class="modal fade" id="Registrar_encargado" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Registrar Encargado</h5>
+				<button type="button" class="close" onclick="cerrar_modal_encargado();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="" method="post" id="form_personal"> {% csrf_token %}
+				<input type="hidden" name="action" value="agregar_encargado">
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+			                <label>Cédula de Identidad</label>
+			                {{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'}}
+			            </div>
+						<!-- /.row -->
+						<div class="row g-2 mt-2">
+			                <div class="col">
+			                    <label>Nombres</label>
+			                    {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'}}
+			                </div>
+			                <div class="col">
+			                    <div class="form-group">
+			                        <label>Apellidos</label>
+			                        {{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'}}
+			                    </div>
+			                </div>
+			            </div>
+						<div class="row">
+			                <label>Dirección</label>
+			                {{form.direccion|add_class:'form-control'|attr:'style:resize:none'|attr:'rows:4'|attr:'placeholder:Ingrese Dirección Habitacional'}}
+			            </div>
+			            <div class="row mt-2">
+			                <div class="col">
+			                    <label>Movil</label>
+			                    {{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'}}
+			                </div>
+			                <!-- /.col -->
+			                
+			            </div>
+			            
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_encargado();">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Registrar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
 
 {% block js %}
-<script>
-		// Call the dataTables jQuery plugin
-		$(document).ready(function() {
-			$('#table').DataTable({
-				responsive: true,
-				autoWidth: false,
-				destroy: true,
-				deferRender: true,
-				ordering:  true,
-				searching: true,
-				paging: true, 
-				"language": {
-					"sProcessing": "Procesando...",
-					"sLengthMenu": "Mostrar _MENU_ registros",
-					"sZeroRecords": "No se encontraron resultados",
-					"sEmptyTable": "Ningún dato disponible en esta tabla",
-					"sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-					"sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-					"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-					"sInfoPostFix": "",
-					"sSearch": "Buscar:",
-					"sUrl": "",
-					"sInfoThousands": ",",
-					"sLoadingRecords": "Cargando...",
-					"oPaginate": {
-						"sFirst": "<span class='fa fa-angle-double-left'></span>",
-						"sLast": "<span class='fa fa-angle-double-right'></span>",
-						"sNext": "<span class='fa fa-angle-right'></span>",
-						"sPrevious": "<span class='fa fa-angle-left'></span>"
-					},
-					"oAria": {
-						"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-					}
-				}
-			});
-		});
-	</script>
-	{% endblock %}
+
+<script type="text/javascript" src="{% static 'encargados/js_encargados.js' %}"></script>
 
 {% endblock %}

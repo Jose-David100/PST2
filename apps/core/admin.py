@@ -3,4 +3,3 @@ from apps.core.models import *
 # Register your models here.
 
 admin.site.register(Personal)
-admin.site.register(TipoReposo)

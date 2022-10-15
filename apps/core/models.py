@@ -1,10 +1,15 @@
 from django.db import models
+from django.forms import model_to_dict
 
 # Create your models here.
 
 sexo_choice = (
 	('masculino', 'Masculino'),
 	('femenino', 'Femenino'),
+)
+status_choice = (
+	('Activo', 'Activo'),
+	('Inactivo', 'Inactivo'),
 )
 
 class Personal(models.Model):
@@ -15,27 +20,33 @@ class Personal(models.Model):
 	movil = models.CharField(max_length=11, null=True, blank=True)
 	ocupacion = models.CharField(max_length=50, null=False, blank=False)
 	sexo = models.CharField(max_length=20, choices=sexo_choice , null=False, blank=False)
-	status = models.CharField(max_length=50, null=False, blank=False)
+	status = models.CharField(max_length=50,choices=status_choice ,null=False, blank=False)
 
 	def __str__(self):
 		return (self.cedula)
 
-class TipoReposo(models.Model):
-	tipo_reposo = models.CharField(max_length=50, null=False, blank=False)
-	observacion = models.TextField(null=True, blank=True)
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item
 
-	def __str__(self):
-		return (self.tipo_reposo)
 
 class Reposos(models.Model):
 	personal = models.ForeignKey(Personal, on_delete=models.CASCADE, null=False, blank=False)
-	tipo_reposo = models.ForeignKey(TipoReposo, on_delete=models.CASCADE, null=False, blank=False)
-	motivo_reposo = models.CharField(max_length=50, null=False, blank=False)
+	motivo_reposo = models.TextField(null=False, blank=False)
 	duracion = models.CharField(max_length=50, null=False, blank=False)
 	fecha_inicio = models.DateField(null=False, blank=False)
 
 	def __str__(self):
 		return (self.id)
+
+	def toJSON(self):
+		item = model_to_dict(self)
+		item['personal'] = {
+			'ci': self.personal.cedula,
+			'nombre': self.personal.nombre,
+			'apellido': self.personal.apellido
+		}
+		return item
 
 class Vacunas(models.Model):
 	nombre = models.CharField(max_length=50, null=False, blank=False)
@@ -45,12 +56,20 @@ class Vacunas(models.Model):
 	def __str__(self):
 		return (self.nombre)
 
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item
+
 class Ingreso(models.Model):
 	fecha_ingreso = models.DateField(null=False, blank=False)
 	observacion = models.TextField(null=False, blank=False)
 
 	def __str__(self):
 		return (self.id)
+
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item
 
 class DetalleIngreso(models.Model):
 	ingreso = models.ForeignKey(Ingreso, on_delete=models.CASCADE, null=False, blank=False)
@@ -59,6 +78,10 @@ class DetalleIngreso(models.Model):
 
 	def __str__(self):
 		return (self.id)
+
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item
 
 
 class Encargado(models.Model):
@@ -71,6 +94,10 @@ class Encargado(models.Model):
 	def __str__(self):
 		return (self.cedula)
 
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item
+
 class Establecimiento(models.Model):
 	nombre = models.CharField(max_length=150,null=False, blank=False)
 	direccion = models.TextField(null=False, blank=False)
@@ -78,6 +105,15 @@ class Establecimiento(models.Model):
 
 	def __str__(self):
 		return (self.nombre)
+
+	def toJSON(self):
+		item = model_to_dict(self)
+		item['encargado'] = {
+			'ci': self.encargado.cedula,
+			'nombre': self.encargado.nombre,
+			'apellido': self.encargado.apellido
+		}
+		return item
 
 class Salida(models.Model):
 	personal = models.ForeignKey(Personal, on_delete=models.CASCADE, null=False, blank=False)
@@ -87,6 +123,10 @@ class Salida(models.Model):
 	def __str__(self):
 		return (self.id)
 
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item
+
 class DetalleSalida(models.Model):
 	salida = models.ForeignKey(Salida, on_delete=models.CASCADE, null=False, blank=False )
 	vacuna = models.ForeignKey(Vacunas, on_delete=models.CASCADE, null=False, blank=False)
@@ -95,3 +135,7 @@ class DetalleSalida(models.Model):
 
 	def __str__(self):
 		return (self.id)
+
+	def toJSON(self):
+		item = model_to_dict(self)
+		return item

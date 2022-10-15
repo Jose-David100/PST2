@@ -1,20 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 {% block title %}Listado de Establecimientos {% endblock %}
+
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="row">
 	<div class="col-12">
 		<!-- Custom Tabs -->
 		<div class="card mt-5">
 			<div class="card-header d-flex p-0">
-				<h3 class="card-title p-3">Listado de Establecimientos</h3>
+				<h3 class="card-title p-3"><strong>Listado de Establecimientos</strong></h3>
 				<ul class="nav nav-pills ml-auto p-2">
 
-					<li class="nav-item dropdown">
+					<li class="nav-item dropdown mr-5">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
 						<div class="dropdown-menu" style="">
-							<a class="dropdown-item" tabindex="-1" href="{% url 'register_establecimientos' %}">Agregar</a>
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_establecimiento();">Agregar</button>
 						</div>
 					</li>
 				</ul>
@@ -28,24 +37,12 @@
 									<th>Nombre del Establecimiento</th>
 									<th>Dirección</th>
 									<th>C.I Encargado</th>
-									<th>Nombres y Apellidos</th>
+									<th>Nombres</th>
+									<th>Apellidos</th>
 									<th>Opciones</th>
 								</tr>
 							</thead>
 							<tbody>
-							{% for x in Establecimiento %}
-								<tr>
-									<td>{{x.nombre}}</td>
-									<td>{{x.direccion}}</td>
-									<td>{{x.encargado.cedula}}</td>
-									<td>{{x.encargado.nombre}} {{x.encargado.apellido}}</td>
-									<td>
-										<!--<a class="btn btn-dark" href="#"><i class="fas fa-info"></i></a> -->
-										<a href="{% url 'edit_establecimientos' x.pk %}" class="btn btn-dark"><i class="fas fa-edit text-warning"></i></a>
-										<a href="#" class="btn btn-dark"><i class="fas fa-trash text-danger"></i></a>
-									</td>
-								</tr>
-							{% endfor %}
 							</tbody>
 						</table>
 					</div>
@@ -59,47 +56,55 @@
 	<!-- /.col -->
 </div>
 
+<!--MODAL REGISTRAR ESTABLECIMIENTO-->
+<!-- Modal -->
+<div class="modal fade" id="Registrar_establecimiento" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Registrar Establecimiento</h5>
+				<button type="button" class="close" onclick="cerrar_modal_establecimiento();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="" method="post" id="Form_establecimiento"> {% csrf_token %}
+				<input type="hidden" name="action" value="agregar_establecimiento">
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<label>Nombre del Establecimiento</label>
+							<input type="text" name="nombre" id="id_nombre" class="form-control" placeholder="Nombre del Establecimiento" required>
+						</div>
+						<!-- /.row -->
+						<div class="row mt-2">
+							<div class="col">
+								<label>Dirección del Establecimiento</label>
+								<textarea class="form-control" name="direccion" id="id_direccion" placeholder="Direccion del establecimiento" style="resize: none;" rows="4" required></textarea>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col">
+								<label>Encargado del Establecimiento</label>
+								{{encargado.encargado|add_class:'form-control'|attr:'id:id_encargado'|attr:'required'}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_establecimiento();">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Registrar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
+{% endblock %}
 
 {% block js %}
-<script>
-		// Call the dataTables jQuery plugin
-		$(document).ready(function() {
-			$('#table').DataTable({
-				responsive: true,
-				autoWidth: false,
-				destroy: true,
-				deferRender: true,
-				ordering:  true,
-				searching: true,
-				paging: true, 
-				"language": {
-					"sProcessing": "Procesando...",
-					"sLengthMenu": "Mostrar _MENU_ registros",
-					"sZeroRecords": "No se encontraron resultados",
-					"sEmptyTable": "Ningún dato disponible en esta tabla",
-					"sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-					"sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-					"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-					"sInfoPostFix": "",
-					"sSearch": "Buscar:",
-					"sUrl": "",
-					"sInfoThousands": ",",
-					"sLoadingRecords": "Cargando...",
-					"oPaginate": {
-						"sFirst": "<span class='fa fa-angle-double-left'></span>",
-						"sLast": "<span class='fa fa-angle-double-right'></span>",
-						"sNext": "<span class='fa fa-angle-right'></span>",
-						"sPrevious": "<span class='fa fa-angle-left'></span>"
-					},
-					"oAria": {
-						"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-					}
-				}
-			});
-		});
-	</script>
-	{% endblock %}
+<script type="text/javascript" src="{% static 'establecimiento/js_establecimiento.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
 
 {% endblock %}

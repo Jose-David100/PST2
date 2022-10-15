@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 {% block title %}Listado de las Vacunas {% endblock %}
 {% block content %}
-<div class="row">
+<div class="row mt-5">
 	<div class="col-12">
 		<!-- Custom Tabs -->
 		<div class="card mt-3">
 			<div class="card-header d-flex p-0">
-				<h3 class="card-title p-3">Listado de las Vacunas</h3>
+				<h3 class="card-title p-3"><strong>Listado de las Vacunas</strong></h3>
 				<ul class="nav nav-pills ml-auto p-2">
 
-					<li class="nav-item dropdown">
+					<li class="nav-item dropdown mr-5">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
 						<div class="dropdown-menu" style="">
-							<a class="dropdown-item" tabindex="-1" href="{% url 'register_vacunas' %}">Agregar</a>
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_vacunas();">Agregar</button>
 						</div>
 					</li>
 				</ul>
@@ -32,17 +34,6 @@
 								</tr>
 							</thead>
 							<tbody>
-							{% for x in Vacunas %}
-								<tr>
-									<td>{{x.nombre}}</td>
-									<td>{{x.presentacion}}</td>
-									<td>{{x.existencia}}</td>
-									<td style="text-align: center;">
-										<a href="{% url 'edit_vacunas' x.pk %}" class="btn btn-dark"><i class="fas fa-edit text-warning"></i></a>
-										<a href="#" class="btn btn-dark"><i class="fas fa-trash text-danger"></i></a>
-									</td>
-								</tr>
-							{% endfor %}
 							</tbody>
 						</table>
 					</div>
@@ -57,46 +48,55 @@
 </div>
 
 
+<!--MODAL REGISTRAR VACUNAS-->
+<!-- Modal -->
+<div class="modal fade" id="Registrar_vacunas" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Registrar Vacunas</h5>
+				<button type="button" class="close" onclick="cerrar_modal_vacunas();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="" method="post" id="form_vacunas"> {% csrf_token %}
+				<input type="hidden" name="action" value="agregar_vacunas">
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+			                <label>Nombre de la Vacuna</label>
+			                {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese el nombre de la vacuna'}}
+			            </div>
+						<!-- /.row -->
+						
+						<div class="row g-2 mt-2">
+			                <div class="col">
+			                    <label>Presentación</label>
+			                    {{form.presentacion|add_class:'form-control'|attr:'placeholder:Ingrese la presentacion'}}
+			                </div>
+			                <div class="col">
+			                    <div class="form-group">
+			                        <label>Existencia</label>
+			                        {{form.existencia|add_class:'form-control'|attr:'placeholder:Ingrese la existencia'|attr:'min:0'}}
+			                    </div>
+			                </div>
+			            </div>
+			            
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_vacunas();">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Registrar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
 
 {% block js %}
-<script>
-		// Call the dataTables jQuery plugin
-		$(document).ready(function() {
-			$('#table').DataTable({
-				responsive: true,
-				autoWidth: false,
-				destroy: true,
-				deferRender: true,
-				ordering:  true,
-				searching: true,
-				paging: true, 
-				"language": {
-					"sProcessing": "Procesando...",
-					"sLengthMenu": "Mostrar _MENU_ registros",
-					"sZeroRecords": "No se encontraron resultados",
-					"sEmptyTable": "Ningún dato disponible en esta tabla",
-					"sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-					"sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-					"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-					"sInfoPostFix": "",
-					"sSearch": "Buscar:",
-					"sUrl": "",
-					"sInfoThousands": ",",
-					"sLoadingRecords": "Cargando...",
-					"oPaginate": {
-						"sFirst": "<span class='fa fa-angle-double-left'></span>",
-						"sLast": "<span class='fa fa-angle-double-right'></span>",
-						"sNext": "<span class='fa fa-angle-right'></span>",
-						"sPrevious": "<span class='fa fa-angle-left'></span>"
-					},
-					"oAria": {
-						"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-					}
-				}
-			});
-		});
-	</script>
-	{% endblock %}
+<script type="text/javascript" src="{% static 'vacunas/js_vacunas.js' %}"></script>
 
 {% endblock %}
