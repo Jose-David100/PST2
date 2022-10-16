@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Listado de Salida {% endblock %}
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!--DATERANGEPICKER-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="row mt-5">
+	<div class="col-12">
+		<!-- Custom Tabs -->
+		<div class="card mt-3">
+			<div class="card-header d-flex p-0">
+				<h3 class="card-title p-3"><strong>Listado de las salidas de vacunas</strong></h3>
+				<ul class="nav nav-pills ml-auto p-2">
+
+					<li class="nav-item dropdown mr-5">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+							Opciones <span class="caret"></span>
+						</a>
+						<div class="dropdown-menu" style="">
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_salida();">Agregar</button>
+						</div>
+					</li>
+				</ul>
+			</div><!-- /.card-header -->
+			<div class="card-body">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_1">
+						<table id="table" class="table" style="width:100%">
+							<thead>
+								<tr>
+									<th>Vacuna</th>
+									<th>Observación</th>
+									<th>Salida</th>
+									<th>Fecha Salida</th>
+									<th>Personal</th>
+									<th>Establecimiento</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.tab-pane -->
+				</div>
+				<!-- /.tab-content -->
+			</div><!-- /.card-body -->
+		</div>
+		<!-- ./card -->
+	</div>
+	<!-- /.col -->
+</div>
+
+
+<!--MODAL REGISTRAR SALIDA-->
+<!-- Modal -->
+<div class="modal fade" id="Registrar_salida" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Registrar salida de Vacunas</h5>
+				<button type="button" class="close" onclick="cerrar_modal_salida();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="" method="post" id="form_salida"> {% csrf_token %}
+				<input type="hidden" name="action" value="agregar_salida">
+				<input type="hidden" name="id_detalle" value="0">
+				<input type="hidden" name="id_salida" value="0">
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+			                <div class="col">
+			                	<label>Nombre de la Vacuna</label>
+			                	{{form.vacuna|add_class:'form-control'|attr:'placeholder:Ingrese el nombre de la vacuna'}}
+			                </div>
+			            </div>
+						<!-- /.row -->
+						
+						<div class="row g-2 mt-2">
+			                <div class="col">
+			                    <label>Cantidad a salir</label>
+			                    {{form.cantidad|add_class:'form-control'|attr:'placeholder:Ingrese la cantidad'|attr:'min:1'}}
+			                </div>
+			                <div class="col">
+			                    <div class="form-group">
+			                        <label>Fecha de la salida</label>
+			                        <input type="text" name="fecha_salida" class="form-control fecha-modal" placeholder="Ingrese la fecha" readonly>
+			                    </div>
+			                </div>
+			            </div>
+			            <div class="row">
+			                <label>Observación de la salida</label>
+			                <textarea class="form-control" name="observacion" style="resize: none;" rows="4" placeholder="Ingrese la observación de la salida de la vacuna"></textarea>
+			            </div>
+			            <div class="row g-2 mt-2">
+			                <div class="col">
+			                    <label>Personal Responsable</label>
+			                    {{form2.personal|add_class:'form-control'}}
+			                </div>
+			                <div class="col">
+			                    <div class="form-group">
+			                        <label>Establecimiento receptor</label>
+			                        {{form2.establecimiento|add_class:'form-control'}}
+			                        
+			                    </div>
+			                </div>
+			            </div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_salida();">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!--MODAL DETALLES DEL INGRESO -->
+<!-- Modal -->
+<div class="modal fade" id="Detalles_ingreso" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles del ingreso de Vacunas</h5>
+				<button type="button" class="close" onclick="cerrar_modal_detalle();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-signature"></i>
+								<label>Nombre de la Vacuna</label><br>
+							<p> <span id="nom"></span></p>
+							</div>
+						</div>
+						<!-- /.row -->
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-sort-numeric-up"></i>
+								<label>Cantidad de Vacunas Ingresadas</label>
+								<p> <span id="ing"></span></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-file-signature"></i>
+								<label>Observación del Ingreso</label>
+								<p id="obs"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-calendar-check"></i>
+								<label>Fecha del Ingreso</label>
+								<p id="fec"></p>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
+				</div>
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'salida/js_salida.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+
+<!--DATERANGEPICKER-->
+<script type="text/javascript" src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+{% endblock %}

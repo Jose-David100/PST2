@@ -161,4 +161,17 @@ class DetalleSalida(models.Model):
 
 	def toJSON(self):
 		item = model_to_dict(self)
+		item['vacuna'] = {
+			'id': self.vacuna.id,
+			'nombre': self.vacuna.nombre,
+		}
+		item['salida'] = {
+			'id': self.salida.id,
+			'fecha': self.salida.fecha_salida,
+			'ced_personal': self.salida.personal.cedula,
+			'nom_personal': self.salida.personal.nombre,
+			'ape_personal': self.salida.personal.apellido,
+			'ocu_personal': self.salida.personal.ocupacion,
+			'nom_estable': self.salida.establecimiento.nombre,
+		}
 		return item
