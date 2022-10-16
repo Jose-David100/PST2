@@ -89,6 +89,10 @@ $(function() {
 // BOTONES PARA LOS MODALES
 function abrir_modal_encargado() {
 	$("#Registrar_encargado").modal("show");
+	$('input[name="cedula"]').removeAttr('readonly');
+	$('input[name="nombre"]').removeAttr('readonly');
+	$('input[name="apellido"]').removeAttr('readonly');
+	modal_title.html('Registrar Encargado');
 }
 
 function cerrar_modal_encargado() {
@@ -106,7 +110,7 @@ function cerrar_modal_detalle() {
 $('#form_personal').on('submit', function(e) {
 	e.preventDefault();
 	var parameters = new FormData(this);
-	submit_with_ajax(window.location.pathname, 'Notifiación', '¿Estas seguro de realizar esta accion?', parameters, function() {
+	submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar esta accion?', parameters, function() {
 		$("#Registrar_encargado").modal('hide');
 		$("#form_personal")[0].reset();
 		toastr.success('Se ha registrado correctamente');

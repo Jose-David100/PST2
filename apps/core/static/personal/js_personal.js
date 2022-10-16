@@ -111,7 +111,7 @@ function cerrar_modal_detalle() {
 $('#form_personal').on('submit', function(e) {
 	e.preventDefault();
 	var parameters = new FormData(this);
-	submit_with_ajax(window.location.pathname, 'Notifiación', '¿Estas seguro de realizar esta accion?', parameters, function() {
+	submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar esta accion?', parameters, function() {
 		$("#Registrar_personal").modal('hide');
 		$("#form_personal")[0].reset();
 		toastr.success('Se ha registrado el Personal correctamente');

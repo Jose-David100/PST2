@@ -17,7 +17,7 @@ function submit_with_ajax(url, title, content, parameters, callback) {
 	$.confirm({
 		theme: 'bootstrap',
 		title: title,
-		icon: 'fa fa-info',
+		icon: 'fas fa-comments',
 		content: content,
 		columnClass: 'small',
 		typeAnimated: true,
@@ -65,7 +65,7 @@ function submit_action(title, content, callback) {
 	$.confirm({
 		theme: 'bootstrap',
 		title: title,
-		icon: 'fa fa-info',
+		icon: 'fas fa-comments',
 		content: content,
 		columnClass: 'small',
 		typeAnimated: true,

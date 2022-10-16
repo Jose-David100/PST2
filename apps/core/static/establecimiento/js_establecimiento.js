@@ -100,12 +100,15 @@ $(document).ready(function() {
 // BOTONES PARA LOS MODALES
 function abrir_modal_establecimiento() {
 	$("#Registrar_establecimiento").modal("show");
+	modal_title.html('Registrar Establecimiento');
+
 }
 
 function cerrar_modal_establecimiento() {
 	$("#Registrar_establecimiento").modal("hide");
 	$("#Form_establecimiento")[0].reset();
 	$('#id_encargado').val(null).trigger('change');
+	$("#id_nombre").removeAttr('readonly');
 
 }
 
@@ -118,7 +121,7 @@ function cerrar_modal_detalle() {
 $('#Form_establecimiento').on('submit', function(e) {
 	e.preventDefault();
 	var parameters = new FormData(this);
-	submit_with_ajax(window.location.pathname, 'Notifiación', '¿Estas seguro de realizar esta accion?', parameters, function() {
+	submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar esta accion?', parameters, function() {
 		$("#Registrar_establecimiento").modal('hide');
 		$("#Form_establecimiento")[0].reset();
 		$('#id_encargado').val(null).trigger('change');

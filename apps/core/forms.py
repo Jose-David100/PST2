@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from apps.core.models import Vacunas, Reposos, Personal, Establecimiento, Encargado
+from apps.core.models import Vacunas, Reposos, Personal, Establecimiento, Encargado, DetalleIngreso
 
 class VacunasForm(ModelForm):
 	class Meta:
@@ -27,3 +27,7 @@ class EncargadosForm(ModelForm):
 		model = Encargado
 		fields = '__all__'
 
+class DetalleIngresoForm(ModelForm):
+	class Meta:
+		model = DetalleIngreso
+		fields = '__all__'

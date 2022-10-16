@@ -1,8 +1,8 @@
-var tablaR;
+var tablaI;
 
 // DATA DE ESTABLECIMIENTOS
-function getDataR() {
-	tablaR = $('#table').DataTable({
+function getDataI() {
+	tablaI = $('#table').DataTable({
 		responsive: true,
 		autoWidth: false,
 		destroy: true,
@@ -35,26 +35,20 @@ function getDataR() {
 			url: window.location.pathname,
 			type: 'POST',
 			data: {
-				'action': 'listado_reposos',
+				'action': 'listado_ingreso',
 			},
 			dataSrc: ""
 		},
 		columns: [{
-			"data": "personal.ci"
+			"data": "vacuna.nombre"
 		}, {
-			"data": "personal.nombre"
+			"data": "ingreso.observacion"
 		}, {
-			"data": "personal.apellido"
+			"data": "cantidad_ingreso"
 		}, {
-			"data": "motivo_reposo"
+			"data": "ingreso.fecha"
 		}, {
-			"data": "duracion"
-		}, {
-			"data": "fecha_inicio"
-		}, {
-			"data": "status"
-		}, {
-			"data": "fecha_inicio"
+			"data": "ingreso.fecha"
 		}],
 		columnDefs: [{
 			targets: [-1],
@@ -68,12 +62,12 @@ function getDataR() {
 			}
 
 		}, {
-			targets: [3],
+			targets: [1],
 			class: '',
 			orderable: true,
 			render: function(data, type, row) {
-				if ((data.length) > 20) {
-					data = data.slice(0, 20) + '...'
+				if ((data.length) > 30) {
+					data = data.slice(0, 30) + '...'
 				}
 				data
 				return data
@@ -86,20 +80,19 @@ function getDataR() {
 	});
 };
 $(function() {
-	getDataR();
+	getDataI();
 });
 
+// DATERANGEPICKER MODAL
 $(function() {
-	// daterangepicker
 	var fecha = new Date();
 	var anno = fecha.getFullYear();
-	$('#id_fecha_inicio').daterangepicker({
+	$('.fecha-modal').daterangepicker({
 		singleDatePicker: true,
 		showDropdowns: true,
 		minYear: 1901,
 		maxDate: fecha,
 		maxYear: anno,
-		drops: 'up',
 		"locale": {
 			"format": "YYYY-MM-DD",
 			"separator": " - ",
@@ -138,9 +131,9 @@ $(function() {
 
 // SELECT2 PARA MODALES
 $(document).ready(function() {
-	$("#id_personal").select2({
-		dropdownParent: $("#Registrar_reposos"),
-		placeholder: 'Seleccione el solicitante',
+	$("#id_vacuna").select2({
+		dropdownParent: $("#Registrar_ingreso"),
+		placeholder: 'Seleccione la Vacuna',
 		theme: 'bootstrap4',
 		language: "es",
 		allowClear: true
@@ -148,72 +141,68 @@ $(document).ready(function() {
 });
 
 // BOTONES PARA LOS MODALES
-function abrir_modal_reposos() {
-	$("#Registrar_reposos").modal("show");
-	modal_title.html('Registrar Reposo');
+function abrir_modal_ingreso() {
+	$("#Registrar_ingreso").modal("show");
+	modal_title.html('Registrar ingreso de Vacuna');
+	//$("#id_vacuna").val(null).trigger('change');
+	$('input[name="cantidad_ingreso"]').removeAttr('readonly');
 }
 
-function cerrar_modal_reposos() {
-	$("#Registrar_reposos").modal("hide");
-	$("#form_reposos")[0].reset();
-	$('#id_personal').val(null).trigger('change');
-	$("#id_personal").removeAttr('disabled');
-
+function cerrar_modal_ingreso() {
+	$("#Registrar_ingreso").modal("hide");
+	$("#form_ingreso")[0].reset();
+	$("#id_vacuna").val(null).trigger('change');
+	$("#id_vacuna").removeAttr('disabled');
 }
 
 function cerrar_modal_detalle() {
-	$("#Detalles_reposo").modal("hide");
+	$("#Detalles_ingreso").modal("hide");
 }
-
 // REGISTRAR PERSONAL
 /* FORM SUBMIT AJAX*/
-$('#form_reposos').on('submit', function(e) {
+$('#form_ingreso').on('submit', function(e) {
 	e.preventDefault();
 	var parameters = new FormData(this);
 	submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar esta accion?', parameters, function() {
-		$("#Registrar_reposos").modal('hide');
-		$("#form_reposos")[0].reset();
-		$('#id_personal').val(null).trigger('change');
+		$("#Registrar_ingreso").modal('hide');
+		$("#form_ingreso")[0].reset();
 		toastr.success('Se ha registrado correctamente');
-		getDataR();
+		getDataI();
 	});
 });
 
 $(function() {
-	// EDICION DE LOS REPOSOS
+	// EDICION DE LOS INGRESOS
 	modal_title = $('#staticBackdropLabel');
 	$("#table tbody").on('click', 'a[rel="edit"]', function() {
-		modal_title.html('Editar Reposo');
-		var tr = tablaR.cell($(this).closest('td, li')).index();
-		var data = tablaR.row(tr.row).data();
+		modal_title.html('Editar Ingreso');
+		var tr = tablaI.cell($(this).closest('td, li')).index();
+		var data = tablaI.row(tr.row).data();
+		$('input[name="action"]').val('editar_ingreso');
+		$('input[name="id_detalle"]').val(data.id);
+		$('input[name="id_ingreso"]').val(data.ingreso.id);
 
-		$('input[name="personal"]').attr('readonly', '');
-		$('#id_personal').attr('disabled', 'disabled');
+		$("#id_vacuna").attr('disabled', 'disabled');
+		$('input[name="cantidad_ingreso"]').attr('readonly', '');
 
-		$('input[name="personal"]').val(data.personal.ci);
-		$('input[name="action"]').val('editar_reposo');
-		$('input[name="id"]').val(data.id);
-		$('textarea[name="motivo_reposo"]').val(data.motivo_reposo);
-		$('input[name="duracion"]').val(data.duracion);
-		$('input[name="fecha_inicio"]').val(data.fecha_inicio);
-		$('select[name="status"]').val(data.status);
-		$("#id_personal").val(data.personal.ci);
-		$("#id_personal").change();
-		$("#Registrar_reposos").modal('show');
+		$('select[name="vacuna"]').val(data.vacuna.id);
+		$('select[name="vacuna"]').change();
+		$('input[name="fecha_ingreso"]').val(data.ingreso.fecha);
+		$('input[name="cantidad_ingreso"]').val(data.cantidad_ingreso);
+		$('textarea[name="observacion"]').val(data.ingreso.observacion);
+
+		$("#Registrar_ingreso").modal('show');
 	});
 
-	// DETALLES DE LOS REPOSOS 
+	// DETALLES DE LAS INGRESOS 
 	$('#table tbody').on('click', 'a[rel="detail"]', function() {
-		var tr = tablaR.cell($(this).closest('td, li')).index();
-		var data = tablaR.row(tr.row).data();
-		$("#Detalles_reposo").modal('show');
+		var tr = tablaI.cell($(this).closest('td, li')).index();
+		var data = tablaI.row(tr.row).data();
+		$("#Detalles_ingreso").modal('show');
 
-		$('#ci').text(data.personal.ci);
-		$('#nom').text(data.personal.nombre);
-		$('#ape').text(data.personal.apellido);
-		$('#mot').text(data.motivo_reposo);
-		$('#dur').text(data.duracion);
-		$('#fec').text(data.fecha_inicio);
-		$('#est').text(data.status);
+		$('#nom').text(data.vacuna.nombre);
+		$('#ing').text(data.cantidad_ingreso);
+		$('#fec').text(data.ingreso.fecha);
+		$('#obs').text(data.ingreso.observacion);
 	});
 });

@@ -11,6 +11,8 @@ from apps.core.view.reposos.views import RepososViews
 from apps.core.view.encargados.views import EncargadoViews
 # vistas de los establecimientos
 from apps.core.view.establecimientos.views import EstablecimientosViews
+# vistas de los ingresos de las vacunas
+from apps.core.view.ingresos.views import IngresoViews
 
 urlpatterns = [
     path('inicio/', Inicio.as_view(), name="inicio"),
@@ -29,5 +31,9 @@ urlpatterns = [
 
     # URLS DE LOS ESTABLECIMIENTOS
     path('listado-de-establecimientos/', EstablecimientosViews.as_view(), name="list_establecimientos"),
+
+    # URLS DE LOS INGRESOS DE LAS VACUNAS
+    path('listado-de-ingresos-de-vacunas/', IngresoViews.as_view(), name="list_ingresos"),
+    
     
 ]

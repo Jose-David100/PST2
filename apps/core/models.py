@@ -78,7 +78,7 @@ class Ingreso(models.Model):
 	observacion = models.TextField(null=False, blank=False)
 
 	def __str__(self):
-		return (self.id)
+		return (str(self.id))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -90,10 +90,20 @@ class DetalleIngreso(models.Model):
 	cantidad_ingreso= models.IntegerField(null=False, blank=False)
 
 	def __str__(self):
-		return (self.id)
+		return (str(self.id))
 
 	def toJSON(self):
 		item = model_to_dict(self)
+		item['ingreso'] = {
+			'id': self.ingreso.id,
+			'fecha': self.ingreso.fecha_ingreso,
+			'observacion': self.ingreso.observacion,
+		}
+		item['vacuna'] = {
+			'id': self.vacuna.id,
+			'nombre': self.vacuna.nombre,
+			'existencia': self.vacuna.existencia,
+		}
 		return item
 
 

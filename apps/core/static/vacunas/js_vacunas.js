@@ -88,7 +88,7 @@ function cerrar_modal_detalle() {
 $('#form_vacunas').on('submit', function(e) {
 	e.preventDefault();
 	var parameters = new FormData(this);
-	submit_with_ajax(window.location.pathname, 'Notifiación', '¿Estas seguro de realizar esta accion?', parameters, function() {
+	submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar esta accion?', parameters, function() {
 		$("#Registrar_vacunas").modal('hide');
 		$("#form_vacunas")[0].reset();
 		toastr.success('Se ha registrado correctamente');
@@ -110,7 +110,6 @@ $(function() {
 		$('input[name="nombre"]').val(data.nombre);
 		$('input[name="id"]').val(data.id);
 		$('input[name="action"]').val('editar_vacuna');
-		$('input[name="id"]').val(data.id);
 		$('input[name="presentacion"]').val(data.presentacion);
 		$('input[name="existencia"]').val(data.existencia);
 		$("#Registrar_vacunas").modal('show');
