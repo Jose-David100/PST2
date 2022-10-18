@@ -29,23 +29,28 @@ class SalidaViews(TemplateView):
 					data.append(i.toJSON())
 
 			elif action == 'agregar_salida':
-				
-				sal = Salida()
-				sal.personal = Personal.objects.get(cedula = request.POST.get('personal'))
-				sal.establecimiento = Establecimiento.objects.get(id = request.POST.get('establecimiento')) 
-				sal.fecha_salida = request.POST.get('fecha_salida')
-				sal.save()
 
-				det_sal = DetalleSalida()
-				det_sal.salida = Salida.objects.get(id = sal.id)
-				det_sal.vacuna = Vacunas.objects.get(id = request.POST.get('vacuna') )
-				det_sal.cantidad = request.POST.get('cantidad')
-				det_sal.observacion = request.POST.get('observacion')
-				det_sal.save()
+				dispo = Vacunas.objects.get(id = request.POST.get('vacuna'))
+				if int(request.POST.get('cantidad')) > int(dispo.existencia):
+					data['error'] = 'No hay suficientes vacunas para sacar esa cantidad'
+				else:
 
-				vac = Vacunas.objects.get(id = request.POST.get('vacuna'))
-				vac.existencia = (int(vac.existencia) - int(det_sal.cantidad))
-				vac.save()
+					sal = Salida()
+					sal.personal = Personal.objects.get(cedula = request.POST.get('personal'))
+					sal.establecimiento = Establecimiento.objects.get(id = request.POST.get('establecimiento')) 
+					sal.fecha_salida = request.POST.get('fecha_salida')
+					sal.save()
+
+					det_sal = DetalleSalida()
+					det_sal.salida = Salida.objects.get(id = sal.id)
+					det_sal.vacuna = Vacunas.objects.get(id = request.POST.get('vacuna') )
+					det_sal.cantidad = request.POST.get('cantidad')
+					det_sal.observacion = request.POST.get('observacion')
+					det_sal.save()
+
+					vac = Vacunas.objects.get(id = request.POST.get('vacuna'))
+					vac.existencia = (int(vac.existencia) - int(det_sal.cantidad))
+					vac.save()
 
 			elif action == 'editar_salida':	
 				pass

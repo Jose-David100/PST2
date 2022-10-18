@@ -131,7 +131,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="staticBackdropLabel">Detalles del ingreso de Vacunas</h5>
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles de la salida de Vacunas</h5>
 				<button type="button" class="close" onclick="cerrar_modal_detalle();">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -150,25 +150,38 @@
 						<div class="row">
 							<div class="col">
 								<i class="fas fa-sort-numeric-up"></i>
-								<label>Cantidad de Vacunas Ingresadas</label>
+								<label>Cantidad de Vacunas Salientes</label>
 								<p> <span id="ing"></span></p>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col">
 								<i class="fas fa-file-signature"></i>
-								<label>Observación del Ingreso</label>
+								<label>Observación de la salida</label>
 								<p id="obs"></p>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col">
 								<i class="fas fa-calendar-check"></i>
-								<label>Fecha del Ingreso</label>
+								<label>Fecha de salida</label>
 								<p id="fec"></p>
 							</div>
 						</div>
-						
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-user"></i>
+								<label>Personal responsable</label>
+								<p> <strong>C.I:</strong> <span id="ced_per"></span>, <strong>Nombres y Apellidos:</strong> <span id="nom_per"></span> <span id="ape_per"></span>, <strong>Ocupación:</strong> <span id="ocu_per"></span></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="nav-icon fas fa-warehouse"></i>
+								<label>Establecimiento receptor</label>
+								<p id="est_rec"></p>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">

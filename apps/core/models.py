@@ -172,6 +172,7 @@ class DetalleSalida(models.Model):
 			'nom_personal': self.salida.personal.nombre,
 			'ape_personal': self.salida.personal.apellido,
 			'ocu_personal': self.salida.personal.ocupacion,
+			'id_estable': self.salida.establecimiento.id,
 			'nom_estable': self.salida.establecimiento.nombre,
 		}
 		return item

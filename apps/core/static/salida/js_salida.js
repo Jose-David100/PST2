@@ -168,9 +168,15 @@ function abrir_modal_salida() {
 
 function cerrar_modal_salida() {
 	$("#Registrar_salida").modal("hide");
-	$("#form_ingreso")[0].reset();
+	$("#form_salida")[0].reset();
 	$("#id_vacuna").val(null).trigger('change');
 	$("#id_vacuna").removeAttr('disabled');
+
+	$("#id_personal").val(null).trigger('change');
+	$("#id_personal").removeAttr('disabled');
+
+	$("#id_establecimiento").val(null).trigger('change');
+	$("#id_establecimiento").removeAttr('disabled');
 }
 
 function cerrar_modal_detalle() {
@@ -190,37 +196,48 @@ $('#form_salida').on('submit', function(e) {
 });
 
 $(function() {
-	// EDICION DE LOS INGRESOS
+	// EDICION DE LAS SALIAS
 	modal_title = $('#staticBackdropLabel');
 	$("#table tbody").on('click', 'a[rel="edit"]', function() {
-		modal_title.html('Editar Ingreso');
+		modal_title.html('Editar salida de vacuna');
 		var tr = tablaS.cell($(this).closest('td, li')).index();
 		var data = tablaS.row(tr.row).data();
-		$('input[name="action"]').val('editar_ingreso');
+		$('input[name="action"]').val('editar_salida');
 		$('input[name="id_detalle"]').val(data.id);
-		$('input[name="id_ingreso"]').val(data.ingreso.id);
+		$('input[name="id_salida"]').val(data.salida.id);
 
 		$("#id_vacuna").attr('disabled', 'disabled');
 		$('input[name="cantidad_ingreso"]').attr('readonly', '');
 
 		$('select[name="vacuna"]').val(data.vacuna.id);
 		$('select[name="vacuna"]').change();
-		$('input[name="fecha_ingreso"]').val(data.ingreso.fecha);
-		$('input[name="cantidad_ingreso"]').val(data.cantidad_ingreso);
-		$('textarea[name="observacion"]').val(data.ingreso.observacion);
+		$('input[name="fecha_salida"]').val(data.salida.fecha);
+		$('input[name="cantidad"]').val(data.cantidad);
+		$('textarea[name="observacion"]').val(data.observacion);
+
+		$('select[name="personal"]').val(data.salida.ced_personal);
+		$('select[name="personal"]').change();
+
+		$('select[name="establecimiento"]').val(data.salida.id_estable);
+		$('select[name="establecimiento"]').change();
 
 		$("#Registrar_salida").modal('show');
 	});
 
-	// DETALLES DE LAS INGRESOS 
+	// DETALLES DE LAS SALIAS 
 	$('#table tbody').on('click', 'a[rel="detail"]', function() {
 		var tr = tablaS.cell($(this).closest('td, li')).index();
 		var data = tablaS.row(tr.row).data();
 		$("#Detalles_ingreso").modal('show');
 
 		$('#nom').text(data.vacuna.nombre);
-		$('#ing').text(data.cantidad_ingreso);
-		$('#fec').text(data.ingreso.fecha);
-		$('#obs').text(data.ingreso.observacion);
+		$('#ing').text(data.cantidad);
+		$('#fec').text(data.salida.fecha);
+		$('#obs').text(data.observacion);
+		$('#ced_per').text(data.salida.ced_personal);
+		$('#nom_per').text(data.salida.nom_personal);
+		$('#ape_per').text(data.salida.ape_personal);
+		$('#est_rec').text(data.salida.nom_estable);
+		$('#ocu_per').text(data.salida.ocu_personal);
 	});
 });
