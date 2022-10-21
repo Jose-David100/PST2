@@ -35,7 +35,7 @@ class Personal(models.Model):
 	status = models.CharField(max_length=50,choices=status_choice ,null=False, blank=False)
 
 	def __str__(self):
-		return (self.cedula)
+		return (str(self.cedula))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -50,7 +50,7 @@ class Reposos(models.Model):
 	status = models.CharField(max_length=20, choices=status_reposo, null=False, blank=False )
 
 	def __str__(self):
-		return (self.id)
+		return (str(self.id))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -67,7 +67,7 @@ class Vacunas(models.Model):
 	existencia = models.IntegerField(null=False, blank=False)
 
 	def __str__(self):
-		return (self.nombre)
+		return (str(self.nombre))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -102,6 +102,7 @@ class DetalleIngreso(models.Model):
 		item['vacuna'] = {
 			'id': self.vacuna.id,
 			'nombre': self.vacuna.nombre,
+			'presentacion': self.vacuna.presentacion,
 			'existencia': self.vacuna.existencia,
 		}
 		return item
@@ -115,7 +116,7 @@ class Encargado(models.Model):
 	direccion = models.TextField(null=False, blank=False)
 
 	def __str__(self):
-		return (self.cedula)
+		return (str(self.cedula))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -127,7 +128,7 @@ class Establecimiento(models.Model):
 	encargado = models.ForeignKey(Encargado, on_delete=models.CASCADE, null=False, blank=False)
 
 	def __str__(self):
-		return (self.nombre)
+		return (str(self.nombre))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -144,7 +145,7 @@ class Salida(models.Model):
 	fecha_salida = models.DateField(null=False, blank=False)
 
 	def __str__(self):
-		return (self.id)
+		return (str(self.id))
 
 	def toJSON(self):
 		item = model_to_dict(self)
@@ -157,7 +158,7 @@ class DetalleSalida(models.Model):
 	observacion = models.TextField(null=False, blank=False)
 
 	def __str__(self):
-		return (self.id)
+		return (str(self.id))
 
 	def toJSON(self):
 		item = model_to_dict(self)

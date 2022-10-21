@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+import json
 
 # IMPORTACIONES DE MOS MODELS Y LOS FORMUALARIOS
 from apps.core.models import Salida, DetalleSalida, Vacunas, Personal, Establecimiento
@@ -27,6 +28,18 @@ class SalidaViews(TemplateView):
 				data = []
 				for i in DetalleSalida.objects.all().order_by('-id'):
 					data.append(i.toJSON())
+
+			elif action == 'listado_vacunas':
+				data = []
+				ids_exclude = json.loads(request.POST['ids'])
+				vacunas = Vacunas.objects.filter(nombre__icontains=request.POST['term'], existencia__gte=1)
+				for i in vacunas.exclude(id__in=ids_exclude)[0:10]:
+					item = i.toJSON()
+					item['id'] = i.id
+					item['nombre'] = i.nombre
+					item['existencia'] = i.existencia
+					item['presentacion'] = i.presentacion
+					data.append(item)	
 
 			elif action == 'agregar_salida':
 
