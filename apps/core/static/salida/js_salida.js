@@ -6,11 +6,39 @@ var vents = {
 		fecha: '',
 		personal: '',
 		establecimiento: '',
-		cantidad: [],
-		existencia: [],
 		observacion: '',
 		det: []
 	},
+	vacunas: {},
+    agregar_vacuna: function (id, existencia) {
+        let vacuna = {
+            'id':id,
+            'existencia':existencia, 
+            'requerido': 0.00
+        }
+        
+        if (!(this.vacunas.length === 0)) {
+            this.vacunas[vacuna['id']] = vacuna
+        } else if (!(this.vacunas[id])){
+            this.vacunas[vacuna['id']] = vacuna
+        };
+
+    },
+    validar_existencia_vacunas: function (){
+        let validador = {}
+        this.items.det.forEach(item => {
+            vents.vacunas[item.id]['requerido'] += item.cantidad 
+            if (vents.vacunas[item.id]['requerido'] > vents.vacunas[item.id]['existencia']) {
+                validador['error'] = {'message': `La vacuna: ${item.text} no tiene esa cantidad disponible`, 'status':'error'}
+            }
+        })
+        Object.entries(this.vacunas).forEach(([key, value]) => {
+            vents.vacunas[key]['requerido'] = 0
+        });
+
+        return validador
+
+    },
 	get_ids: function() {
 		var ids = [];
 		$.each(this.items.det, function(key, value) {
@@ -135,6 +163,7 @@ $(function() {
 		var data = e.params.data;
 		data.cantidad = 1;
 		vents.add(data);
+		vents.agregar_vacuna(data.id, data.existencia);
 		$(this).val('').trigger('change.select2');
 
 	});
@@ -163,9 +192,17 @@ $(function() {
 			return false;
 		}
 
+		 validar = vents.validar_existencia_vacunas();
+        if (validar['error']) {
+            if (validar['error']['status'] == 'error') {
+                toastr.error(validar['error']['message'])
+                return false;
+            }
+        };
+
 		vents.items.fecha = $('input[name="fecha_salida"]').val();
-		vents.items.personal = $('input[name="personal"]').val();
-		vents.items.establecimiento = $('input[name="establecimiento"]').val();
+		vents.items.personal = $('select[name="personal"]').val();
+		vents.items.establecimiento = $('select[name="establecimiento"]').val();
 		vents.items.observacion = $('textarea[name="observacion"]').val();
 
 		var parameters = new FormData();

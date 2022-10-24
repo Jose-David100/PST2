@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 import json
+from django.db import transaction
 
 # IMPORTACIONES DE MOS MODELS Y LOS FORMUALARIOS
 from apps.core.models import Salida, DetalleSalida, Vacunas, Personal, Establecimiento
@@ -42,28 +43,49 @@ class SalidaViews(TemplateView):
 					data.append(item)	
 
 			elif action == 'agregar_salida':
+				with transaction.atomic():
+					salida_js = json.loads(request.POST['vents'])
 
-				dispo = Vacunas.objects.get(id = request.POST.get('vacuna'))
-				if int(request.POST.get('cantidad')) > int(dispo.existencia):
-					data['error'] = 'No hay suficientes vacunas para sacar esa cantidad'
-				else:
+					salida = Salida()
 
-					sal = Salida()
-					sal.personal = Personal.objects.get(cedula = request.POST.get('personal'))
-					sal.establecimiento = Establecimiento.objects.get(id = request.POST.get('establecimiento')) 
-					sal.fecha_salida = request.POST.get('fecha_salida')
-					sal.save()
+					salida.personal = Personal.objects.get(cedula = salida_js['personal'])
+					salida.establecimiento = Establecimiento.objects.get(id = salida_js['establecimiento'])
+					salida.fecha_salida = salida_js['fecha']
+					salida.save()
 
-					det_sal = DetalleSalida()
-					det_sal.salida = Salida.objects.get(id = sal.id)
-					det_sal.vacuna = Vacunas.objects.get(id = request.POST.get('vacuna') )
-					det_sal.cantidad = request.POST.get('cantidad')
-					det_sal.observacion = request.POST.get('observacion')
-					det_sal.save()
+					for i in salida_js['det']:
+						det_salida = DetalleSalida()
+						det_salida.salida = Salida.objects.get(id = salida.id)
+						det_salida.vacuna = Vacunas.objects.get(id = i['id'])
+						det_salida.cantidad = i['cantidad']
+						det_salida.observacion = salida_js['observacion']
+						det_salida.save()
 
-					vac = Vacunas.objects.get(id = request.POST.get('vacuna'))
-					vac.existencia = (int(vac.existencia) - int(det_sal.cantidad))
-					vac.save()
+						vac = Vacunas.objects.get(id= i['id'])
+						vac.existencia = (int(vac.existencia) - int(i['cantidad']))
+						vac.save()
+
+				# dispo = Vacunas.objects.get(id = request.POST.get('vacuna'))
+				# if int(request.POST.get('cantidad')) > int(dispo.existencia):
+				# 	data['error'] = 'No hay suficientes vacunas para sacar esa cantidad'
+				# else:
+
+				# 	sal = Salida()
+				# 	sal.personal = Personal.objects.get(cedula = request.POST.get('personal'))
+				# 	sal.establecimiento = Establecimiento.objects.get(id = request.POST.get('establecimiento')) 
+				# 	sal.fecha_salida = request.POST.get('fecha_salida')
+				# 	sal.save()
+
+				# 	det_sal = DetalleSalida()
+				# 	det_sal.salida = Salida.objects.get(id = sal.id)
+				# 	det_sal.vacuna = Vacunas.objects.get(id = request.POST.get('vacuna') )
+				# 	det_sal.cantidad = request.POST.get('cantidad')
+				# 	det_sal.observacion = request.POST.get('observacion')
+				# 	det_sal.save()
+
+				# 	vac = Vacunas.objects.get(id = request.POST.get('vacuna'))
+				# 	vac.existencia = (int(vac.existencia) - int(det_sal.cantidad))
+				# 	vac.save()
 
 			elif action == 'editar_salida':	
 				pass
