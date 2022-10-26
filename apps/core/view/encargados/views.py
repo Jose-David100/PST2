@@ -11,7 +11,7 @@ from apps.core.models import Encargado
 from apps.core.forms import EncargadosForm
 
 # ENCARGADOS 
-class EncargadoViews(TemplateView):
+class EncargadoViews(LoginRequiredMixin, TemplateView):
 	template_name =  'encargados/Listado_encargados.html'
 
 	@method_decorator(csrf_exempt)

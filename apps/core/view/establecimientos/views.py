@@ -12,7 +12,7 @@ from apps.core.models import Establecimiento, Encargado
 from apps.core.forms import EstablecimientoForm
 
 # ESTABLECIMIENTOS 
-class EstablecimientosViews(TemplateView):
+class EstablecimientosViews(LoginRequiredMixin, TemplateView):
 	template_name =  'establecimientos/Listado_establecimiento.html'
 
 	@method_decorator(csrf_exempt)

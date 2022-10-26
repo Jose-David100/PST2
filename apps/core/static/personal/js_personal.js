@@ -51,6 +51,8 @@ function getDataP() {
 			"data": "movil"
 		}, {
 			"data": "ocupacion"
+		},{
+			"data": "correo"
 		}, {
 			"data": "sexo"
 		}, {
@@ -66,6 +68,7 @@ function getDataP() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
+				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -94,6 +97,12 @@ $(function() {
 // BOTONES PARA LOS MODALES
 function abrir_modal_personal() {
 	$("#Registrar_personal").modal("show");
+	$('input[name="cedula"]').removeAttr('readonly');
+	$('input[name="nombre"]').removeAttr('readonly');
+	$('input[name="apellido"]').removeAttr('readonly');
+	$('select[name="sexo"]').removeAttr('disabled');
+	$('select[name="ocupacion"]').removeAttr('disabled');
+
 }
 
 function cerrar_modal_personal() {
@@ -116,6 +125,12 @@ $('#form_personal').on('submit', function(e) {
 		$("#form_personal")[0].reset();
 		toastr.success('Se ha registrado el Personal correctamente');
 		getDataP();
+
+		$('input[name="cedula"]').removeAttr('readonly');
+		$('input[name="nombre"]').removeAttr('readonly');
+		$('input[name="apellido"]').removeAttr('readonly');
+		$('select[name="sexo"]').removeAttr('disabled');
+		$('select[name="ocupacion"]').removeAttr('disabled');
 	});
 });
 
@@ -131,9 +146,11 @@ $(function() {
 		$('input[name="nombre"]').attr('readonly', '');
 		$('input[name="apellido"]').attr('readonly', '');
 		$('select[name="sexo"]').attr('disabled', 'disabled');
+		$('select[name="ocupacion"]').attr('disabled', 'disabled');
 		//$('#id_titular_ben').attr('disabled','disabled');
 
 		$('input[name="cedula"]').val(data.cedula);
+		$('input[name="correo"]').val(data.correo);
 		$('input[name="action"]').val('editar_personal');
 		$('input[name="nombre"]').val(data.nombre);
 		$('input[name="apellido"]').val(data.apellido);
@@ -160,6 +177,7 @@ $(function() {
 		$('#mov').text(data.movil);
 		$('#ocu').text(data.ocupacion);
 		$('#sex').text(data.sexo);
+		$('#email').text(data.correo);
 		$('#sta').text(data.status);
 
 	});

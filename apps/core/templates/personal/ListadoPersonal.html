@@ -32,6 +32,7 @@
 									<th>Dirección</th>
 									<th>Movil</th>
 									<th>Ocupación</th>
+									<th>Correo</th>
 									<th>Sexo</th>
 									<th>Status</th>
 									<th>Opciones</th>
@@ -68,29 +69,33 @@
 					<div class="card-body">
 						<div class="row">
 			                <label>Cédula de Identidad</label>
-			                {{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'}}
+			                {{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:8'|attr:'minlength:8'}}
 			            </div>
 						<!-- /.row -->
 						<div class="row g-2 mt-2">
 			                <div class="col">
 			                    <label>Nombres</label>
-			                    {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'}}
+			                    {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'|attr:'onkeypress:return Solo_Texto(event);'}}
 			                </div>
 			                <div class="col">
 			                    <div class="form-group">
 			                        <label>Apellidos</label>
-			                        {{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'}}
+			                        {{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'|attr:'onkeypress:return Solo_Texto(event);'}}
 			                    </div>
 			                </div>
 			            </div>
 						<div class="row">
 			                <label>Dirección</label>
-			                {{form.direccion|add_class:'form-control'|attr:'style:resize:none'|attr:'rows:4'|attr:'placeholder:Ingrese Dirección Habitacional'}}
+			                {{form.direccion|add_class:'form-control'|attr:'style:resize:none'|attr:'rows:4'|attr:'placeholder:Ingrese Dirección Habitacional'|attr:'onkeypress:return Texto_Numeros(event);'}}
+			            </div>
+			            <div class="row">
+			                <label>Correo Electrónico</label>
+			                {{form.correo|add_class:'form-control'|attr:'placeholder:Ingrese su correo electrónico'|attr:'type:email'}}
 			            </div>
 			            <div class="row g-2 mt-2">
 			                <div class="col">
 			                    <label>Movil</label>
-			                    {{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'}}
+			                    {{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:11'|attr:'minlength:11'}}
 			                </div>
 			                <!-- /.col -->
 			                <div class="col">
@@ -168,6 +173,13 @@
 								<i class="fas fa-users"></i>
 								<label>Ocupación</label>
 								<p id="ocu"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-envelope-open"></i>
+								<label>Correo</label>
+								<p id="email"></p>
 							</div>
 						</div>
 						<div class="row">

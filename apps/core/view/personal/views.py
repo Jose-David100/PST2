@@ -14,7 +14,7 @@ from apps.core.forms import PersonalForm
 # Create your views here.
 
 # ESTABLECIMIENTOS 
-class PersonalViews(TemplateView):
+class PersonalViews(LoginRequiredMixin, TemplateView):
 	template_name =  'personal/ListadoPersonal.html'
 
 	@method_decorator(csrf_exempt)
@@ -32,21 +32,26 @@ class PersonalViews(TemplateView):
 					data.append(i.toJSON())
 
 			elif action == 'agregar_personal':
-				per = Personal()
-				per.cedula = request.POST.get('cedula')
-				per.nombre = request.POST.get('nombre')
-				per.apellido = request.POST.get('apellido')
-				per.direccion = request.POST.get('direccion')
-				per.movil = request.POST.get('movil')
-				per.ocupacion = request.POST.get('ocupacion')
-				per.sexo = request.POST.get('sexo')
-				per.status = request.POST.get('status')
-				per.save()
+				if Personal.objects.filter(cedula = request.POST.get('cedula')):
+					data['error'] = 'Ya existe personal registrado con este numero de cédula'   
+				else:
+					per = Personal()
+					per.cedula = request.POST.get('cedula')
+					per.nombre = request.POST.get('nombre')
+					per.apellido = request.POST.get('apellido')
+					per.direccion = request.POST.get('direccion')
+					per.movil = request.POST.get('movil')
+					per.correo = request.POST.get('correo')
+					per.ocupacion = request.POST.get('ocupacion')
+					per.sexo = request.POST.get('sexo')
+					per.status = request.POST.get('status')
+					per.save()
 
 			elif action == 'editar_personal':	
 				per = Personal.objects.get(cedula = request.POST.get('cedula'))
 				per.direccion = request.POST.get('direccion')
 				per.movil = request.POST.get('movil')
+				per.correo = request.POST.get('correo')
 				per.ocupacion = request.POST.get('ocupacion')
 				per.status = request.POST.get('status')
 				per.save()

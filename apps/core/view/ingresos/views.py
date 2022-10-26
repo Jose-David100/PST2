@@ -8,11 +8,11 @@ import json
 from django.urls import reverse_lazy
 
 # IMPORTACIONES DE MOS MODELS Y LOS FORMUALARIOS
-from apps.core.models import Ingreso, DetalleIngreso, Vacunas
+from apps.core.models import Ingreso, DetalleIngreso, Vacunas, Personal
 from apps.core.forms import DetalleIngresoForm
 
 # INGRESOS 
-class IngresoViews(TemplateView):
+class IngresoViews(LoginRequiredMixin, TemplateView):
 	template_name =  'ingresos/Listado_ingresos.html'
 
 	@method_decorator(csrf_exempt)
@@ -46,6 +46,7 @@ class IngresoViews(TemplateView):
 			ing = Ingreso()
 			ing.fecha_ingreso = ingreso['fecha']
 			ing.observacion = ingreso['observacion']
+			ing.personal = Personal.objects.get(cedula = ingreso['personal'])
 			ing.save()
 
 			for i in ingreso['det']:
@@ -76,4 +77,5 @@ class IngresoViews(TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(IngresoViews, self).get_context_data(**kwargs)
 		context['form'] = DetalleIngresoForm()
+		context['per'] = Personal.objects.filter(status = 'Activo')
 		return context

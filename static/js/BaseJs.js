@@ -92,13 +92,52 @@ function submit_action(title, content, callback) {
 }
 
 // PARA CERRAR SECCION 
-/*$(function () {
+$(function () {
     $('a[id="btn-logout"]').on('click', function () {
 
-        submit_action('Notifiación', '¿Estas seguro de cerrar sesión?', function () {
+        submit_action('Notificación', '¿Estas seguro de cerrar sesión?', function () {
             
             window.location.replace("/accounts/logout/");
             
         });
     });
-});*/
+});
+
+//Solo texto
+function Solo_Texto(e) {
+  var code;
+  if (!e) var e = window.event;
+  if (e.keyCode) code = e.keyCode;
+  else if (e.which) code = e.which;
+  var character = String.fromCharCode(code);
+  var AllowRegex  = /^[\ba-zA-Z\s]$/;
+  if (AllowRegex.test(character)) return true;     
+  return false; 
+}
+//Solo numeros
+function Solo_Numero(e){
+  var keynum = window.event ? window.event.keyCode : e.which;
+  if ((keynum == 8) || (keynum == 46))
+  return true;
+  return /\d/.test(String.fromCharCode(keynum));
+}
+
+//Solo numeros sin puntos 
+function Solo_Numero_ci(e){
+  var keynum = window.event ? window.event.keyCode : e.which;
+  if ((keynum == 8))
+  return true;
+  return /\d/.test(String.fromCharCode(keynum));
+}
+
+// solo numeros y letras sin caracteres especiales
+function Texto_Numeros(e) {
+  var code;
+  if (!e) var e = window.event;
+  if (e.keyCode) code = e.keyCode;
+  else if (e.which) code = e.which;
+  var character = String.fromCharCode(code);
+  var AllowRegex  = /^[A-Za-z0-9\s\.,-]+$/g;
+  if (AllowRegex.test(character)) return true;     
+  return false; 
+}

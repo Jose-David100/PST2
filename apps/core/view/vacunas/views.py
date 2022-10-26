@@ -11,7 +11,7 @@ from apps.core.models import Vacunas
 from apps.core.forms import VacunasForm
 
 # VACUNAS 
-class VacunasViews(TemplateView):
+class VacunasViews(LoginRequiredMixin, TemplateView):
 	template_name =  'vacunas/Listado_vacunas.html'
 
 	@method_decorator(csrf_exempt)

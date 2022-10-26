@@ -309,6 +309,13 @@ $(document).ready(function() {
 		language: "es",
 		allowClear: true
 	});
+	$("#per_responsable").select2({
+		dropdownParent: $("#Registrar_ingreso"),
+		placeholder: 'Seleccione el Personal',
+		theme: 'bootstrap4',
+		language: "es",
+		allowClear: true
+	});
 });
 
 // BOTONES PARA LOS MODALES

@@ -13,7 +13,7 @@ from apps.core.models import Salida, DetalleSalida, Vacunas, Personal, Estableci
 from apps.core.forms import DetalleSalidaForm, SalidaForm
 
 # SALIDAS 
-class SalidaViews(TemplateView):
+class SalidaViews(LoginRequiredMixin, TemplateView):
 	template_name =  'salida/Listado_salida.html'
 
 	@method_decorator(csrf_exempt)
@@ -51,6 +51,7 @@ class SalidaViews(TemplateView):
 					salida.personal = Personal.objects.get(cedula = salida_js['personal'])
 					salida.establecimiento = Establecimiento.objects.get(id = salida_js['establecimiento'])
 					salida.fecha_salida = salida_js['fecha']
+					salida.observacion = salida_js['observacion']
 					salida.save()
 
 					for i in salida_js['det']:
@@ -58,7 +59,6 @@ class SalidaViews(TemplateView):
 						det_salida.salida = Salida.objects.get(id = salida.id)
 						det_salida.vacuna = Vacunas.objects.get(id = i['id'])
 						det_salida.cantidad = i['cantidad']
-						det_salida.observacion = salida_js['observacion']
 						det_salida.save()
 
 						vac = Vacunas.objects.get(id= i['id'])

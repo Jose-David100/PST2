@@ -11,7 +11,7 @@ from apps.core.models import Reposos, Personal
 from apps.core.forms import ReposoForm
 
 # REPOSOS 
-class RepososViews(TemplateView):
+class RepososViews(LoginRequiredMixin, TemplateView):
 	template_name =  'reposos/Listado_reposo.html'
 
 	@method_decorator(csrf_exempt)
