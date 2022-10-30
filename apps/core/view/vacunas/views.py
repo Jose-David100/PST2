@@ -1,13 +1,12 @@
-from django.views.generic import TemplateView
-from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from django.urls import reverse_lazy
+import json
 
 # IMPORTACIONES DE LOS MODELS Y FORMULARIOS
-from apps.core.models import Vacunas
+from apps.core.models import DetalleSalida, Vacunas, DetalleIngreso
 from apps.core.forms import VacunasForm
 
 # VACUNAS 
@@ -32,7 +31,7 @@ class VacunasViews(LoginRequiredMixin, TemplateView):
 				vac = Vacunas()
 				vac.nombre = request.POST.get('nombre')
 				vac.presentacion = request.POST.get('presentacion')
-				vac.existencia = request.POST.get('existencia')
+				vac.existencia = 0
 				vac.save()
 
 			elif action == 'editar_vacuna':	
@@ -41,6 +40,12 @@ class VacunasViews(LoginRequiredMixin, TemplateView):
 				vac.presentacion = request.POST.get('presentacion')
 				vac.existencia = request.POST.get('existencia')
 				vac.save()
+			
+			elif action == 'detalle_vacuna':	
+				data = []
+				for i in DetalleIngreso.objects.filter(vacuna = request.POST.get('id')):
+					data.append(i.toJSON())
+			
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 
@@ -52,3 +57,30 @@ class VacunasViews(LoginRequiredMixin, TemplateView):
 		context = super(VacunasViews, self).get_context_data(**kwargs)
 		context['form'] = VacunasForm()
 		return context
+
+# DETALLES DE LAS SALIDAS Y ENTRADAS DE LAS VACUNAS
+class MovimientosVacunas(LoginRequiredMixin, View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		data = {}
+		action = request.POST['action']
+
+		if action == "detalle_ingreso":
+			print(request.POST)
+			data = []
+			for i in DetalleIngreso.objects.filter(vacuna = request.POST.get('id')):
+				data.append(i.toJSON())
+				
+		elif action == "detalle_salida":
+			print(request.POST)
+			data = []
+			for i in DetalleSalida.objects.filter(vacuna = request.POST.get('id')):
+				data.append(i.toJSON())
+            
+		else:
+			data['error'] = 'Ha ocurrido un error inesperado'
+
+		return JsonResponse(data, safe=False)

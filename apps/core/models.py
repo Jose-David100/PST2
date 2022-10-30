@@ -25,7 +25,7 @@ ocupacion_choice = (
 )
 
 class Personal(models.Model):
-	cedula = models.CharField(max_length=10, primary_key=True, null=False, blank=False)
+	cedula = models.CharField(max_length=10, null=False, blank=False)
 	nombre = models.CharField(max_length=50, null=False, blank=False)
 	apellido = models.CharField(max_length=50, null=False, blank=False)
 	direccion = models.TextField(null=False, blank=False)
@@ -67,8 +67,6 @@ class Vacunas(models.Model):
 	nombre = models.CharField(max_length=50, null=False, blank=False)
 	presentacion = models.CharField(max_length=50, null=False, blank=False)
 	existencia = models.IntegerField(null=False, blank=False)
-	lote = models.CharField(max_length=50, null=False, blank=False)
-	fecha_vencimiento = models.DateField(null=False, blank=False)
 
 	def __str__(self):
 		return (str(self.nombre))
@@ -92,6 +90,8 @@ class Ingreso(models.Model):
 class DetalleIngreso(models.Model):
 	ingreso = models.ForeignKey(Ingreso, on_delete=models.CASCADE, null=False, blank=False)
 	vacuna = models.ForeignKey(Vacunas, on_delete=models.CASCADE, null=False, blank=False)
+	lote = models.CharField(max_length=50, null=False, blank=False)
+	fecha_vencimiento = models.DateField(null=False, blank=False)
 	cantidad_ingreso= models.IntegerField(null=False, blank=False)
 
 	def __str__(self):
@@ -114,7 +114,7 @@ class DetalleIngreso(models.Model):
 
 
 class Encargado(models.Model):
-	cedula = models.CharField(max_length=10, primary_key=True, null=False, blank=False)
+	cedula = models.CharField(max_length=10, null=False, blank=False)
 	nombre = models.CharField(max_length=50,null=False, blank=False)
 	apellido = models.CharField(max_length=50,null=False, blank=False)
 	movil = models.CharField(max_length=11,null=True, blank=True)
@@ -130,7 +130,7 @@ class Encargado(models.Model):
 		return item
 
 class Establecimiento(models.Model):
-	nombre = models.CharField(max_length=150,null=False, blank=False)
+	nombre = models.CharField(max_length=150, null=False, blank=False, unique=True)
 	direccion = models.TextField(null=False, blank=False)
 	encargado = models.ForeignKey(Encargado, on_delete=models.CASCADE, null=False, blank=False)
 
@@ -157,6 +157,12 @@ class Salida(models.Model):
 
 	def toJSON(self):
 		item = model_to_dict(self)
+		item['personal'] = {
+			'cedula': self.personal.cedula,
+		}
+		item['establecimiento'] = {
+			'nombre': self.establecimiento.nombre,
+		}
 		return item
 
 class DetalleSalida(models.Model):
@@ -172,6 +178,7 @@ class DetalleSalida(models.Model):
 		item['vacuna'] = {
 			'id': self.vacuna.id,
 			'nombre': self.vacuna.nombre,
+			'presentacion': self.vacuna.presentacion,
 		}
 		item['salida'] = {
 			'id': self.salida.id,

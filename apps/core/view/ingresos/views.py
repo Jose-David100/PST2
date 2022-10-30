@@ -21,61 +21,86 @@ class IngresoViews(LoginRequiredMixin, TemplateView):
 
 	def post(self, request, *args, **kwargs):
 		data = {}
-		# try:
-		action = request.POST['action']
-		
-		if action == 'listado_ingreso':
-			data = []
-			for i in Ingreso.objects.all().order_by('-id'):
-				data.append(i.toJSON())
+		try:
+			action = request.POST['action']
+			
+			if action == 'listado_ingreso':
+				data = []
+				for i in Ingreso.objects.all().order_by('-id'):
+					data.append(i.toJSON())
 
-		elif action == 'listado_vacunas':
-			data = []
-			ids_exclude = json.loads(request.POST['ids'])
-			vacunas = Vacunas.objects.filter(nombre__icontains=request.POST['term'], existencia__gte=1)
-			for i in vacunas.exclude(id__in=ids_exclude)[0:10]:
-				item = i.toJSON()
-				item['id'] = i.id
-				item['nombre'] = i.nombre
-				item['presentacion'] = i.presentacion
-				data.append(item)	
+			elif action == 'detalle_ingreso':	
+				data = []
+				for i in DetalleIngreso.objects.filter(ingreso = request.POST.get('id')):
+					data.append(i.toJSON())
 
-		elif action == 'agregar_ingreso':
-			ingreso = json.loads(request.POST['vents'])
+			else:
+				data['error'] = 'Ha ocurrido un error'           
 
-			ing = Ingreso()
-			ing.fecha_ingreso = ingreso['fecha']
-			ing.observacion = ingreso['observacion']
-			ing.personal = Personal.objects.get(cedula = ingreso['personal'])
-			ing.save()
-
-			for i in ingreso['det']:
-				print(i)
-				det_ing = DetalleIngreso()
-				det_ing.ingreso = Ingreso.objects.get(id = ing.id)
-				det_ing.vacuna = Vacunas.objects.get(id = i['id'])
-				det_ing.cantidad_ingreso = int(i['cantidad_ingreso'])
-				det_ing.save()
-
-				vac = Vacunas.objects.get(id = i['id'])
-				vac.existencia = (int(vac.existencia) + int(det_ing.cantidad_ingreso))
-				vac.save()
-
-		elif action == 'detalle_ingreso':	
-			data = []
-			for i in DetalleIngreso.objects.filter(ingreso = request.POST.get('id')):
-				data.append(i.toJSON())
-
-
-		else:
-			data['error'] = 'Ha ocurrido un error'           
-
-		# except Exception as e:
-		# 	data['error'] = str(e)
+		except Exception as e:
+		 	data['error'] = str(e)
 		return JsonResponse(data, safe=False)
 
 	def get_context_data(self, **kwargs):
 		context = super(IngresoViews, self).get_context_data(**kwargs)
+		return context
+
+class Ingresoform(LoginRequiredMixin, TemplateView):
+	template_name =  'ingresos/ingreso_form.html'
+
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		data = {}
+		try:
+			action = request.POST['action']
+			
+			if action == 'listado_vacunas':
+				data = []
+				ids_exclude = json.loads(request.POST['ids'])
+				vacunas = Vacunas.objects.filter(nombre__icontains=request.POST['term'])
+				for i in vacunas.exclude(id__in=ids_exclude)[0:10]:
+					item = i.toJSON()
+					item['id'] = i.id
+					item['nombre'] = i.nombre
+					item['presentacion'] = i.presentacion
+					data.append(item)	
+
+			elif action == 'agregar_ingreso':
+				ingreso = json.loads(request.POST['vents'])
+
+				ing = Ingreso()
+				ing.fecha_ingreso = ingreso['fecha']
+				ing.observacion = ingreso['observacion']
+				ing.personal = Personal.objects.get(cedula = ingreso['personal'])
+				ing.save()
+
+				for i in ingreso['det']:
+					print(i)
+					det_ing = DetalleIngreso()
+					det_ing.ingreso = Ingreso.objects.get(id = ing.id)
+					det_ing.vacuna = Vacunas.objects.get(id = i['id'])
+					det_ing.cantidad_ingreso = int(i['cantidad_ingreso'])
+					det_ing.lote = i['lote']
+					det_ing.fecha_vencimiento = i['fecha_vencimiento']
+					det_ing.save()
+
+					vac = Vacunas.objects.get(id = i['id'])
+					vac.existencia = (int(vac.existencia) + int(det_ing.cantidad_ingreso))
+					vac.save()
+
+			else:
+				data['error'] = 'Ha ocurrido un error'           
+
+		except Exception as e:
+			data['error'] = str(e)
+			
+		return JsonResponse(data, safe=False)
+	
+	def get_context_data(self, **kwargs):
+		context = super(Ingresoform, self).get_context_data(**kwargs)
 		context['form'] = DetalleIngresoForm()
-		context['per'] = Personal.objects.filter(status = 'Activo')
+		context['per'] = Personal.objects.filter(status = 'Activo', ocupacion = 'Administrativo')
 		return context

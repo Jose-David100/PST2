@@ -124,5 +124,98 @@ $(function() {
 		$('#nom').text(data.nombre);
 		$('#pre').text(data.presentacion);
 		$('#exi').text(data.existencia);
+		
+		// FUNCION ASINCRONA PARA LAS CONSULTAS
+
+		/** TABLA DINAMICA PARA NO REPETIR CODIGO */
+		const getData = async (id_table, data_params, data_columns, data_columns_def, data_url) => {
+
+			tblCate = $(id_table).DataTable({
+				responsive: true,
+				autoWidth: false,
+				destroy: true,
+				deferRender: true,
+				"language": {
+					"sProcessing": "Procesando...",
+					"sLengthMenu": "Mostrar _MENU_ registros",
+					"sZeroRecords": "No se encontraron resultados",
+					"sEmptyTable": "Ningún dato disponible en esta tabla",
+					"sInfo": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
+					"sInfoEmpty": "Mostrand del 0 al 0 de un total de 0 registros",
+					"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+					"sInfoPostFix": "",
+					"sSearch": "Buscar:",
+					"sUrl": "",
+					"sInfoThousands": ",",
+					"sLoadingRecords": "Cargando...",
+					"oPaginate": {
+						"sFirst": "<span class='fa fa-angle-double-left'></span>",
+						"sLast": "<span class='fa fa-angle-double-right'></span>",
+						"sNext": "<span class='fa fa-angle-right'></span>",
+						"sPrevious": "<span class='fa fa-angle-left'></span>"
+					},
+					"oAria": {
+						"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+					}
+				},
+				ajax: {
+					url: data_url,
+					type: 'POST',
+					data: data_params,
+					dataSrc: ""
+				},
+				columns: data_columns,
+				columnDefs: data_columns_def,
+				initComplete: function (settings, json) {
+
+				},
+
+			});
+
+		}
+
+		$(async function () {
+			btn_ingreso.addEventListener('click', async () => {
+				//** cargar tabla con sus parametros */
+				await getData(
+					'#Detalle_vacunas',
+					{
+						'action': 'detalle_ingreso',
+						'id': data.id
+					},
+					[
+						{"data": "cantidad_ingreso"},
+						{"data": "lote"},
+						{"data": "ingreso.fecha"},
+						{"data": "fecha_vencimiento"},
+					],
+					[
+					],
+					'/detalles-de-vacunas/',
+				);    
+			});
+			btn_salida.addEventListener('click', async () => {
+				//** cargar tabla con sus parametros */
+				await getData(
+					'#table_salida',
+					{
+						'action': 'detalle_salida',
+						'id': data.id
+					},
+					[
+						{"data": "cantidad"},
+						{"data": "salida.ced_personal"},
+						{"data": "salida.fecha"},
+						{"data": "salida.nom_estable"},
+					],
+					[
+					],
+					'/detalles-de-vacunas/',
+				);
+			});    
+			btn_ingreso.click();
+		});
+		
 	});
 });

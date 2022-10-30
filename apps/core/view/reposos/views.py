@@ -30,11 +30,16 @@ class RepososViews(LoginRequiredMixin, TemplateView):
 
 			elif action == 'agregar_reposos':
 				rep = Reposos()
-				rep.personal = Personal.objects.get(cedula = request.POST.get('personal'))
+				rep.personal = Personal.objects.get(id = request.POST.get('personal'))
 				rep.motivo_reposo = request.POST.get('motivo_reposo')
 				rep.duracion = request.POST.get('duracion')
 				rep.fecha_inicio = request.POST.get('fecha_inicio')
 				rep.save()
+
+				# INACTIVANDO EL PERSONAL SOLICITANTE DEL REPOSO
+				per = Personal.objects.get(id = request.POST.get('personal'))
+				per.status = 'Inactivo'
+				per.save()
 
 			elif action == 'editar_reposo':	
 				rep = Reposos.objects.get(id = request.POST.get('id'))

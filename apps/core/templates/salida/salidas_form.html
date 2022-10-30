@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Registro de Salida {% endblock %}
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!--DATERANGEPICKER-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Registrar salida de vacunas</h3>
+    </div>
+    <form action="" method="post" id="form_salida">{% csrf_token %}
+        <input type="hidden" name="action" value="agregar_salida">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-signature"></i> Detalle de las vacunas</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador de vacunas:</label>
+                                <div class="input-group">
+                                    <select name="search" class="form-control">
+                                        
+                                    </select>
+                                    <span class="input-group-append">
+                                        <button type="button" class="btn btn-danger btn-flat"><i
+                                                class="fas fa-times"></i></button>
+                                      </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblProducts">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10%;">Eliminar</th>
+                                    <th style="width: 45%;">Vacuna</th>
+                                    <th style="width: 30%;">Presentación</th>
+                                    <th style="width: 30%;">Disp.</th>
+                                    <th style="width: 15%;">Salida</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-file-signature"></i> Datos de la salida</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Fecha de la salida:</label>
+                                <input type="text" name="fecha_salida" class="form-control fecha-modal" readonly required>
+                            </div>
+                            <div class="form-group">
+                                <label>Detalles de la salida:</label>
+                                <textarea name="observacion" class="form-control" style="resize: none;" rows="3" placeholder="Describa la salida de la vacuna" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Personal responsable:</label>
+                                {{form2.personal|add_class:'form-control'}}
+                            </div>
+                            <div class="form-group">
+                                <label>Establecimiento:</label>
+                                {{form2.establecimiento|add_class:'form-control'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-flat">
+                <i class="fas fa-save"></i> Guardar registro
+            </button>
+            <a href="{% url 'list_salida' %}" class="btn btn-danger btn-flat">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+<div class="modal fade" id="Registrar_salida" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				
+				<button type="button" class="close" onclick="cerrar_modal_ingreso();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+{% endblock  %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static 'salida/js_salida_form.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+<!--DATERANGEPICKER-->
+<script type="text/javascript" src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+{% endblock %}

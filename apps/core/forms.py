@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from apps.core.models import Vacunas, Reposos, Personal, Establecimiento, Encargado, DetalleIngreso, Salida ,DetalleSalida
+from apps.core.models import *
 
 class VacunasForm(ModelForm):
 	class Meta:
@@ -8,6 +8,7 @@ class VacunasForm(ModelForm):
 		fields = '__all__'
 
 class ReposoForm(ModelForm):
+	personal = forms.ModelChoiceField(queryset=Personal.objects.filter(status='Activo'))
 	class Meta:
 		model = Reposos
 		fields = '__all__'
@@ -38,6 +39,7 @@ class DetalleSalidaForm(ModelForm):
 		fields = '__all__'
 
 class SalidaForm(ModelForm):
+	personal = forms.ModelChoiceField(queryset=Personal.objects.filter(status = 'Activo', ocupacion__in=['Medico', 'Enfermero'] ))
 	class Meta:
 		model = Salida
 		fields = '__all__'

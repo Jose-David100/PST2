@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Ingreso de vacunas{% endblock %}
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+<!--Jquery ui-->
+<link rel="stylesheet" href="{% static 'plugins/jquery-ui/jquery-ui.min.css' %}">
+<!--DATERANGEPICKER-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
+
+{% block content %}
+<!--MODAL REGISTRAR INGRESO-->
+<!-- Modal -->
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Registrar ingresos de vacunas</h3>
+    </div>
+    <form action="" method="post" id="form_ingreso">{% csrf_token %}
+        <input type="hidden" name="action" value="agregar_ingreso">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-signature"></i> Detalle de las vacunas</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Buscador de vacunas:</label>
+                                <div class="input-group">
+                                    <select name="search" class="form-control">
+                                        
+                                    </select>
+                                    <span class="input-group-append">
+                                        <button type="button" class="btn btn-danger btn-flat"><i
+                                                class="fas fa-times"></i></button>
+                                        </span>
+                                </div>
+                            </div>
+                            <hr>
+                            <table class="table table-bordered" id="tblProducts">
+                                <thead>
+                                <tr>
+                                    <th >Eliminar</th>
+                                    <th >Vacuna</th>
+                                    <th>Presentación</th>
+                                    <th>Ingreso</th>
+                                    <th>Lote</th>
+                                    <th>F. Vencimiento</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-file-signature"></i> Datos del ingreso</h3>
+                        </div>
+                        <div class="card-body">
+                            <label for="">Fecha de ingreso</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <input type="text" name="fecha_ingreso" id="" class="form-control fecha-modal" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Detalles del ingreso:</label>
+                                <textarea name="observacion" class="form-control" style="resize: none;" rows="4" placeholder="Describa el ingreso" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Personal Responsable:</label>
+                                <select id="per_responsable" name="personal" class="form-control" required autocomplete="off">
+                                    <option value="">Seleccione el Personal</option>
+                                    {% for x in per %}
+                                        <option value="{{x.cedula}}">{{x.cedula}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-flat">
+                <i class="fas fa-save"></i> Guardar registro
+            </button>
+            <a href="{% url 'list_ingresos' %}" class="btn btn-danger btn-flat">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'ingresos/js_ingresos_form.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+<!--jquery ui-->
+<script type="text/javascript" src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!--DATERANGEPICKER-->
+<script type="text/javascript" src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+{% endblock %}

@@ -15,7 +15,7 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
-						<div class="dropdown-menu" style="">
+						<div class="dropdown-menu" >
 							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_vacunas();">Agregar</button>
 						</div>
 					</li>
@@ -75,12 +75,6 @@
 			                    <label>Presentación</label>
 			                    {{form.presentacion|add_class:'form-control'|attr:'placeholder:Ingrese la presentacion'}}
 			                </div>
-			                <div class="col">
-			                    <div class="form-group">
-			                        <label>Existencia</label>
-			                        {{form.existencia|add_class:'form-control'|attr:'placeholder:Ingrese la existencia'|attr:'min:0'}}
-			                    </div>
-			                </div>
 			            </div>
 			            
 					</div>
@@ -99,51 +93,93 @@
 <!--MODAL DETALLES DE LAS VACUNAS -->
 <!-- Modal -->
 <div class="modal fade" id="Detalles_vacunas" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">Detalles de la Vacuna</h5>
+				<input type="hidden" name="id" value="0">
 				<button type="button" class="close" onclick="cerrar_modal_detalle();">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			
-				<div class="modal-body">
-					<div class="card-body">
-						<div class="row">
-							<div class="col">
-								<i class="fas fa-signature"></i>
-								<label>Nombre de la Vacuna</label><br>
-							<p> <span id="nom"></span></p>
+			<div class="modal-body">
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<i class="fas fa-signature"></i>
+							<label>Nombre de la Vacuna</label><br>
+						<p> <span id="nom"></span></p>
+						</div>
+					</div>
+					<!-- /.row -->
+					<div class="row">
+						<div class="col">
+							<i class="fas fa-vial"></i>
+							<label>Presentación</label>
+							<p> <span id="pre"></span></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<i class="fas fa-sort-numeric-up"></i>
+							<label>Existencia</label>
+							<p id="exi"></p>
+						</div>
+					</div>
+					<label for="">Detalles de la Vacuna</label>
+					<div class="row">
+						<div class="col">
+							<ul class="nav nav-tabs" id="myTab" role="tablist">
+								<li class="nav-item">
+								  <a type="button" class="nav-link active" id="btn_ingreso" data-target="#home" href="#" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Ingresos de vacunas</a>
+								</li>
+								<li class="nav-item">
+								  <a type="button" class="nav-link" id="btn_salida" data-target="#profile" href="#" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="true">Salida de vacunas</a>
+								</li>
+							</ul>
+							<div class="tab-content mt-2" id="myTabContent">
+
+								<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="ingreso">
+									<table id="Detalle_vacunas" class="table" style="width:100%">
+										<thead>
+											<tr>
+												<th>Ingresadas</th>
+												<th>Lote</th>
+												<th>F. Ingreso</th>
+												<th>F. Vencimiento</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="salida">
+									<table id="table_salida" class="table" style="width:100%">
+										<thead>
+											<tr>
+												<th>Cantidad Salida</th>
+												<th>Personal R.</th>
+												<th>Fecha Salida</th>
+												<th>Establecimiento</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
-						<!-- /.row -->
-						<div class="row">
-							<div class="col">
-								<i class="fas fa-vial"></i>
-								<label>Presentación</label>
-								<p> <span id="pre"></span></p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col">
-								<i class="fas fa-sort-numeric-up"></i>
-								<label>Existencia</label>
-								<p id="exi"></p>
-							</div>
-						</div>
-						
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
-				</div>
-
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" onclick="cerrar_modal_detalle();">Cerrar</button>
+			</div>
 		</div>
 	</div>
 </div>
-
-
 
 {% endblock %}
 

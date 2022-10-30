@@ -35,7 +35,7 @@ function getDataP() {
 			url: window.location.pathname,
 			type: 'POST',
 			data: {
-				'action': 'listado_personal',
+				'action': 'listado_personal'
 			},
 			dataSrc: ""
 		},
@@ -58,7 +58,7 @@ function getDataP() {
 		}, {
 			"data": "status"
 		}, {
-			"data": "status"
+			"data": "id"
 		}],
 		columnDefs: [{
 			targets: [-1],
@@ -84,6 +84,20 @@ function getDataP() {
 				return data
 			}
 
+		},{
+			targets: [-2],
+			class: '',
+			orderable: true,
+			render: function(data, type, row) {
+				
+				if (row['status'] == 'Activo'){
+					var buttons = ' <a href="#" rel="desactivar" class="btn btn-icon btn-success"><i class="fas fa-thumbs-up"></i></a>';
+				}else{
+					var buttons = ' <a href="#" rel="activar" class="btn btn-icon btn-danger"><i class="fas fa-thumbs-down"></i></a>';
+				}
+				return buttons;
+			}
+
 		}, ],
 		initComplete: function(settings, json) {
 
@@ -93,6 +107,7 @@ function getDataP() {
 $(function() {
 	getDataP();
 });
+
 
 // BOTONES PARA LOS MODALES
 function abrir_modal_personal() {
@@ -142,16 +157,19 @@ $(function() {
 		var tr = tablaP.cell($(this).closest('td, li')).index();
 		var data = tablaP.row(tr.row).data();
 
-		$('input[name="cedula"]').attr('readonly', '');
+		//$('input[name="cedula"]').attr('readonly', '');
 		$('input[name="nombre"]').attr('readonly', '');
 		$('input[name="apellido"]').attr('readonly', '');
 		$('select[name="sexo"]').attr('disabled', 'disabled');
-		$('select[name="ocupacion"]').attr('disabled', 'disabled');
+		//$('select[name="ocupacion"]').attr('disabled', 'disabled');
 		//$('#id_titular_ben').attr('disabled','disabled');
+
+		// ACTION E ID
+		$('input[name="action"]').val('editar_personal');
+		$('input[name="id"]').val(data.id);
 
 		$('input[name="cedula"]').val(data.cedula);
 		$('input[name="correo"]').val(data.correo);
-		$('input[name="action"]').val('editar_personal');
 		$('input[name="nombre"]').val(data.nombre);
 		$('input[name="apellido"]').val(data.apellido);
 		$('input[name="movil"]').val(data.movil);
@@ -181,4 +199,51 @@ $(function() {
 		$('#sta').text(data.status);
 
 	});
+
+	// ELIMINAR PERSONAL
+	$('#table tbody').on('click', 'a[rel="delete"]', function () {
+
+		var tr = tablaP.cell($(this).closest('td, li')).index();
+		var data_status = tablaP.row(tr.row).data();
+		
+		var parameters = new FormData();
+		parameters.append('action', 'delete_personal');
+		parameters.append('id', data_status.id);
+		submit_with_ajax(window.location.pathname,'Notificación', '¿Estas seguro de eliminar al personal?', parameters, function () {
+			toastr.success('Se ha eliminado correctamente');
+			getDataP();
+		});  
+
+	});
+	// ACTIVAR PERSONAL
+	$('#table tbody').on('click', 'a[rel="activar"]', function () {
+
+		var tr = tablaP.cell($(this).closest('td, li')).index();
+		var data_status = tablaP.row(tr.row).data();
+		
+		var parameters = new FormData();
+		parameters.append('action', 'activar_personal');
+		parameters.append('id', data_status.id);
+		submit_with_ajax(window.location.pathname,'Notificación', '¿Estas seguro de activar al personal?', parameters, function () {
+			toastr.success('Se ha activado correctamente');
+			getDataP();
+		});  
+
+	});
+	// INACTIVAR PERSONAL
+	$('#table tbody').on('click', 'a[rel="desactivar"]', function () {
+
+		var tr = tablaP.cell($(this).closest('td, li')).index();
+		var data_status = tablaP.row(tr.row).data();
+		
+		var parameters = new FormData();
+		parameters.append('action', 'desactivar_personal');
+		parameters.append('id', data_status.id);
+		submit_with_ajax(window.location.pathname,'Notificación', '¿Estas seguro de inactivar al personal?', parameters, function () {
+			toastr.success('Se ha inactivado correctamente');
+			getDataP();
+		});  
+
+	});
+	
 });

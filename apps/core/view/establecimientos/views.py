@@ -33,13 +33,13 @@ class EstablecimientosViews(LoginRequiredMixin, TemplateView):
 				esta = Establecimiento()
 				esta.nombre = request.POST.get('nombre')
 				esta.direccion = request.POST.get('direccion')
-				esta.encargado = Encargado.objects.get(cedula = request.POST.get('encargado')) 
+				esta.encargado = Encargado.objects.get(id = request.POST.get('encargado')) 
 				esta.save()
 
 			elif action == 'editar_establecimiento':	
 				esta = Establecimiento.objects.get(nombre = request.POST.get('nombre'))
 				esta.direccion = request.POST.get('direccion')
-				esta.encargado = Encargado.objects.get(cedula = request.POST.get('encargado'))
+				esta.encargado = Encargado.objects.get(id = request.POST.get('encargado'))
 				esta.save()
 
 			else:
