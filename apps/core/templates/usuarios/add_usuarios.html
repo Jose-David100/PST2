@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Registrar Usuario {% endblock %}
+
+{% block link %}
+<!--SELECT2-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+{% endblock link %}
+
+{% block content %}
+
+<h4 class="fw-bold py-3 mb-4">Registrar usuario</h4>
+
+<!-- Basic Layout -->
+<form action="" method="post">
+{% csrf_token %}
+<div class="row">
+	<div class="col-xl">
+		<div class="card mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">
+						<div class="mb-3">
+							<label class="form-label" for="basic-default-fullname">Personal </label>
+							{{ form.personal|add_class:'form-control'|attr:'name:personal'|attr:'required' }}
+						</div>
+						<div class="row g-2">
+							<div class="col">
+								<div class="mb-3 form-password-toggle">
+									<label class="form-label" for="password1">Contraseña</label>
+									<div class="input-group input-group-merge">
+									{{ form.password1|add_class:'form-control'|attr:'name:password1'|attr:'type:password'|attr:'id:password1'|attr:'placeholder:••••••••••'|attr:'aria-describedby:password'|attr:'required' }}
+									
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="mb-3 form-password-toggle">
+									<label class="form-label" for="password2">Confirmar Contraseña</label>
+									<div class="input-group input-group-merge">
+									{{ form.password2|add_class:'form-control'|attr:'name:password2'|attr:'type:password'|attr:'id:password2'|attr:'placeholder:••••••••••'|attr:'aria-describedby:password'|attr:'required' }}
+									
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="mb-3">
+							<label class="form-label" for="id_groups">Rol del Usuario</label>
+							{{ form.groups|add_class:'form-control groups'|attr:'multiple:multiple'|attr:'required' }}
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-primary">Guardar</button>
+				<a href="#" id="btn-back" class="btn btn-danger">Cancelar</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</form>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+  <script>
+	$(function () {
+	  $('#id_personal').select2({
+		  placeholder: 'Seleccione el Personal',
+		  theme:'bootstrap4',
+		  language: "es"
+	  });
+
+	  $('.groups').select2({
+		  placeholder: 'Seleccione los permisos',
+		  theme:'bootstrap4',
+		  language: "es"
+	  });
+	  
+	  $('#btn-back').click(function () {
+		  window.history.back();
+	  });
+	  
+	});
+	{% if form.errors %}
+	  {% for key, value in form.errors.items %}
+
+		function ErrorForm(FormError) {
+			toastr.warning(FormError)
+		}
+		ErrorForm('{{ value }}')
+
+	  {% endfor %}
+	{% endif %}
+  </script>
+  
+{% endblock js %}

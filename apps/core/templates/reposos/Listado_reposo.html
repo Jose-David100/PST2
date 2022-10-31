@@ -24,7 +24,7 @@
 							Opciones <span class="caret"></span>
 						</a>
 						<div class="dropdown-menu" style="">
-							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_reposos();">Agregr</button>
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_reposos();">Agregar</button>
 						</div>
 					</li>
 				</ul>
@@ -41,6 +41,7 @@
 									<th>Motivo</th>
 									<th>Duración</th>
 									<th>Fecha Inicio</th>
+									<th>Fecha Ingreso</th>
 									<th>Estado</th>
 									<th>Opciones</th>
 								</tr>
@@ -80,7 +81,7 @@
 						<div class="row ">
 							<div class="col">
 								<label>Solicitante</label>
-								{{form.personal|add_class:'form-control'}}
+								{{form.personal|add_class:'form-control'|attr:'required'}}
 							</div>
 						</div>
 						<!-- /.row -->
@@ -88,26 +89,26 @@
 						<div class="row g-2 mt-2">
 							<div class="col">
 								<label>Motivo del reposo</label>
-								{{form.motivo_reposo|add_class:'form-control'|attr:'placeholder:Motivo del reposo'|attr:'style:resize:none'|attr:'rows:4'}}
+								{{form.motivo_reposo|add_class:'form-control'|attr:'placeholder:Motivo del reposo'|attr:'style:resize:none'|attr:'rows:4'|attr:'required'}}
 							</div>
 							
 						</div>
 						<div class="row g-2 mt-2">
 							<div class="col">
 								<label for="">Fecha de inicio</label>
-								{{form.fecha_inicio|add_class:'form-control'|attr:'type:text'|attr:'readonly'}}
+								{{form.fecha_inicio|add_class:'form-control'|attr:'type:text'|attr:'readonly'|attr:'required'}}
 							</div>
 							<div class="col">
 								<div class="form-group">
-									<label>Duración del reposo</label>
-									{{form.duracion|add_class:'form-control'|attr:'placeholder:Duración del reposo'}}
+									<label>Duración del reposo (Dias)</label>
+									{{form.duracion|add_class:'form-control'|attr:'placeholder:Duración del reposo'|attr:'step:0'|attr:'required'}}
 								</div>
 							</div>
 						</div>
 						<div class="row ">
 							<div class="col">
 								<label>Estado</label>
-								{{form.status|add_class:'form-control'}}
+								{{form.status|add_class:'form-control'|attr:'required'}}
 							</div>
 						</div>
 						
@@ -162,7 +163,7 @@
 						<div class="row">
 							<div class="col">
 								<i class="fas fa-clock"></i>
-								<label>Duración</label>
+								<label>Duración (Dias)</label>
 								<p id="dur"></p>
 							</div>
 							<!-- /.col -->
@@ -172,6 +173,14 @@
 								<i class="fas fa-calendar-week"></i>
 								<label>Fecha de Inicio</label>
 								<p id="fec"></p>
+							</div>
+							<!-- /.col -->
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-calendar-week"></i>
+								<label>Fecha de Ingreso</label>
+								<p id="fec_in"></p>
 							</div>
 							<!-- /.col -->
 						</div>

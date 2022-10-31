@@ -57,6 +57,7 @@ class Reposos(models.Model):
 	def toJSON(self):
 		item = model_to_dict(self)
 		item['personal'] = {
+			'id': self.personal.id,
 			'ci': self.personal.cedula,
 			'nombre': self.personal.nombre,
 			'apellido': self.personal.apellido

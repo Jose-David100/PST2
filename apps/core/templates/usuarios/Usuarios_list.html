@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Listado de Usuarios {% endblock %}
+{% block content %}
+<div class="row mt-5">
+	<div class="col-12">
+		<!-- Custom Tabs -->
+		<div class="card">
+			<div class="card-header d-flex p-0">
+				<h3 class="card-title p-3"><strong>Listado de Usuarios</strong></h3>
+				<ul class="nav nav-pills ml-auto p-2">
+					<li class="nav-item dropdown mr-5">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+							Opciones <span class="caret"></span>
+						</a>
+						<div class="dropdown-menu">
+                            <a href="{% url 'add_usuarios' %}" class="dropdown-item" tabindex="-1">Agregar</a>
+						</div>
+					</li>
+				</ul>
+			</div><!-- /.card-header -->
+			<div class="card-body">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_1">
+						<table id="table" class="table" style="width:100%">
+							<thead>
+								<tr>
+									<th>Usuario</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+									<th>Rol</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+                                <tr>
+                                    {% for x in obj %}
+                                    <td>{{x.username}}</td>
+                                    <td>{{x.first_name}}</td>
+                                    <td>{{x.last_name}}</td>
+                                    <td>{{x.last_name}}</td>
+                                    <td><a href="">opt</a></td>
+                                    {% endfor %}
+                                </tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.tab-pane -->
+				</div>
+				<!-- /.tab-content -->
+			</div><!-- /.card-body -->
+		</div>
+		<!-- ./card -->
+	</div>
+	<!-- /.col -->
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'usuarios/js_usuarios.js' %}"></script>
+{% endblock%}

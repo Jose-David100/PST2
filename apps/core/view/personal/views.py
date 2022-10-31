@@ -34,6 +34,7 @@ class PersonalViews(LoginRequiredMixin, TemplateView):
 					data['error'] = 'Ya existe personal registrado con este numero de cédula'   
 				else:
 					per = Personal()
+					print(request.POST)
 					per.cedula = request.POST.get('cedula')
 					per.nombre = request.POST.get('nombre')
 					per.apellido = request.POST.get('apellido')

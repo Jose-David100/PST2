@@ -15,6 +15,8 @@ from apps.core.view.establecimientos.views import EstablecimientosViews
 from apps.core.view.ingresos.views import IngresoViews, Ingresoform
 # vista para las salidas de las vacunas
 from apps.core.view.salida.views import SalidaViews, SalidasForm
+# vista de los usuarios
+from apps.core.view.usuarios.views import UsuariosViews, RegistrarUsuario
 
 urlpatterns = [
     path('inicio/', Inicio.as_view(), name="inicio"),
@@ -42,5 +44,9 @@ urlpatterns = [
     # URLS DE LOS SALIDAS DE LAS VACUNAS
     path('listado-de-salidas-de-vacunas/', SalidaViews.as_view(), name="list_salida"),
     path('registro-de-salidas-de-vacunas/', SalidasForm.as_view(), name="add_salida"),
+
+    # URLS DE LOS USUARIOS
+    path('listado-de-usuarios/', UsuariosViews.as_view(), name="list_usuarios"),
+    path('registro-de-usuarios/', RegistrarUsuario.as_view(), name="add_usuarios"),
     
 ]

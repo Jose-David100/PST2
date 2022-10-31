@@ -1,6 +1,6 @@
 var tablaP;
 
-// DATA DE ESTABLECIMIENTOS
+// DATA DE PERSONAL
 function getDataP() {
 	tablaP = $('#table').DataTable({
 		responsive: true,
@@ -112,6 +112,7 @@ $(function() {
 // BOTONES PARA LOS MODALES
 function abrir_modal_personal() {
 	$("#Registrar_personal").modal("show");
+	$('input[name="id"]').val(0);
 	$('input[name="cedula"]').removeAttr('readonly');
 	$('input[name="nombre"]').removeAttr('readonly');
 	$('input[name="apellido"]').removeAttr('readonly');
@@ -123,6 +124,7 @@ function abrir_modal_personal() {
 function cerrar_modal_personal() {
 	$("#Registrar_personal").modal("hide");
 	$("#form_personal")[0].reset();
+	$('input[name="action"]').val('agregar_personal');
 
 }
 
@@ -140,7 +142,8 @@ $('#form_personal').on('submit', function(e) {
 		$("#form_personal")[0].reset();
 		toastr.success('Se ha registrado el Personal correctamente');
 		getDataP();
-
+		$('input[name="id"]').val(0);
+		$('input[name="action"]').val('agregar_personal');
 		$('input[name="cedula"]').removeAttr('readonly');
 		$('input[name="nombre"]').removeAttr('readonly');
 		$('input[name="apellido"]').removeAttr('readonly');
@@ -157,16 +160,16 @@ $(function() {
 		var tr = tablaP.cell($(this).closest('td, li')).index();
 		var data = tablaP.row(tr.row).data();
 
+		// ACTION E ID
+		$('input[name="action"]').val('editar_personal');
+		$('input[name="id"]').val(data.id);
+
 		//$('input[name="cedula"]').attr('readonly', '');
 		$('input[name="nombre"]').attr('readonly', '');
 		$('input[name="apellido"]').attr('readonly', '');
 		$('select[name="sexo"]').attr('disabled', 'disabled');
 		//$('select[name="ocupacion"]').attr('disabled', 'disabled');
 		//$('#id_titular_ben').attr('disabled','disabled');
-
-		// ACTION E ID
-		$('input[name="action"]').val('editar_personal');
-		$('input[name="id"]').val(data.id);
 
 		$('input[name="cedula"]').val(data.cedula);
 		$('input[name="correo"]').val(data.correo);

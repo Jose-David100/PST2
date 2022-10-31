@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from datetime import timedelta, date, datetime
 
 # IMPORTACIONES DE LOS MODELS Y FORMULARIOS
 from apps.core.models import Reposos, Personal
@@ -34,20 +35,35 @@ class RepososViews(LoginRequiredMixin, TemplateView):
 				rep.motivo_reposo = request.POST.get('motivo_reposo')
 				rep.duracion = request.POST.get('duracion')
 				rep.fecha_inicio = request.POST.get('fecha_inicio')
+				inicio = datetime.strptime(rep.fecha_inicio, '%Y-%m-%d')
+				fin = timedelta(int(request.POST.get('duracion')) )
+				rep.fecha_ingreso = inicio + fin
+				rep.status = request.POST.get('status')
 				rep.save()
 
-				# INACTIVANDO EL PERSONAL SOLICITANTE DEL REPOSO
-				per = Personal.objects.get(id = request.POST.get('personal'))
-				per.status = 'Inactivo'
-				per.save()
+				if request.POST.get('status') == 'Aprobado':
+					# INACTIVANDO EL PERSONAL SOLICITANTE DEL REPOSO
+					per = Personal.objects.get(id = request.POST.get('personal'))
+					per.status = 'Inactivo'
+					per.save()
 
 			elif action == 'editar_reposo':	
 				rep = Reposos.objects.get(id = request.POST.get('id'))
 				rep.motivo_reposo = request.POST.get('motivo_reposo')
 				rep.duracion = request.POST.get('duracion')
 				rep.fecha_inicio = request.POST.get('fecha_inicio')
+				inicio = datetime.strptime(rep.fecha_inicio, '%Y-%m-%d')
+				fin = timedelta(int(request.POST.get('duracion')) )
+				rep.fecha_ingreso = inicio + fin
 				rep.status = request.POST.get('status')
 				rep.save()
+
+				if request.POST.get('status') == 'Aprobado':
+					# INACTIVANDO EL PERSONAL SOLICITANTE DEL REPOSO
+					per = Personal.objects.get(id = request.POST.get('personal'))
+					per.status = 'Inactivo'
+					per.save()
+
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 
