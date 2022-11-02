@@ -5,14 +5,16 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from apps.core.mixins import Perms_Check
 
 # IMPORTACIONES DE MOS MODELS Y LOS FORMUALARIOS
 from apps.core.models import Encargado
 from apps.core.forms import EncargadosForm
 
 # ENCARGADOS 
-class EncargadoViews(LoginRequiredMixin, TemplateView):
+class EncargadoViews(LoginRequiredMixin,Perms_Check, TemplateView):
 	template_name =  'encargados/Listado_encargados.html'
+	permission_required = 'core.view_encargado'
 
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, *args, **kwargs):
@@ -24,24 +26,42 @@ class EncargadoViews(LoginRequiredMixin, TemplateView):
 			action = request.POST['action']
 			
 			if action == 'listado_encargado':
-				data = []
-				for i in Encargado.objects.all():
-					data.append(i.toJSON())
+				perms = ('core.view_encargado',)
+				if request.user.has_perms(perms):
+					data = []
+					for i in Encargado.objects.all():
+						data.append(i.toJSON())
 
 			elif action == 'agregar_encargado':
-				enc = Encargado()
-				enc.cedula = request.POST.get('cedula')
-				enc.nombre = request.POST.get('nombre')
-				enc.apellido = request.POST.get('apellido')
-				enc.movil = request.POST.get('movil')
-				enc.direccion = request.POST.get('direccion')
-				enc.save()
+				perms = ('core.add_encargado',)
+				if request.user.has_perms(perms):
+					if Encargado.objects.filter(cedula = request.POST.get('cedula')):
+						data['error'] = 'Ya existe un encargado registrado con esta cedula'
+					else:
+						enc = Encargado()
+						enc.cedula = request.POST.get('cedula')
+						enc.nombre = request.POST.get('nombre')
+						enc.apellido = request.POST.get('apellido')
+						enc.movil = request.POST.get('movil')
+						enc.direccion = request.POST.get('direccion')
+						enc.save()
 
-			elif action == 'editar_encargado':	
-				enc = Encargado.objects.get(cedula = request.POST.get('cedula'))
-				enc.movil = request.POST.get('movil')
-				enc.direccion = request.POST.get('direccion')
-				enc.save()
+			elif action == 'editar_encargado':
+				perms = ('core.change_encargado',)
+				if request.user.has_perms(perms):	
+					enc = Encargado.objects.get(cedula = request.POST.get('cedula'))
+					if enc.cedula == request.POST.get('cedula'):
+						enc.movil = request.POST.get('movil')
+						enc.direccion = request.POST.get('direccion')
+						enc.save()
+					else:
+						if Encargado.objects.filter(cedula = request.POST.get('cedula')):
+							data['error'] = 'Ya existe un encargado registrado con esta cedula'
+						else:
+							enc.cedula == request.POST.get('cedula')
+							enc.movil = request.POST.get('movil')
+							enc.direccion = request.POST.get('direccion')
+							enc.save()
 
 			else:
 				data['error'] = 'Ha ocurrido un error'           

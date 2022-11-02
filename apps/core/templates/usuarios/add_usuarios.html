@@ -29,27 +29,17 @@
 						<div class="row g-2">
 							<div class="col">
 								<div class="mb-3 form-password-toggle">
-									<label class="form-label" for="password1">Contraseña</label>
+									<label class="form-label" for="password">Contraseña</label>
 									<div class="input-group input-group-merge">
-									{{ form.password1|add_class:'form-control'|attr:'name:password1'|attr:'type:password'|attr:'id:password1'|attr:'placeholder:••••••••••'|attr:'aria-describedby:password'|attr:'required' }}
+									{{ form.password|add_class:'form-control'|attr:'name:password'|attr:'type:password'|attr:'id:password'|attr:'placeholder:Ingrese una contraseña'|attr:'aria-describedby:password'|attr:'required' }}
 									
 									</div>
 								</div>
 							</div>
 							<div class="col">
-								<div class="mb-3 form-password-toggle">
-									<label class="form-label" for="password2">Confirmar Contraseña</label>
-									<div class="input-group input-group-merge">
-									{{ form.password2|add_class:'form-control'|attr:'name:password2'|attr:'type:password'|attr:'id:password2'|attr:'placeholder:••••••••••'|attr:'aria-describedby:password'|attr:'required' }}
-									
-									</div>
-								</div>
+								<label class="form-label" for="id_groups">Rol del Usuario</label>
+								{{ form.groups|add_class:'form-control'|attr:'multiple:multiple'|attr:'required' }}
 							</div>
-						</div>
-						
-						<div class="mb-3">
-							<label class="form-label" for="id_groups">Rol del Usuario</label>
-							{{ form.groups|add_class:'form-control groups'|attr:'multiple:multiple'|attr:'required' }}
 						</div>
 					</div>
 
@@ -77,10 +67,11 @@
 		  language: "es"
 	  });
 
-	  $('.groups').select2({
+	  $('#id_groups').select2({
 		  placeholder: 'Seleccione los permisos',
 		  theme:'bootstrap4',
-		  language: "es"
+		  language: "es",
+		  maximumSelectionLength: 1
 	  });
 	  
 	  $('#btn-back').click(function () {

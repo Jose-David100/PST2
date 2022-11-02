@@ -46,15 +46,18 @@ class SalidaForm(ModelForm):
 		model = Salida
 		fields = '__all__'
 
-class RegisterForm(UserCreationForm):
+class RegisterForm(ModelForm):
 	personal = forms.ModelChoiceField(queryset=Personal.objects.filter(status = 'Activo', ocupacion__in=['Medico', 'Enfermero', 'Administrativo'] ))
-	model = User
-	fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2', 'personal', 'groups']
+	class Meta:
 
-	def clean(self):
-		cleaned_data = super(RegisterForm, self).clean()
+		model = User
+		fields = ['personal','password', 'groups']
+		exclude = ['first_name', 'last_name', 'email', 'username']
 
-		user_exists = (User.objects.filter(username = cleaned_data.get('username')).count() > 0)
+		def clean(self):
+			cleaned_data = super(RegisterForm, self).clean()
 
-		if user_exists:
-			self.add_error('username', 'Un usuario ya esta registrado con esta cedula')
+			user_exists = (User.objects.filter(username = cleaned_data.get('username')).count() > 0)
+
+			if user_exists:
+				self.add_error('username', 'Un usuario ya esta registrado con esta cedula')

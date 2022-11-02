@@ -231,22 +231,22 @@
 <script src=" {% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %} "></script>
 
 <script>
-    {% if messages %}
-      {% for mensaje in messages %}
-      {% if mensaje.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-        function mensaje(sms) {
-        toastr.error(sms)
-        }
-        mensaje('{{ mensaje }}')
-      {% else %}
-        function mensaje(sms) {
-        toastr.success(sms)
-        }
-        mensaje('{{ mensaje }}')
-      {% endif %}
-      {% endfor %}
-    {% endif %}
-    </script>
+	{% if messages %}
+		{% for mensaje in messages %}
+		{% if mensaje.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+			function mensaje(sms) {
+			toastr.error(sms)
+			}
+			mensaje('{{ mensaje }}')
+		{% else %}
+			function mensaje(sms) {
+			toastr.success(sms)
+			}
+			mensaje('{{ mensaje }}')
+		{% endif %}
+		{% endfor %}
+	{% endif %}
+</script>
 
 {% block js %}
 

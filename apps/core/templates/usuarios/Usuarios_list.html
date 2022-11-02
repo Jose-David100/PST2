@@ -34,15 +34,21 @@
 								</tr>
 							</thead>
 							<tbody>
+								{% for x in obj %}
                                 <tr>
-                                    {% for x in obj %}
                                     <td>{{x.username}}</td>
                                     <td>{{x.first_name}}</td>
                                     <td>{{x.last_name}}</td>
-                                    <td>{{x.last_name}}</td>
-                                    <td><a href="">opt</a></td>
-                                    {% endfor %}
+                                    <td>
+										{% for g in x.groups.all %}
+											<span class="badge bg-dark">{{ g }}</span>
+										{% endfor %}
+									</td>
+                                    <td><a href="" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+										<a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+									</td>
                                 </tr>
+								{% endfor %}
 							</tbody>
 						</table>
 					</div>

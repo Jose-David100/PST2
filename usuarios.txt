@@ -1,0 +1,9 @@
+ADMINISTRADOR
+-------------
+USUARIO: admin
+PASSWORD: admin123
+
+TRANSCRIPTOR
+-------------
+USUARIO: transcriptor
+PASSWORD: noadmin123
