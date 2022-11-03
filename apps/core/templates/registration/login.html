@@ -12,6 +12,7 @@
   <link rel="stylesheet" href=" {% static 'plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href=" {% static 'dist/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -63,7 +64,32 @@
 <script src=" {% static 'plugins/jquery/jquery.js' %}"></script>
 <!-- Bootstrap 4 -->
 <script src=" {% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src=" {% static 'dist/js/adminlte.min.js' %}"></script>
+<script>
+  {% if form.errors %}
+    {% for field in form %}
+        {% if field.errors %}
+          {% for errors in field.errors %}
+            function ErrorForm(FormError) {
+                toastr.warning(FormError)
+            }
+            ErrorForm('{{ error }}')
+          {% endfor %}
+        {% endif %}
+    {% endfor %}
+    {% if form.non_field_errors%}
+      {% for error in form.non_field_errors %}
+        function ErrorForm(FormError) {
+            toastr.warning(FormError)
+        }
+        ErrorForm('{{ error }}')
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+
+  
+</script>
 </body>
 </html>

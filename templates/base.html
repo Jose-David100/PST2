@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -63,7 +64,8 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        
+
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"TRANSCRIPTOR" %}
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
@@ -81,7 +83,9 @@
                 </li>
             </ul>
         </li>
+		{% endif %}
 
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"COORDINADOR/A DE CUARTO FRIO" or request.user|has_group:"COORDINADOR/A DE DIVISION ESTRATEGICA" %}
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-syringe"></i>
@@ -111,7 +115,9 @@
                 </li>
             </ul>
         </li>
-        
+		{% endif %}
+
+        {% if request.user|has_group:"ADMINISTRADOR" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-file-medical"></i>
@@ -129,6 +135,9 @@
               </li>
             </ul>
           </li>
+		{% endif %}
+
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"TRANSCRIPTOR" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-warehouse"></i>
@@ -153,6 +162,9 @@
               </li>
             </ul>
           </li>
+		{% endif %}
+
+        {% if request.user|has_group:"ADMINISTRADOR" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -170,7 +182,7 @@
               </li>
             </ul>
           </li> 
-          
+        {% endif %}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

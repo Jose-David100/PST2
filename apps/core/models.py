@@ -24,6 +24,13 @@ ocupacion_choice = (
 	('Obrero', 'Obrero'),
 )
 
+rol_choice = (
+	('Administrador', 'Administrador'),
+	('Coordinador/a de cuarto frio', 'Coordinador/a de cuarto frio'),
+	('Coordinador/a de division estrategica', 'Coordinador/a de division estrategica'),
+	('Transcriptor', 'Transcriptor'),
+)
+
 class Personal(models.Model):
 	cedula = models.CharField(max_length=10, null=False, blank=False)
 	nombre = models.CharField(max_length=50, null=False, blank=False)
@@ -32,6 +39,7 @@ class Personal(models.Model):
 	movil = models.CharField(max_length=11, null=True, blank=True)
 	correo = models.CharField(max_length=50, null=True, blank=True)
 	ocupacion = models.CharField(max_length=50, choices=ocupacion_choice,null=False, blank=False)
+	rol_sistema = models.CharField(max_length=50, choices=rol_choice,null=True, blank=True)
 	sexo = models.CharField(max_length=20, choices=sexo_choice , null=False, blank=False)
 	status = models.CharField(max_length=50,choices=status_choice ,null=False, blank=False)
 
