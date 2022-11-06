@@ -61,6 +61,7 @@ function getDataE() {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
 				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
+				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark delete"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -98,6 +99,7 @@ function abrir_modal_encargado() {
 function cerrar_modal_encargado() {
 	$("#Registrar_encargado").modal("hide");
 	$("#form_personal")[0].reset();
+	$('input[name="action"]').val('agregar_encargado');
 
 }
 
@@ -115,6 +117,8 @@ $('#form_personal').on('submit', function(e) {
 		$("#form_personal")[0].reset();
 		toastr.success('Se ha registrado correctamente');
 		getDataE();
+		$('input[name="action"]').val('agregar_encargado');
+
 	});
 });
 
@@ -136,9 +140,10 @@ $(function() {
 		$('input[name="nombre"]').val(data.nombre);
 		$('input[name="apellido"]').val(data.apellido);
 		$('input[name="movil"]').val(data.movil);
+		$('input[name="correo"]').val(data.correo);
+		$('select[name="funcion"]').val(data.funcion);
 		$('textarea[name="direccion"]').val(data.direccion);
-		/*$(".titular_modal").val(data.titular_ben.name);
-	    $(".titular_modal").change();*/
+
 		$("#Registrar_encargado").modal('show');
 	});
 
@@ -153,6 +158,24 @@ $(function() {
 		$('#ape').text(data.apellido);
 		$('#dir').text(data.direccion);
 		$('#mov').text(data.movil);
+		$('#ema').text(data.correo);
+		$('#fun').text(data.funcion);
+
+	});
+
+	// ELIMINAR ENCARGADOS
+	$('#table tbody').on('click', 'a[rel="delete"]', function () {
+
+		var tr = tablaE.cell($(this).closest('td, li')).index();
+		var data_status = tablaE.row(tr.row).data();
+		
+		var parameters = new FormData();
+		parameters.append('action', 'delete_encargado');
+		parameters.append('id', data_status.id);
+		submit_with_ajax(window.location.pathname,'Notificación', '¿Estas seguro de eliminar al encargado?', parameters, function () {
+			toastr.success('Se ha eliminado correctamente');
+			getDataE();
+		});  
 
 	});
 });

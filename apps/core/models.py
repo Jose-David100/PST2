@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.forms import model_to_dict
 
 # Create your models here.
@@ -29,6 +30,7 @@ rol_choice = (
 	('Coordinador/a de cuarto frio', 'Coordinador/a de cuarto frio'),
 	('Coordinador/a de division estrategica', 'Coordinador/a de division estrategica'),
 	('Transcriptor', 'Transcriptor'),
+	('Sin acceso', 'Sin acceso'),
 )
 
 class Personal(models.Model):
@@ -199,4 +201,10 @@ class DetalleSalida(models.Model):
 			'id_estable': self.salida.establecimiento.id,
 			'nom_estable': self.salida.establecimiento.nombre,
 		}
+		return item
+
+class Usuarios(AbstractUser):
+
+	def toJSON(self):
+		item = model_to_dict(self)
 		return item

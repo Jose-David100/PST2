@@ -44,8 +44,10 @@
 											<span class="badge bg-dark">{{ g }}</span>
 										{% endfor %}
 									</td>
-                                    <td><a href="" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-										<a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                    <td>
+										{% if not x.username == request.user.username %}
+											<a href="#" rel="delete" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+										{% endif %}
 									</td>
                                 </tr>
 								{% endfor %}
@@ -64,5 +66,57 @@
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="{% static 'usuarios/js_usuarios.js' %}"></script>
-{% endblock%}
+<script>
+	function getDataU() {
+		tablaU = $('#table').DataTable({
+			responsive: true,
+			autoWidth: false,
+			destroy: true,
+			deferRender: true,
+			"language": {
+				"sProcessing": "Procesando...",
+				"sLengthMenu": "Mostrar _MENU_ registros",
+				"sZeroRecords": "No se encontraron resultados",
+				"sEmptyTable": "Ningún dato disponible en esta tabla",
+				"sInfo": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
+				"sInfoEmpty": "Mostrand del 0 al 0 de un total de 0 registros",
+				"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+				"sInfoPostFix": "",
+				"sSearch": "Buscar:",
+				"sUrl": "",
+				"sInfoThousands": ",",
+				"sLoadingRecords": "Cargando...",
+				"oPaginate": {
+					"sFirst": "<span class='fa fa-angle-double-left'></span>",
+					"sLast": "<span class='fa fa-angle-double-right'></span>",
+					"sNext": "<span class='fa fa-angle-right'></span>",
+					"sPrevious": "<span class='fa fa-angle-left'></span>"
+				},
+				"oAria": {
+					"sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+					"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+				}
+			}
+		});
+	};
+	$(function() {
+		getDataU();
+		// ELIMINAR PERSONAL
+		$('#table tbody').on('click', 'a[rel="delete"]', function () {
+
+			var tr = tablaU.cell($(this).closest('td, li')).index();
+			var data_status = tablaU.row(tr.row).data();
+
+			var parameters = new FormData();
+			parameters.append('action', 'delete_user');
+			parameters.append('username', data_status[0]);
+			submit_with_ajax(window.location.pathname,'Notificación', '¿Estas seguro de eliminar el usuario?', parameters, function () {
+				toastr.success('Se ha eliminado correctamente');
+				window.location.replace('/listado-de-usuarios/');
+			});  
+
+		});
+	});
+
+</script>
+{% endblock %}

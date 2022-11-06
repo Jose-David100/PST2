@@ -67,8 +67,8 @@ function getDataP() {
 			render: function(data, type, row) {
 
 				var buttons = '<a href="#" rel="detail" class="btn btn-icon btn-dark"><i class="fas fa-info"></i></a> ';
-				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark"><i class="fas fa-edit"></i></a> ';
-				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark"><i class="fas fa-trash"></i></a> ';
+				buttons += '<a href="#" rel="edit" class="btn btn-icon btn-dark edit"><i class="fas fa-edit"></i></a> ';
+				buttons += '<a href="#" rel="delete" class="btn btn-icon btn-dark delete"><i class="fas fa-trash"></i></a> ';
 				return buttons;
 			}
 
@@ -180,6 +180,7 @@ $(function() {
 		$('select[name="ocupacion"]').val(data.ocupacion);
 		$('select[name="sexo"]').val(data.sexo);
 		$('select[name="status"]').val(data.status);
+		$('select[name="rol_sistema"]').val(data.rol_sistema);
 		/*$(".titular_modal").val(data.titular_ben.name);
 	    $(".titular_modal").change();*/
 		$("#Registrar_personal").modal('show');
@@ -200,6 +201,7 @@ $(function() {
 		$('#sex').text(data.sexo);
 		$('#email').text(data.correo);
 		$('#sta').text(data.status);
+		$('#rol').text(data.rol_sistema);
 
 	});
 

@@ -38,13 +38,21 @@
     </ul>
 
     <!-- Right navbar links -->
+	
     <ul class="navbar-nav ml-auto">
+		<div class="btn-group mr-3">
+			<button type="button" class="btn btn-default"><i class="fas fa-users-cog"></i></button>
+			<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+			  
+			</button>
+			<div class="dropdown-menu" role="menu">
+			  <a class="dropdown-item" href="#" onclick="abrir_modal_usuario()"><i class="fas fa-user"></i> Mi Información</a>
+			  <a class="dropdown-item" href="#" onclick="abrir_modal_pass()"><i class="fas fa-unlock-alt"></i> Cambiar contraseña</a>
+			  <div class="dropdown-divider"></div>
+			  <a class="dropdown-item" href="#" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
+			</div>
+		  </div>
       <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" href="#" role="button" id="btn-logout">
-          <i class="fas fa-sign-out-alt"></i>
-        </a>
-      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -85,7 +93,7 @@
         </li>
 		{% endif %}
 
-		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"COORDINADOR/A DE CUARTO FRIO" or request.user|has_group:"COORDINADOR/A DE DIVISION ESTRATEGICA" %}
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"COORDINADOR/A DE CUARTO FRIO" or request.user|has_group:"TRANSCRIPTOR" or request.user|has_group:"COORDINADOR/A DE DIVISION ESTRATEGICA" %}
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-syringe"></i>
@@ -189,7 +197,13 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-
+  {% if request.user|has_group:"TRANSCRIPTOR" %}
+    <style>
+      .delete{
+        display:none;
+      }
+    </style>
+  {% endif %}
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -220,6 +234,108 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+
+<!--MODAL DETALLES DEL PERSONAL-->
+<!-- Modal -->
+<div class="modal fade" id="detalle_usuario" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Detalles del Usuario</h5>
+				<button type="button" class="close" onclick="cerrar_modal_usuario();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row">
+							<label for="">Usuario</label>
+							<input type="text" name="username" id="id_username" class="form-control" value="{{request.user.username}}" readonly>
+						</div>
+						<div class="row g-2 mt-2">
+							<div class="col">
+								<label for="">Nombres</label>
+								<input type="text" name="first_name" id="id_first_name" class="form-control" value="{{request.user.first_name}}" readonly>
+							</div>
+							<div class="col">
+								<label for="">Apellidos</label>
+								<input type="text" name="last_name" id="id_last_name" class="form-control" value="{{request.user.last_name}}" readonly>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col">
+								<label for="">Correo</label>
+								<input type="text" name="email" id="id_email" class="form-control" value="{{request.user.email}}" readonly>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col">
+								<label for="">Permisos</label>
+								<input type="text" name="gropus" id="id_groups" class="form-control" value="{% for x in request.user.groups.all %} {{x.name}} {% endfor %}" readonly>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_usuario();">Cerrar</button>
+				</div>
+
+		</div>
+	</div>
+</div>
+
+<!--MODAL CAMBIAR CONTRASEÑA-->
+<!-- Modal -->
+<div class="modal fade" id="cambiar_pass" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Cambiar Contraseña</h5>
+				<button type="button" class="close" onclick="cerrar_modal_pass();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="" method="post" id="form_pass">
+				<input type="hidden" name="action" value="cambiar_pass">
+				{% csrf_token %}
+				<div class="modal-body">
+					<div class="card-body">
+						<div class="row g-2">
+							<div class="col">
+								<label for="">Usuario</label>
+								<input type="text" name="username" id="id_username" class="form-control" value="{{request.user.username}}" required readonly>
+							</div>
+							<div class="col">
+								<label for="">Contraseña actual</label>
+								<input type="password" name="password_actual" id="" class="form-control" placeholder="Contraseña actual" required>
+							</div>
+							
+						</div>
+						<div class="row g-2 mt-3">
+							<div class="col">
+								<label for="">Contraseña nueva</label>
+								<input type="password" name="password1" id="id_password1" class="form-control" placeholder="Ingrese su nueva contraseña" required minlength="6">
+							</div>
+							<div class="col">
+								<label for="">Confirmar contraseña</label>
+								<input type="password" name="password2" id="id_password2" class="form-control" placeholder="Confirme su nueva contraseña" required minlength="6">
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Guardar</button>
+					<button type="button" class="btn btn-secondary" onclick="cerrar_modal_pass();">Cerrar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 
 <!-- jQuery -->
 <script src=" {% static 'plugins/jquery/jquery.js' %}"></script>
@@ -258,6 +374,43 @@
 		{% endif %}
 		{% endfor %}
 	{% endif %}
+	
+	// MODAL INFORMACION
+	function abrir_modal_usuario() {
+		$("#detalle_usuario").modal("show");
+
+	}
+	function cerrar_modal_usuario() {
+		$("#detalle_usuario").modal("hide");
+
+	}
+	// MODAL CAMBIAR CONTRASEÑA
+	function abrir_modal_pass() {
+		$("#cambiar_pass").modal("show");
+
+	}
+	function cerrar_modal_pass() {
+		$("#cambiar_pass").modal("hide");
+
+	}
+
+	// CAMBIAR CONTRASEÑA
+	/* FORM SUBMIT AJAX*/
+	$('#form_pass').on('submit', function(e) {
+		e.preventDefault();
+		if($("#id_password1").val() !== $("#id_password2").val() ){
+			toastr.warning('Las nuevas contraseñas no coinciden');
+			$("#id_password1").focus();
+		}else{
+			var parameters = new FormData(this);
+			submit_with_ajax("/inicio/", 'Notificación', '¿Estas seguro de realizar esta accion?', parameters, function() {
+				$("#cambiar_pass").modal('hide');
+				toastr.success('Se ha actualizado correctamente, ingrese con su nueva contraseña');
+				window.location.replace("/accounts/login/");
+			});
+		}
+	});
+
 </script>
 
 {% block js %}

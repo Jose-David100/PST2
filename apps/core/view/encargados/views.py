@@ -44,6 +44,8 @@ class EncargadoViews(LoginRequiredMixin,Perms_Check, TemplateView):
 						enc.apellido = request.POST.get('apellido')
 						enc.movil = request.POST.get('movil')
 						enc.direccion = request.POST.get('direccion')
+						enc.correo = request.POST.get('correo')
+						enc.funcion = request.POST.get('funcion')
 						enc.save()
 
 			elif action == 'editar_encargado':
@@ -53,6 +55,8 @@ class EncargadoViews(LoginRequiredMixin,Perms_Check, TemplateView):
 					if enc.cedula == request.POST.get('cedula'):
 						enc.movil = request.POST.get('movil')
 						enc.direccion = request.POST.get('direccion')
+						enc.correo = request.POST.get('correo')
+						enc.funcion = request.POST.get('funcion')
 						enc.save()
 					else:
 						if Encargado.objects.filter(cedula = request.POST.get('cedula')):
@@ -61,8 +65,13 @@ class EncargadoViews(LoginRequiredMixin,Perms_Check, TemplateView):
 							enc.cedula == request.POST.get('cedula')
 							enc.movil = request.POST.get('movil')
 							enc.direccion = request.POST.get('direccion')
+							enc.correo = request.POST.get('correo')
+							enc.funcion = request.POST.get('funcion')
 							enc.save()
 
+			elif action == "delete_encargado":
+				enc = Encargado.objects.get(id = request.POST.get('id'))
+				enc.delete()
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

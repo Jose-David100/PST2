@@ -15,7 +15,7 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
-						<div class="dropdown-menu" style="">
+						<div class="dropdown-menu">
 							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_encargado();">Agregar</button>
 						</div>
 					</li>
@@ -67,18 +67,18 @@
 					<div class="card-body">
 						<div class="row">
 							<label>Cédula de Identidad</label>
-							{{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'}}
+							{{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'|attr:'maxlength:8'|attr:'onkeypress:return Solo_Numero_ci(event);'}}
 						</div>
 						<!-- /.row -->
 						<div class="row g-2 mt-2">
 							<div class="col">
 								<label>Nombres</label>
-								{{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'}}
+								{{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'|attr:'onkeypress:return Solo_Texto(event);'}}
 							</div>
 							<div class="col">
 								<div class="form-group">
 									<label>Apellidos</label>
-									{{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'}}
+									{{form.apellido|add_class:'form-control'|attr:'placeholder:Ingrese Apellidos'|attr:'onkeypress:return Solo_Texto(event);'}}
 								</div>
 							</div>
 						</div>
@@ -89,10 +89,18 @@
 						<div class="row mt-2">
 							<div class="col">
 								<label>Movil</label>
-								{{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'}}
+								{{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'|attr:'onkeypress:return Solo_Numero_ci(event);'}}
 							</div>
-							<!-- /.col -->
-							
+						</div>
+						<div class="row g-2 mt-2">
+							<div class="col">
+								<label for="">Correo</label>
+								{{form.correo|add_class:'form-control'|attr:'placeholder:Ingrese el correo'|attr:'type:email'}}
+							</div>
+							<div class="col">
+								<label for="id_funcion">Función</label>
+								{{form.funcion|add_class:'form-control'|attr:'placeholder:Ingrese la funcion'}}
+							</div>
 						</div>
 						
 					</div>
@@ -148,8 +156,20 @@
 								<label>Movil</label>
 								<p id="mov"></p>
 							</div>
-							<!-- /.col -->
-							
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-at"></i>
+								<label>Correo</label>
+								<p id="ema"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-users-cog"></i>
+								<label>Función</label>
+								<p id="fun"></p>
+							</div>
 						</div>
 						
 					</div>

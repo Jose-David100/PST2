@@ -14,7 +14,7 @@
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 							Opciones <span class="caret"></span>
 						</a>
-						<div class="dropdown-menu" style="">
+						<div class="dropdown-menu">
 							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_personal();">Agregar</button>
 						</div>
 					</li>
@@ -114,6 +114,10 @@
 			                    {{form.status|add_class:'form-control'|attr:'placeholder:Seleccione el estado'}}
 			                </div>
 			            </div>
+						<div class="row mt-2">
+							<label for="">Rol en el sistema</label>
+							{{form.rol_sistema|add_class:'form-control'|attr:'required'}}
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -188,6 +192,13 @@
 								<i class="fas fa-venus-mars"></i>
 								<label>Sexo</label>
 								<p id="sex"></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<i class="fas fa-user"></i>
+								<label>Rol en el sistema</label>
+								<p id="rol"></p>
 							</div>
 						</div>
 						<div class="row">

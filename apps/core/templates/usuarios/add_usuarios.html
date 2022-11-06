@@ -14,44 +14,59 @@
 <h4 class="fw-bold py-3 mb-4">Registrar usuario</h4>
 
 <!-- Basic Layout -->
-<form action="" method="post">
+<form action="" method="POST" id="user_form">
+	<input type="hidden" name="action" value="add_user">
 {% csrf_token %}
-<div class="row">
-	<div class="col-xl">
-		<div class="card mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col">
-						<div class="mb-3">
-							<label class="form-label" for="basic-default-fullname">Personal </label>
-							{{ form.personal|add_class:'form-control'|attr:'name:personal'|attr:'required' }}
-						</div>
-						<div class="row g-2">
-							<div class="col">
-								<div class="mb-3 form-password-toggle">
-									<label class="form-label" for="password">Contraseña</label>
-									<div class="input-group input-group-merge">
-									{{ form.password|add_class:'form-control'|attr:'name:password'|attr:'type:password'|attr:'id:password'|attr:'placeholder:Ingrese una contraseña'|attr:'aria-describedby:password'|attr:'required' }}
-									
+	<div class="row">
+		<div class="col-xl">
+			<div class="card mb-4">
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<div class="mb-3">
+								<label class="form-label" for="id_personal">Personal </label>
+								<select name="personal" id="id_personal" class="form-control" required>
+									<option value="">Seleccione al personal</option>
+									{% for x in personal %}
+										<option value="{{x.cedula}}">{{x.cedula}} | {{x.ocupacion}} | {{x.rol_sistema}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="row g-2">
+								<div class="col">
+									<div class="mb-3 form-password-toggle">
+										<label class="form-label" for="id_password1">Contraseña</label>
+										<div class="input-group input-group-merge">
+											<input type="password" name="password1" id="id_password1" class="form-control" placeholder="Ingrese contraseña" required minlength="6">
+										</div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="mb-3 form-password-toggle">
+										<label class="form-label" for="id_password2">Confirme contraseña</label>
+										<div class="input-group input-group-merge">
+											<input type="password" name="password2" id="id_password2" class="form-control" placeholder="Confirme contraseña" required minlength="6">
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col">
-								<label class="form-label" for="id_groups">Rol del Usuario</label>
-								{{ form.groups|add_class:'form-control'|attr:'multiple:multiple'|attr:'required' }}
+							<div class="row">
+								<div class="col">
+									<label class="form-label" for="id_groups">Rol del Usuario</label>
+									{{ form.groups|add_class:'form-control'|attr:'multiple:multiple'|attr:'required' }}
+								</div>
 							</div>
 						</div>
-					</div>
 
+					</div>
 				</div>
-			</div>
-			<div class="card-footer">
-				<button type="submit" class="btn btn-primary">Guardar</button>
-				<a href="#" id="btn-back" class="btn btn-danger">Cancelar</a>
+				<div class="card-footer">
+					<button type="submit" class="btn btn-primary">Guardar</button>
+					<a href="#" id="btn-back" class="btn btn-danger">Cancelar</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
 </form>
 {% endblock %}
@@ -59,14 +74,10 @@
 {% block js %}
 <script type="text/javascript" src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/select2/js/i18n/es.js' %}"></script>
+<script type="text/javascript" src="{% static 'usuarios/js_usuarios.js' %}"></script>
+
   <script>
 	$(function () {
-	  $('#id_personal').select2({
-		  placeholder: 'Seleccione el Personal',
-		  theme:'bootstrap4',
-		  language: "es"
-	  });
-
 	  $('#id_groups').select2({
 		  placeholder: 'Seleccione los permisos',
 		  theme:'bootstrap4',
