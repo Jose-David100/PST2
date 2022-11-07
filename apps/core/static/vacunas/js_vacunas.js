@@ -205,6 +205,8 @@ $(function() {
 					},
 					[
 						{"data": "cantidad"},
+						{"data": "lote"},
+						{"data": "fecha_vencimiento"},
 						{"data": "salida.ced_personal"},
 						{"data": "salida.fecha"},
 						{"data": "salida.nom_estable"},

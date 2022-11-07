@@ -94,6 +94,10 @@ var vents = {
 				"data": "existencia"
 			}, {
 				"data": "cantidad"
+			}, {
+				"data": "cantidad"
+			}, {
+				"data": "cantidad"
 			}],
 			columnDefs: [{
 				targets: [0],
@@ -105,13 +109,27 @@ var vents = {
 					return buttons;
 				}
 			}, {
-				targets: [-1],
+				targets: [-3],
 				class: '',
 				orderable: false,
 				render: function(data, type, row, meta) {
 					return '<input type="number"  min="1" value="' + parseInt(data) + '" name="cantidad" class="form-control form-control-sm monto-table" autocomplete="off" required>';
 				}
-			}, ],
+			}, {
+				targets: [-2],
+				class: '',
+				orderable: false,
+				render: function(data, type, row, meta) {
+					return '<input type="text" name="lote" class="form-control form-control-sm lote-table" autocomplete="off" placeholder="Ingrese el lote" required>';
+				}
+			} , {
+				targets: [-1],
+				class: '',
+				orderable: false,
+				render: function(data, type, row, meta) {
+					return '<input type="date" name="fecha_ven" class="form-control form-control-sm fecha_ven-table" autocomplete="off" required>';
+				}
+			}],
 			initComplete: function(settings, json) {
 
 			},
@@ -171,6 +189,18 @@ $(function() {
 		let cantidad = $(this).val();
 		var tr = tblCate.cell($(this).closest('td, li')).index();
 		vents.items.det[tr.row].cantidad = parseInt(cantidad);
+	});
+
+	$('#tblProducts tbody').on('change keyup', '.lote-table', function() {
+		let lote = $(this).val();
+		var tr = tblCate.cell($(this).closest('td, li')).index();
+		vents.items.det[tr.row].lote = lote;
+	});
+
+	$('#tblProducts tbody').on('change keyup', '.fecha_ven-table', function() {
+		let fecha_ven = $(this).val();
+		var tr = tblCate.cell($(this).closest('td, li')).index();
+		vents.items.det[tr.row].fecha_ven = fecha_ven;
 	});
 
 	// Eliminar el ingreso individual

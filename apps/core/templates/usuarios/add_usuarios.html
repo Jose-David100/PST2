@@ -28,7 +28,7 @@
 								<select name="personal" id="id_personal" class="form-control" required>
 									<option value="">Seleccione al personal</option>
 									{% for x in personal %}
-										<option value="{{x.cedula}}">{{x.cedula}} | {{x.ocupacion}} | {{x.rol_sistema}}</option>
+										<option value="{{x.cedula}}">{{x.cedula}} |ocupacion: {{x.ocupacion}} | rol sistena: {{x.rol_sistema}}</option>
 									{% endfor %}
 								</select>
 							</div>

@@ -39,7 +39,7 @@ class DetalleSalidaForm(ModelForm):
 		fields = '__all__'
 
 class SalidaForm(ModelForm):
-	personal = forms.ModelChoiceField(queryset=Personal.objects.filter(status = 'Activo', ocupacion__in=['Medico', 'Enfermero']).exclude(rol_sistema = "Transcriptor"))
+	personal = forms.ModelChoiceField(queryset=Personal.objects.filter(status = 'Activo', rol_sistema__in=['Enfermero/a coordinador/a PAI', 'Coordinador/a de cuarto frio', 'Coordinador/a de division estrategica']).exclude(rol_sistema = "Transcriptor"))
 	class Meta:
 		model = Salida
 		fields = '__all__'

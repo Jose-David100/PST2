@@ -73,7 +73,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"TRANSCRIPTOR" %}
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"TRANSCRIPTOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
@@ -93,7 +93,7 @@
         </li>
 		{% endif %}
 
-		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"COORDINADOR/A DE CUARTO FRIO" or request.user|has_group:"TRANSCRIPTOR" or request.user|has_group:"COORDINADOR/A DE DIVISION ESTRATEGICA" %}
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"COORDINADOR/A DE CUARTO FRIO" or request.user|has_group:"TRANSCRIPTOR" or request.user|has_group:"COORDINADOR/A DE DIVISION ESTRATEGICA" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-syringe"></i>
@@ -125,7 +125,7 @@
         </li>
 		{% endif %}
 
-        {% if request.user|has_group:"ADMINISTRADOR" %}
+        {% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-file-medical"></i>
@@ -145,7 +145,7 @@
           </li>
 		{% endif %}
 
-		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"TRANSCRIPTOR" %}
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"TRANSCRIPTOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-warehouse"></i>
@@ -172,7 +172,7 @@
           </li>
 		{% endif %}
 
-        {% if request.user|has_group:"ADMINISTRADOR" %}
+        {% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>

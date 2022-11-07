@@ -53,6 +53,7 @@ class IngresoViews(LoginRequiredMixin, Perms_Check, TemplateView):
 
 class Ingresoform(LoginRequiredMixin, Perms_Check, TemplateView):
 	template_name =  'ingresos/ingreso_form.html'
+	permission_required = "core.add_ingreso"
 
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, *args, **kwargs):
@@ -112,5 +113,5 @@ class Ingresoform(LoginRequiredMixin, Perms_Check, TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(Ingresoform, self).get_context_data(**kwargs)
 		context['form'] = DetalleIngresoForm()
-		context['per'] = Personal.objects.filter(status = 'Activo', ocupacion = 'Administrativo')
+		context['per'] = Personal.objects.filter(status = 'Activo',  rol_sistema__in=['Enfermero/a coordinador/a PAI', 'Coordinador/a de cuarto frio', 'Coordinador/a de division estrategica']).exclude(rol_sistema = "Transcriptor")
 		return context

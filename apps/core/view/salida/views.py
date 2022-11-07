@@ -98,6 +98,8 @@ class SalidasForm(LoginRequiredMixin, Perms_Check, TemplateView):
 							det_salida.salida = Salida.objects.get(id = salida.id)
 							det_salida.vacuna = Vacunas.objects.get(id = i['id'])
 							det_salida.cantidad = i['cantidad']
+							det_salida.lote = i['lote']
+							det_salida.fecha_vencimiento = i['fecha_ven']
 							det_salida.save()
 
 							vac = Vacunas.objects.get(id= i['id'])

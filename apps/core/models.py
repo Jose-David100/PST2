@@ -26,7 +26,8 @@ ocupacion_choice = (
 )
 
 rol_choice = (
-	('Administrador', 'Administrador'),
+	('Administrador', 'Administrador del sistena'),
+	('Enfermero/a coordinador/a PAI', 'Enfermero/a coordinador/a PAI'),
 	('Coordinador/a de cuarto frio', 'Coordinador/a de cuarto frio'),
 	('Coordinador/a de division estrategica', 'Coordinador/a de division estrategica'),
 	('Transcriptor', 'Transcriptor'),
@@ -78,6 +79,7 @@ class Vacunas(models.Model):
 	nombre = models.CharField(max_length=50, null=False, blank=False)
 	presentacion = models.CharField(max_length=50, null=False, blank=False)
 	existencia = models.IntegerField(null=False, blank=False)
+	status = models.CharField(max_length=20, choices=status_choice ,null=False, blank=False)
 
 	def __str__(self):
 		return (str(self.nombre))
@@ -180,6 +182,8 @@ class DetalleSalida(models.Model):
 	salida = models.ForeignKey(Salida, on_delete=models.CASCADE, null=False, blank=False )
 	vacuna = models.ForeignKey(Vacunas, on_delete=models.CASCADE, null=False, blank=False)
 	cantidad = models.IntegerField(null=False, blank=False)
+	lote = models.CharField(max_length=50, null=False, blank=False)
+	fecha_vencimiento = models.DateField(null=False, blank=False)
 
 	def __str__(self):
 		return (str(self.id))
@@ -203,6 +207,7 @@ class DetalleSalida(models.Model):
 		}
 		return item
 
+# MODELO DE LOS USUARIOS
 class Usuarios(AbstractUser):
 
 	def toJSON(self):

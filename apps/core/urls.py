@@ -16,7 +16,7 @@ from apps.core.view.ingresos.views import IngresoViews, Ingresoform
 # vista para las salidas de las vacunas
 from apps.core.view.salida.views import SalidaViews, SalidasForm
 # vista de los usuarios
-from apps.core.view.usuarios.views import UsuariosViews, CrearUsuarios
+from apps.core.view.usuarios.views import UsuariosViews, CrearUsuarios, RecuperarAcceso
 
 urlpatterns = [
     path('inicio/', Inicio.as_view(), name="inicio"),
@@ -48,5 +48,6 @@ urlpatterns = [
     # URLS DE LOS USUARIOS
     path('listado-de-usuarios/', UsuariosViews.as_view(), name="list_usuarios"),
     path('registro-de-usuarios/', CrearUsuarios.as_view(), name="add_usuarios"),
+    path('recuperacion-de-acceso/', RecuperarAcceso.as_view(), name="reset_password"),
        
 ]

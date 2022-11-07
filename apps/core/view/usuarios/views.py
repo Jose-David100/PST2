@@ -46,9 +46,14 @@ class UsuariosViews(LoginRequiredMixin,Perms_Check, TemplateView):
 			if action == 'delete_user':
 				perms = ('core.delete_usuarios',)
 				if request.user.has_perms(perms):
-					print(request.POST)
 					user = Usuarios.objects.get(username = request.POST.get('username'))
-					user.delete()
+					groups =  user.groups.all()
+					for x in groups:
+						if "ENFERMERO/A COORDINADOR/A PAI" in x.name:
+							data['error'] = "No puedes eliminar a este usuario"
+							break
+						else:
+							user.delete()
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 
@@ -104,4 +109,44 @@ class CrearUsuarios(LoginRequiredMixin, Perms_Check, TemplateView):
 		context = super(CrearUsuarios, self).get_context_data(**kwargs)
 		context['form'] = UserForm()
 		context['personal'] = Personal.objects.filter(status='Activo', ocupacion__in = ['Administrativo', 'Medico', 'Enfermero'])
+		return context
+
+class RecuperarAcceso(TemplateView):
+	template_name = "registration/reset_password.html"
+	success_url = reverse_lazy("login")
+
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		data = {}
+		try:
+			action = request.POST['action']
+			if action == 'reset_password':
+
+				user_error = request.POST['username']
+				if not Usuarios.objects.filter(username = request.POST['username']):
+					data['error'] = f'el usuario {user_error} no existe' 
+					
+				else:
+					user = Usuarios.objects.get(username = request.POST['username'])
+					per = Personal.objects.get(cedula = request.POST.get('username'))
+					correo = per.correo
+					tlf = per.movil
+					if correo != request.POST.get('correo') or tlf != request.POST.get('tlf'):
+						data['error'] = "Correo o telefono no coinciden con el registro del personal" 
+					else:
+						user.set_password(request.POST.get('password'))
+						user.save()
+
+			else:
+				data['error'] = 'Ha ocurrido un error'           
+
+		except Exception as e:
+			data['error'] = str(e)
+		return JsonResponse(data, safe=False)
+
+	def get_context_data(self, **kwargs):
+		context = super(RecuperarAcceso, self).get_context_data(**kwargs)
 		return context

@@ -112,19 +112,21 @@ class PersonalViews(Perms_Check, LoginRequiredMixin, TemplateView):
 					per.delete()
 
 			elif action == 'activar_personal':
-				perms = ('core.change_personal',)
+				perms = ('core.add_personal',)
 				if request.user.has_perms(perms):
 					per = Personal.objects.get(id = request.POST.get('id'))
 					per.status = 'Activo'
 					per.save()
-
+				else:
+					data['error'] = "No tienes permisos para realizar esta accion"
 			elif action == 'desactivar_personal':
-				perms = ('core.change_personal',)
+				perms = ('core.delete_personal',)
 				if request.user.has_perms(perms):
 					per = Personal.objects.get(id = request.POST.get('id'))
 					per.status = 'Inactivo'
 					per.save()
-				
+				else:
+					data['error'] = "No tienes permisos para realizar esta accion"
 			else:
 				data['error'] = 'Ha ocurrido un error'           
 

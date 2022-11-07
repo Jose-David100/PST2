@@ -90,10 +90,12 @@ function getDataP() {
 			orderable: true,
 			render: function(data, type, row) {
 				
-				if (row['status'] == 'Activo'){
-					var buttons = ' <a href="#" rel="desactivar" class="btn btn-icon btn-success"><i class="fas fa-thumbs-up"></i></a>';
-				}else{
+				if (row['status'] == 'Inactivo'){
 					var buttons = ' <a href="#" rel="activar" class="btn btn-icon btn-danger"><i class="fas fa-thumbs-down"></i></a>';
+					//var buttons = ' <a href="#" rel="desactivar" class="btn btn-icon btn-success"><i class="fas fa-thumbs-up"></i></a>';
+				}else{
+					//var buttons = ' <a href="#" rel="activar" class="btn btn-icon btn-danger"><i class="fas fa-thumbs-down"></i></a>';
+					return data;
 				}
 				return buttons;
 			}
