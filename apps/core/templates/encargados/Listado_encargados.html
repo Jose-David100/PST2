@@ -65,12 +65,12 @@
 				<input type="hidden" name="action" value="agregar_encargado">
 				<div class="modal-body">
 					<div class="card-body">
-						<div class="row">
+						<div class="row delete">
 							<label>Cédula de Identidad</label>
 							{{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'|attr:'maxlength:8'|attr:'onkeypress:return Solo_Numero_ci(event);'}}
 						</div>
 						<!-- /.row -->
-						<div class="row g-2 mt-2">
+						<div class="row g-2 mt-2 delete">
 							<div class="col">
 								<label>Nombres</label>
 								{{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'|attr:'onkeypress:return Solo_Texto(event);'}}
@@ -97,7 +97,7 @@
 								<label for="">Correo</label>
 								{{form.correo|add_class:'form-control'|attr:'placeholder:Ingrese el correo'|attr:'type:email'}}
 							</div>
-							<div class="col">
+							<div class="col delete">
 								<label for="id_funcion">Función</label>
 								{{form.funcion|add_class:'form-control'|attr:'placeholder:Ingrese la funcion'}}
 							</div>

@@ -166,13 +166,6 @@ $(function() {
 		$('input[name="action"]').val('editar_personal');
 		$('input[name="id"]').val(data.id);
 
-		//$('input[name="cedula"]').attr('readonly', '');
-		$('input[name="nombre"]').attr('readonly', '');
-		$('input[name="apellido"]').attr('readonly', '');
-		$('select[name="sexo"]').attr('disabled', 'disabled');
-		//$('select[name="ocupacion"]').attr('disabled', 'disabled');
-		//$('#id_titular_ben').attr('disabled','disabled');
-
 		$('input[name="cedula"]').val(data.cedula);
 		$('input[name="correo"]').val(data.correo);
 		$('input[name="nombre"]').val(data.nombre);

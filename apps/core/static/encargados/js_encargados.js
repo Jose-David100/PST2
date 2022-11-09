@@ -130,11 +130,6 @@ $(function() {
 		var tr = tablaE.cell($(this).closest('td, li')).index();
 		var data = tablaE.row(tr.row).data();
 
-		$('input[name="cedula"]').attr('readonly', '');
-		$('input[name="nombre"]').attr('readonly', '');
-		$('input[name="apellido"]').attr('readonly', '');
-		//$('#id_titular_ben').attr('disabled','disabled');
-
 		$('input[name="cedula"]').val(data.cedula);
 		$('input[name="action"]').val('editar_encargado');
 		$('input[name="nombre"]').val(data.nombre);

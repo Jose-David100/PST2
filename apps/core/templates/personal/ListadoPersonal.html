@@ -68,12 +68,12 @@
 				<input type="hidden" name="id" value="0">
 				<div class="modal-body">
 					<div class="card-body">
-						<div class="row">
+						<div class="row delete">
 			                <label>Cédula de Identidad</label>
 			                {{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:8'|attr:'minlength:8'}}
 			            </div>
 						<!-- /.row -->
-						<div class="row g-2 mt-2">
+						<div class="row g-2 mt-2 delete">
 			                <div class="col">
 			                    <label>Nombres</label>
 			                    {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese Nombres'|attr:'onkeypress:return Solo_Texto(event);'}}
@@ -99,12 +99,12 @@
 			                    {{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:11'|attr:'minlength:11'}}
 			                </div>
 			                <!-- /.col -->
-			                <div class="col">
+			                <div class="col delete">
 			                    <label>Ocupación</label>
 			                    {{form.ocupacion|add_class:'form-control'|attr:'placeholder:Ingrese la ocupación'}}
 			                </div>
 			            </div>
-			            <div class="row g-2 mt-2">
+			            <div class="row g-2 mt-2 delete">
 			                <div class="col">
 			                    <label>Sexo</label>
 			                    {{form.sexo|add_class:'form-control'|attr:'placeholder:Seleccione un genero'}}
@@ -114,7 +114,7 @@
 			                    {{form.status|add_class:'form-control'|attr:'placeholder:Seleccione el estado'}}
 			                </div>
 			            </div>
-						<div class="row mt-2">
+						<div class="row mt-2 delete">
 							<label for="">Rol en el sistema</label>
 							{{form.rol_sistema|add_class:'form-control'|attr:'required'}}
 						</div>
@@ -218,6 +218,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 {% endblock %}

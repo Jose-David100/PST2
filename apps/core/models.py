@@ -153,6 +153,7 @@ class Establecimiento(models.Model):
 	def toJSON(self):
 		item = model_to_dict(self)
 		item['encargado'] = {
+			'id': self.encargado.id,
 			'ci': self.encargado.cedula,
 			'nombre': self.encargado.nombre,
 			'apellido': self.encargado.apellido

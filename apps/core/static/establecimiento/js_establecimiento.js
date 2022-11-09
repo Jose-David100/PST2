@@ -138,14 +138,11 @@ $(function() {
 		var tr = tablaE.cell($(this).closest('td, li')).index();
 		var data = tablaE.row(tr.row).data();
 
-		$('input[name="nombre"]').attr('readonly', '');
-		//$('#id_titular_ben').attr('disabled','disabled');
-
 		$('input[name="nombre"]').val(data.nombre);
 		$('input[name="action"]').val('editar_establecimiento');
 		$('textarea[name="direccion"]').val(data.direccion);
-		$("#id_encargado").val(data.encargado.ci);
-		$("#id_encargado").change();
+		$('select[id="id_encargado"]').val(data.encargado.id);
+		$('select[id="id_encargado"]').change();
 		$("#Registrar_establecimiento").modal('show');
 	});
 

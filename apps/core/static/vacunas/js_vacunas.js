@@ -104,7 +104,7 @@ $(function() {
 		var tr = tablaV.cell($(this).closest('td, li')).index();
 		var data = tablaV.row(tr.row).data();
 
-		$('input[name="nombre"]').attr('readonly', '');
+		//$('input[name="nombre"]').attr('readonly', '');
 		$('input[name="existencia"]').attr('readonly', '');
 
 		$('input[name="nombre"]').val(data.nombre);
