@@ -2,6 +2,10 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block title %}Listado de las Vacunas {% endblock %}
+{% block link %}
+<!--DATERANGEPICKER-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
 {% block content %}
 <div class="row mt-5">
 	<div class="col-12">
@@ -17,6 +21,7 @@
 						</a>
 						<div class="dropdown-menu" >
 							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_vacunas();">Agregar</button>
+							<button class="dropdown-item" tabindex="-1" onclick="abrir_modal_reporte();">Reportes</button>
 						</div>
 					</li>
 				</ul>
@@ -64,7 +69,7 @@
 				<input type="hidden" name="id" value="0">
 				<div class="modal-body">
 					<div class="card-body">
-						<div class="row delete">
+						<div class="row div delete">
 			                <label>Nombre de la Vacuna</label>
 			                {{form.nombre|add_class:'form-control'|attr:'placeholder:Ingrese el nombre de la vacuna'}}
 			            </div>
@@ -183,9 +188,46 @@
 	</div>
 </div>
 
+<!--MODAL REPORTES DE VACUNAS-->
+<!-- Modal -->
+<div class="modal fade" id="reportes" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Reportes de las vacunas</h5>
+				<button type="button" class="close" onclick="cerrar_modal_reporte();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			
+			<div class="modal-body">
+				<div class="card-body">
+					<div class="row">
+						<label for="">Reporte de los Ingresos de vacunas</label>
+						<input type="text" name="fecha_ingreso" id="id_fecha_ingreso" class="form-control fecha_reporte">
+					</div>
+					<!-- /.row -->
+					
+					<div class="row mt-2">
+						<label for="">Reporte de las salidas de vacunas</label>
+						<input type="text" name="fecha_salida" id="id_fecha_salida" class="form-control fecha_reporte">
+					</div>
+					
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" onclick="cerrar_modal_reporte();">Cerrar</button>
+				<button type="submit" class="btn btn-primary">Guardar</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block js %}
 <script type="text/javascript" src="{% static 'vacunas/js_vacunas.js' %}"></script>
-
+<!--DATERANGEPICKER-->
+<script type="text/javascript" src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
 {% endblock %}

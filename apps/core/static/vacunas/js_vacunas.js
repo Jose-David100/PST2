@@ -72,12 +72,21 @@ $(function() {
 // BOTONES PARA LOS MODALES
 function abrir_modal_vacunas() {
 	$("#Registrar_vacunas").modal("show");
+	$(".div").removeClass('delete');
 }
 
 function cerrar_modal_vacunas() {
 	$("#Registrar_vacunas").modal("hide");
 	$("#form_vacunas")[0].reset();
+	$(".div").addClass('delete');
+}
 
+function abrir_modal_reporte() {
+	$("#reportes").modal("show");
+}
+
+function cerrar_modal_reporte() {
+	$("#reportes").modal("hide");
 }
 
 function cerrar_modal_detalle() {
@@ -220,4 +229,92 @@ $(function() {
 		});
 		
 	});
+});
+
+//  REPORTES
+
+// PARA INGRESOS DE VACUNAS
+$(function() {
+    $('input[name="fecha_ingreso"]').daterangepicker({
+      opens: 'left',
+      "locale": {
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "De",
+            "toLabel": "a",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Deciembre"
+            ],
+            "firstDay": 1
+        }
+    }).on('apply.daterangepicker', function(ev, picker) {
+        window.open('/reporte-de-ingresos-de-vacunas/'+ picker.startDate.format('YYYY-MM-DD') +'/'+ picker.endDate.format('YYYY-MM-DD'))
+        
+    });;
+});
+
+// PARA SALIDAS DE VACUNAS
+$(function() {
+    $('input[name="fecha_salida"]').daterangepicker({
+      opens: 'left',
+      "locale": {
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "De",
+            "toLabel": "a",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Deciembre"
+            ],
+            "firstDay": 1
+        }
+    }).on('apply.daterangepicker', function(ev, picker) {
+        window.open('/reporte-de-salida-de-vacunas/'+ picker.startDate.format('YYYY-MM-DD') +'/'+ picker.endDate.format('YYYY-MM-DD'))
+        
+    });;
 });

@@ -71,9 +71,9 @@
 				<input type="hidden" name="action" value="agregar_establecimiento">
 				<div class="modal-body">
 					<div class="card-body">
-						<div class="row delete">
+						<div class="row div delete">
 							<label>Nombre del Establecimiento</label>
-							<input type="text" name="nombre" id="id_nombre" class="form-control" placeholder="Nombre del Establecimiento" required>
+							<input type="text" name="nombre" id="id_nombre" class="form-control" placeholder="Nombre del Establecimiento" maxlength="50" required>
 						</div>
 						<!-- /.row -->
 						<div class="row mt-2">
@@ -82,7 +82,7 @@
 								<textarea class="form-control" name="direccion" id="id_direccion" placeholder="Direccion del establecimiento" style="resize: none;" rows="4" required></textarea>
 							</div>
 						</div>
-						<div class="row mt-2 delete">
+						<div class="row mt-2 div delete">
 							<div class="col">
 								<label>Encargado del Establecimiento</label>
 								{{encargado.encargado|add_class:'form-control'|attr:'id:id_encargado'|attr:'required'}}

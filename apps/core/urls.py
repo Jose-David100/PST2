@@ -4,7 +4,7 @@ from apps.core.views import Inicio
 # vistas del personal
 from apps.core.view.personal.views import PersonalViews
 # vistas de las vacunas 
-from apps.core.view.vacunas.views import VacunasViews, MovimientosVacunas
+from apps.core.view.vacunas.views import VacunasViews, MovimientosVacunas, SalidaVacunas, IngresoVacunas
 # vistas de los reposos
 from apps.core.view.reposos.views import RepososViews
 # vistas de los encargados
@@ -17,6 +17,8 @@ from apps.core.view.ingresos.views import IngresoViews, Ingresoform
 from apps.core.view.salida.views import SalidaViews, SalidasForm
 # vista de los usuarios
 from apps.core.view.usuarios.views import UsuariosViews, CrearUsuarios, RecuperarAcceso
+# vistas para respaldar la base de datos
+from apps.core.view.respaldo_bd.views import RespaldarBD, RespaldoDB
 
 urlpatterns = [
     path('inicio/', Inicio.as_view(), name="inicio"),
@@ -49,5 +51,13 @@ urlpatterns = [
     path('listado-de-usuarios/', UsuariosViews.as_view(), name="list_usuarios"),
     path('registro-de-usuarios/', CrearUsuarios.as_view(), name="add_usuarios"),
     path('recuperacion-de-acceso/', RecuperarAcceso.as_view(), name="reset_password"),
+
+    # RESPALDO DE LA BASE DE DATOS
+    path('respaldo-del-sistema/', RespaldoDB.as_view(), name="respaldo_db"),
+    path('respaldar-base-datos/', RespaldarBD.as_view(), name="respaldar_db"),
        
+    # REPORTES
+    path('reporte-de-salida-de-vacunas/<str:fecha1>/<str:fecha2>', SalidaVacunas, name="salida_report"),
+    path('reporte-de-ingresos-de-vacunas/<str:fecha1>/<str:fecha2>', IngresoVacunas, name="ingreso_report"),
+    
 ]

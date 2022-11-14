@@ -94,12 +94,14 @@ function abrir_modal_encargado() {
 	$('input[name="nombre"]').removeAttr('readonly');
 	$('input[name="apellido"]').removeAttr('readonly');
 	modal_title.html('Registrar Encargado');
+	$(".div").removeClass("delete");
 }
 
 function cerrar_modal_encargado() {
 	$("#Registrar_encargado").modal("hide");
 	$("#form_personal")[0].reset();
 	$('input[name="action"]').val('agregar_encargado');
+	$(".div").addClass("delete");
 
 }
 
@@ -107,7 +109,7 @@ function cerrar_modal_detalle() {
 	$("#Detalles_encargado").modal("hide");
 }
 
-// REGISTRAR PERSONAL
+// REGISTRAR ENCARGADOS
 /* FORM SUBMIT AJAX*/
 $('#form_personal').on('submit', function(e) {
 	e.preventDefault();
@@ -118,6 +120,7 @@ $('#form_personal').on('submit', function(e) {
 		toastr.success('Se ha registrado correctamente');
 		getDataE();
 		$('input[name="action"]').val('agregar_encargado');
+		$(".div").addClass("delete");
 
 	});
 });

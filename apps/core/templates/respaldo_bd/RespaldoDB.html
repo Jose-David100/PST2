@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Respaldo de Información {% endblock %}
+{% load custom_tags %}
+{% load widget_tweaks %}
+{% block content %}
+
+<h4 class="fw-bold py-3 mb-4">Respaldo de la Base de Datos</h4>
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12 order-0 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row mb-5">
+                    <form action="" method="get" id="form_download">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label" for="basic-default-fullname">Respaldar la Base de Datos</label><br>
+                                <button type="Button" class="btn btn-primary mt-2" onclick="abrir_modal_verificacion();">Respaldar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>  
+                <hr>
+                <!--SUBIR BASE DE DATOS-->
+                <div class="row mt-5">
+                    <div class="col">
+                        <label class="form-label" for="">Restaurar la Base de Datos</label><br>
+                        <button type="Button" class="btn btn-primary mt-2" onclick="abrir_modal_upload();">Restaurar Base de Datos</button>
+                    </div>
+                    <!-- /.col -->
+                </div>       
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--MODAL PARA VALIDAR LA CONTRASEÑA PARA HACER EL RESPALDO-->
+<div class="mt-3">
+    <!-- Modal -->
+    <div class="modal fade" id="ModalConfirmacion" data-bs-backdrop="static" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <form class="modal-content" method="post" id="form_verificacion">{% csrf_token %}
+                <input type="hidden" name="action" value="validar_datos_administrador">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="backDropModalTitle">Verificación de Seguridad <i class="fas fa-lock"></i></h5>
+                    <button type="button" class="close" onclick="cerrar_modal_verificacion();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="username" class="form-label">Usuario</label>
+                            <input type="text" id="username" name="username"  class="form-control" placeholder="Usuario" value="{{request.user.username}}" readonly>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col mb-0">
+                            <label for="password1" class="form-label">Contraseña</label>
+                            <input type="password" id="password1" name="password1" class="form-control" placeholder="Contraseña actual" minlength="6">
+                        </div>
+                        <div class="col mb-0">
+                            <label for="password2" class="form-label">Confirme su contraseña</label>
+                            <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirme contraseña" minlength="6">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" onclick="cerrar_modal_verificacion();">
+                      Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-primary">Verificar y Descargar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--MODAL PARA VALIDAR LA CONTRASEÑA PARA HACER LA RECUPERACIÓN-->
+<div class="mt-3">
+    <!-- Modal -->
+    <div class="modal fade" id="ModalConfirmacion_upload" data-bs-backdrop="static" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <form class="modal-content" method="post" id="form_verificacion_upload" enctype="multipart/form-data">{% csrf_token %}
+                <input type="hidden" name="action" value="validar_datos_administrador">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="backDropModalTitle">Verificación de Seguridad <i class="fas fa-lock"></i></h5>
+                    <button type="button" class="close" onclick="cerrar_modal_upload();">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="username" class="form-label">Usuario</label>
+                            <input type="text" id="username" name="username"  class="form-control" placeholder="Usuario" value="{{request.user.username}}" readonly>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col mb-0">
+                            <label for="password1" class="form-label">Contraseña</label>
+                            <input type="password" id="password1" name="password1" class="form-control" placeholder="Contraseña actual" minlength="6">
+                        </div>
+                        <div class="col mb-0">
+                            <label for="password2" class="form-label">Confirme su contraseña</label>
+                            <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirme contraseña" minlength="6">
+                        </div>
+                    </div>
+                    <div class="col">{% csrf_token %}
+                        <div class="input-group mt-3 ">
+                            <input type="file" class="form-control" name="upload_db" id="upload_file" accept=".json" aria-describedby="inputGroupFileAddon04" aria-label="Restaurar">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" onclick="cerrar_modal_upload();">
+                      Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-primary">Verificar y Restablecer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'db/DataBase.js' %}"></script>
+{% endblock js %}

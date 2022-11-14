@@ -6,6 +6,21 @@ from django.http import JsonResponse
 import json
 from apps.core.mixins import Perms_Check
 
+# IMPORTACIONES PARA LOS REPORTES
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.contrib.staticfiles import finders
+from django.views.generic.base import TemplateView
+from xhtml2pdf import pisa
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.decorators import method_decorator
+import datetime
+from django.utils.dateparse import parse_date
+from datetime import timedelta, date
+
 # IMPORTACIONES DE LOS MODELS Y FORMULARIOS
 from apps.core.models import DetalleSalida, Vacunas, DetalleIngreso
 from apps.core.forms import VacunasForm
@@ -79,18 +94,102 @@ class MovimientosVacunas(LoginRequiredMixin,View):
 		action = request.POST['action']
 
 		if action == "detalle_ingreso":
-			print(request.POST)
 			data = []
 			for i in DetalleIngreso.objects.filter(vacuna = request.POST.get('id')):
 				data.append(i.toJSON())
 				
 		elif action == "detalle_salida":
-			print(request.POST)
 			data = []
 			for i in DetalleSalida.objects.filter(vacuna = request.POST.get('id')):
 				data.append(i.toJSON())
-            
+			
 		else:
 			data['error'] = 'Ha ocurrido un error inesperado'
 
 		return JsonResponse(data, safe=False)
+
+# REPORTES 
+def link_callback(uri, rel):
+		"""
+		Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+		resources
+		"""
+		result = finders.find(uri)
+		if result:
+				if not isinstance(result, (list, tuple)):
+						result = [result]
+				result = list(os.path.realpath(path) for path in result)
+				path=result[0]
+		else:
+				sUrl = settings.STATIC_URL        # Typically /static/
+				sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+				mUrl = settings.MEDIA_URL         # Typically /media/
+				mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+				if uri.startswith(mUrl):
+						path = os.path.join(mRoot, uri.replace(mUrl, ""))
+				elif uri.startswith(sUrl):
+						path = os.path.join(sRoot, uri.replace(sUrl, ""))
+				else:
+						return uri
+
+		# make sure that file exists
+		if not os.path.isfile(path):
+				raise Exception(
+						'media URI must start with %s or %s' % (sUrl, mUrl)
+				)
+		return path
+
+# SALIDA DE VACUNAS
+@login_required(redirect_field_name='login')
+@permission_required('core.view_vacunas', '/')
+def SalidaVacunas(request, fecha1, fecha2):
+	template_path= 'vacunas/reportes/salida_vacunas.html'
+	today = timezone.now()
+	fecha1 = parse_date(fecha1)
+	fecha2 = parse_date(fecha2)
+	fecha2 = fecha2 + timedelta(days=1)
+	vac = DetalleSalida.objects.filter(salida__fecha_salida__gte = fecha1, salida__fecha_salida__lt= fecha2 )
+	fecha2 = fecha2 - timedelta(days=1)
+	context = {
+		'obj':vac,
+		'today':today,
+		'request':request
+	}
+
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'inline; filename="salida_de_vacunas.pdf"'
+	template = get_template(template_path)
+	html = template.render(context)
+
+	pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+	if pisaStatus.err:
+	   return HttpResponse('We had some errors <pre>' + html + '</pre>')
+	return response
+
+# INGRESO DE VACUNAS
+@login_required(redirect_field_name='login')
+@permission_required('core.view_vacunas', '/')
+def IngresoVacunas(request, fecha1, fecha2):
+	template_path= 'vacunas/reportes/ingreso_vacunas.html'
+	today = timezone.now()
+	fecha1 = parse_date(fecha1)
+	fecha2 = parse_date(fecha2)
+	fecha2 = fecha2 + timedelta(days=1)
+	vac = DetalleIngreso.objects.filter(ingreso__fecha_ingreso__gte = fecha1, ingreso__fecha_ingreso__lt = fecha2 )
+	fecha2 = fecha2 - timedelta(days=1)
+	context = {
+		'obj':vac,
+		'today':today,
+		'request':request
+	}
+
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'inline; filename="ingreso_de_vacunas.pdf"'
+	template = get_template(template_path)
+	html = template.render(context)
+
+	pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+	if pisaStatus.err:
+	   return HttpResponse('We had some errors <pre>' + html + '</pre>')
+	return response

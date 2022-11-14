@@ -120,6 +120,7 @@ function abrir_modal_personal() {
 	$('input[name="apellido"]').removeAttr('readonly');
 	$('select[name="sexo"]').removeAttr('disabled');
 	$('select[name="ocupacion"]').removeAttr('disabled');
+	$(".div").removeClass("delete");
 
 }
 
@@ -127,7 +128,7 @@ function cerrar_modal_personal() {
 	$("#Registrar_personal").modal("hide");
 	$("#form_personal")[0].reset();
 	$('input[name="action"]').val('agregar_personal');
-
+	$(".div").addClass("delete");
 }
 
 function cerrar_modal_detalle() {

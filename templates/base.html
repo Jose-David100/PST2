@@ -191,6 +191,27 @@
             </ul>
           </li> 
         {% endif %}
+
+		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Respaldar B.D
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'respaldo_db' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Respaldar información</p>
+                </a>
+              </li>
+            </ul>
+          </li> 
+        {% endif %}
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

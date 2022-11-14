@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+    .head {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 3rem;
+    }
+
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    #invoice tbody tr {
+        padding: 0;
+    }
+
+    .cosa{
+        width: 100%;
+        margin: 10px;
+        border-top: black;
+    }
+
+    #invoice tbody tr td {
+        text-align: left;
+        border-bottom: 1px solid rgb(183, 183, 183);
+        padding-top: 4px;
+    }
+
+</style>
+<body>
+<p class="head">
+    <b style="font-size: 20px;">ASIC EL PROGRESO</b> <br>
+</p>
+<p>
+    <b style="font-size: 20px;">Reporte de salidas de vacunas</b> <br>
+    <b>FECHA DEL REPORTE:  {{ today|date:"d-m-Y" }}</b> <br>
+</p>
+<table id="invoice">
+    <thead>
+        <tr>
+            <th class="cosa">Vacuna</th>
+            <th class="cosa">Presentación</th>
+            <th class="cosa">lote</th>
+            <th class="cosa">Fecha V.</th>
+            <th class="cosa">Cantidad</th>
+            <th class="cosa">Fecha S.</th>
+            <th class="cosa">Personal R.</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for x in obj %}
+        <tr>
+            <td class="cosa">{{ x.vacuna.nombre }}</td>
+            <td class="cosa">{{ x.vacuna.presentacion }}</td>
+            <td class="cosa">{{ x.lote }}</td>
+            <td class="cosa">{{ x.fecha_vencimiento|date:"d-m-Y"}}</td>
+            <td class="cosa">{{ x.cantidad}}</td>
+            <td class="cosa">{{ x.salida.fecha_salida|date:"d-m-Y"}}</td>
+            <td class="cosa">{{ x.salida.personal.nombre}} {{ x.salida.personal.apellido}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

@@ -101,6 +101,7 @@ $(document).ready(function() {
 function abrir_modal_establecimiento() {
 	$("#Registrar_establecimiento").modal("show");
 	modal_title.html('Registrar Establecimiento');
+	$(".div").removeClass("delete");
 
 }
 
@@ -109,7 +110,7 @@ function cerrar_modal_establecimiento() {
 	$("#Form_establecimiento")[0].reset();
 	$('#id_encargado').val(null).trigger('change');
 	$("#id_nombre").removeAttr('readonly');
-
+	$(".div").addClass("delete");
 }
 
 function cerrar_modal_detalle() {
