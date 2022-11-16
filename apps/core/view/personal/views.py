@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from datetime import timedelta, date, datetime
+from dateutil.relativedelta import relativedelta
 from apps.core.mixins import Perms_Check
 
 # IMPORTACIONES DE LOS MODELOS Y LOS FORMULARIOS
@@ -41,9 +43,11 @@ class PersonalViews(Perms_Check, LoginRequiredMixin, TemplateView):
 					else:
 						per = Personal()
 						print(request.POST)
+						per.tipo_ci = request.POST.get('tipo_ci')
 						per.cedula = request.POST.get('cedula')
 						per.nombre = request.POST.get('nombre')
 						per.apellido = request.POST.get('apellido')
+						per.fecha_nacimiento = request.POST.get('fecha_nacimiento')
 						per.direccion = request.POST.get('direccion')
 						per.movil = request.POST.get('movil')
 						per.correo = request.POST.get('correo')

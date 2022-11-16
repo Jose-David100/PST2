@@ -2,6 +2,10 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block title %}Listado del Personal {% endblock %}
+{% block link %}
+<!--DATERANGEPICKER-->
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+{% endblock %}
 {% block content %}
 <div class="row mt-5">
 	<div class="col-12">
@@ -55,7 +59,7 @@
 <!--MODAL REGISTRAR PERSONAL-->
 <!-- Modal -->
 <div class="modal fade" id="Registrar_personal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">Registrar Personal</h5>
@@ -68,11 +72,14 @@
 				<input type="hidden" name="id" value="0">
 				<div class="modal-body">
 					<div class="card-body">
-						<div class="row div delete">
-			                <label>Cédula de Identidad</label>
-			                {{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:8'|attr:'minlength:8'}}
-			            </div>
-						<!-- /.row -->
+						<label for="">Cedula de Identidad</label>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								{{form.tipo_ci|add_class:'form-control text-center'|attr:'required'}}
+							</div>
+							<!-- /btn-group -->
+							{{form.cedula|add_class:'form-control'|attr:'placeholder:Ingrese Cédula de Identidad'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:8'|attr:'minlength:8'}}
+						</div>
 						<div class="row g-2 mt-2 div delete">
 			                <div class="col">
 			                    <label>Nombres</label>
@@ -85,11 +92,15 @@
 			                    </div>
 			                </div>
 			            </div>
-						<div class="row">
+						<div class="row div delete mt-2">
+							<label for="id_fecha_nacimiento">Fecha de Nacimiento</label>
+							{{form.fecha_nacimiento|add_class:'form-control fecha'|attr:'required'|attr:'placeholder:Ingrese fecha de nacimiento'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:10'}}
+						</div>
+						<div class="row mt-2">
 			                <label>Dirección</label>
 			                {{form.direccion|add_class:'form-control'|attr:'style:resize:none'|attr:'rows:4'|attr:'placeholder:Ingrese Dirección Habitacional'|attr:'onkeypress:return Texto_Numeros(event);'}}
 			            </div>
-			            <div class="row">
+			            <div class="row mt-2">
 			                <label>Correo Electrónico</label>
 			                {{form.correo|add_class:'form-control'|attr:'placeholder:Ingrese su correo electrónico'|attr:'type:email'}}
 			            </div>
@@ -99,24 +110,34 @@
 			                    {{form.movil|add_class:'form-control'|attr:'placeholder:Ingrese Número de celular'|attr:'onkeypress:return Solo_Numero_ci(event);'|attr:'maxlength:11'|attr:'minlength:11'}}
 			                </div>
 			                <!-- /.col -->
-			                <div class="col div delete">
-			                    <label>Ocupación</label>
-			                    {{form.ocupacion|add_class:'form-control'|attr:'placeholder:Ingrese la ocupación'}}
-			                </div>
-			            </div>
-			            <div class="row g-2 mt-2 div delete">
-			                <div class="col">
+							<div class="col">
 			                    <label>Sexo</label>
 			                    {{form.sexo|add_class:'form-control'|attr:'placeholder:Seleccione un genero'}}
 			                </div>
+			                
+			            </div>
+			            <div class="row g-2 mt-2 div delete">
+			                
 			                <div class="col">
 			                    <label>Estado</label>
 			                    {{form.status|add_class:'form-control'|attr:'placeholder:Seleccione el estado'}}
 			                </div>
+							<div class="col div delete">
+			                    <label>Ocupación</label>
+			                    {{form.ocupacion|add_class:'form-control'|attr:'placeholder:Ingrese la ocupación'}}
+			                </div>
 			            </div>
 						<div class="row mt-2 div delete">
 							<label for="">Rol en el sistema</label>
-							{{form.rol_sistema|add_class:'form-control'|attr:'required'}}
+							<select name="rol_sistema" id="id_rol_sistena" class="form-control" required>
+								<option value="">--Seleccione un elemento--</option>
+								<option class="sel" value="Administrador">Administrador</option>
+								<option class="sel" value="Enfermero/a coordinador/a PAI">Enfermero/a coordinador/a PAI</option>
+								<option class="sel" value="Coordinador/a de cuarto frio">Coordinador/a de cuarto frio</option>
+								<option class="sel" value="Coordinador/a de division estrategica">Coordinador/a de division estrategica</option>
+								<option class="sel" value="Transcriptor">Transcriptor</option>
+								<option value="Sin acceso">Sin acceso</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -219,11 +240,28 @@
 	</div>
 </div>
 
-
+<style>
+	.ocult{
+		display: none;
+	}
+</style>
 
 {% endblock %}
 
 
 {% block js %}
 <script type="text/javascript" src="{% static 'personal/js_personal.js' %}"></script>
+<!--DATERANGEPICKER-->
+<script type="text/javascript" src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script>
+	$("#id_ocupacion").change(function(){
+      var estado = $("#id_ocupacion").val();
+      if (estado == "Obrero" ){
+		$(".sel").addClass('ocult');
+	  }else{
+		$(".sel").removeClass('ocult');
+	  }
+    });
+</script>
 {% endblock %}

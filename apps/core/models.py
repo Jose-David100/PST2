@@ -34,10 +34,18 @@ rol_choice = (
 	('Sin acceso', 'Sin acceso'),
 )
 
+naci_choice = (
+	('V', 'V-'),
+	('E', 'E-'),
+)
+
+
 class Personal(models.Model):
+	tipo_ci = models.CharField(max_length=10, choices=naci_choice ,null=False, blank=False)
 	cedula = models.CharField(max_length=10, null=False, blank=False)
 	nombre = models.CharField(max_length=50, null=False, blank=False)
 	apellido = models.CharField(max_length=50, null=False, blank=False)
+	fecha_nacimiento = models.DateField(null=False, blank=False)
 	direccion = models.TextField(null=False, blank=False)
 	movil = models.CharField(max_length=11, null=True, blank=True)
 	correo = models.CharField(max_length=50, null=True, blank=True)
