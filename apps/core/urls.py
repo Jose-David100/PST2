@@ -2,7 +2,7 @@ from django.urls import path
 
 from apps.core.views import Inicio
 # vistas del personal
-from apps.core.view.personal.views import PersonalViews
+from apps.core.view.personal.views import PersonalViews, PersonalFormView
 # vistas de las vacunas 
 from apps.core.view.vacunas.views import VacunasViews, MovimientosVacunas, SalidaVacunas, IngresoVacunas
 # vistas de los reposos
@@ -25,6 +25,7 @@ urlpatterns = [
 
     # URLS DEL PERSONAL
     path('listado-de-personal/', PersonalViews.as_view(), name="list_personal"),
+    path('agregar-personal/', PersonalFormView.as_view(), name="add_personal"),
     
     # URLS DE LAS VACUNAS
     path('listado-de-vacunas/', VacunasViews.as_view(), name="list_vacunas"),

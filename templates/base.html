@@ -89,6 +89,14 @@
                     <p>Listado del Personal</p>
                     </a>
                 </li>
+				{% if request.user|has_group:"ADMINISTRADOR"  or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
+					<li class="nav-item">
+						<a href="{% url 'list_usuarios' %}" class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p>Listado de Usuarios</p>
+						</a>
+					</li>
+				{% endif %}
             </ul>
         </li>
 		{% endif %}
@@ -172,7 +180,7 @@
           </li>
 		{% endif %}
 
-        {% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
+        <!-- {% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -190,7 +198,7 @@
               </li>
             </ul>
           </li> 
-        {% endif %}
+        {% endif %} -->
 
 		{% if request.user|has_group:"ADMINISTRADOR" or request.user|has_group:"ENFERMERO/A COORDINADOR/A PAI" %}
           <li class="nav-item">
@@ -273,7 +281,7 @@
 					<div class="card-body">
 						<div class="row">
 							<label for="">Usuario</label>
-							<input type="text" name="username" id="id_username" class="form-control" value="{{request.user.username}}" readonly>
+							<input type="text" name="username" id="id_username_detail" class="form-control" value="{{request.user.username}}" readonly>
 						</div>
 						<div class="row g-2 mt-2">
 							<div class="col">

@@ -184,6 +184,7 @@ $(function() {
 		$('input[name="action"]').val('editar_personal');
 		$('input[name="id"]').val(data.id);
 
+		$('select[name="tipo_ci"]').val(data.tipo_ci);
 		$('input[name="cedula"]').val(data.cedula);
 		$('input[name="correo"]').val(data.correo);
 		$('input[name="nombre"]').val(data.nombre);
@@ -205,9 +206,11 @@ $(function() {
 		var data = tablaP.row(tr.row).data();
 		$("#Detalle_personal").modal('show');
 
+		$('#tipo').text(data.tipo_ci);
 		$('#ci').text(data.cedula);
 		$('#nom').text(data.nombre);
 		$('#ape').text(data.apellido);
+		$('#fecha').text(data.fecha_nacimiento);
 		$('#dir').text(data.direccion);
 		$('#mov').text(data.movil);
 		$('#ocu').text(data.ocupacion);

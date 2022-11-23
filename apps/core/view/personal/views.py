@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -9,8 +10,7 @@ from apps.core.mixins import Perms_Check
 
 # IMPORTACIONES DE LOS MODELOS Y LOS FORMULARIOS
 from apps.core.models import Personal, Usuarios
-from apps.core.forms import PersonalForm
-
+from apps.core.forms import PersonalForm, UserForm
 
 # Create your views here.
 
@@ -142,4 +142,68 @@ class PersonalViews(Perms_Check, LoginRequiredMixin, TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(PersonalViews, self).get_context_data(**kwargs)
 		context['form'] = PersonalForm()
+		return context
+
+# AGREGAR UN PERSONAL
+class PersonalFormView(Perms_Check, LoginRequiredMixin, TemplateView):
+	permission_required = 'core.add_personal'
+	template_name =  'personal/Personal_form.html'
+
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		data = {}
+		try:
+			action = request.POST['action']
+			
+			if action == 'agregar_personal':
+				perms = ('core.add_personal',)
+				if request.user.has_perms(perms):
+					if Personal.objects.filter(cedula = request.POST.get('cedula')):
+						data['error'] = 'Ya existe personal registrado con este numero de cédula'   
+					else:
+						per = Personal()
+						
+						per.tipo_ci = request.POST.get('tipo_ci')
+						per.cedula = request.POST.get('cedula')
+						per.nombre = request.POST.get('nombre')
+						per.apellido = request.POST.get('apellido')
+						per.fecha_nacimiento = request.POST.get('fecha_nacimiento')
+						per.direccion = request.POST.get('direccion')
+						per.movil = request.POST.get('movil')
+						per.correo = request.POST.get('correo')
+						per.ocupacion = request.POST.get('ocupacion')
+						per.sexo = request.POST.get('sexo')
+						per.status = request.POST.get('status')
+						per.rol_sistema = request.POST.get('rol_sistema')
+						per.save()
+
+						user = Usuarios()
+						user.username = per.cedula
+						user.first_name = per.nombre
+						user.last_name = per.apellido
+						user.email = per.correo
+						user.set_password(request.POST.get('password'))
+						user.save()
+
+						if request.POST.get('groups'):
+							user_new = Usuarios.objects.get(username = per.cedula)
+							for g in request.POST['groups']:
+								user_new.groups.add(g)
+							user_new.save()
+			
+			else:
+				data['error'] = 'Ha ocurrido un error'           
+
+		except Exception as e:
+			data['error'] = str(e)
+
+		return JsonResponse(data, safe=False)
+
+	def get_context_data(self, **kwargs):
+		context = super(PersonalFormView, self).get_context_data(**kwargs)
+		context['form'] = PersonalForm()
+		context['form2'] = UserForm()
 		return context
