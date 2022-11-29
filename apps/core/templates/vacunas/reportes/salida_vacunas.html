@@ -64,7 +64,8 @@
 
 <p>
     <b style="font-size: 18px;">Reporte de salidas de vacunas</b> <br> <br>
-    <b>FECHA DEL REPORTE:  {{ today|date:"d-m-Y" }}</b> <br>
+    <b>REPORTE DESDE: {{ fecha1|date:'d-m-Y' }} HASTA: {{ fecha2|date:'d-m-Y' }}</b> <br>
+    <b>FECHA EN QUE SE GENERA EL REPORTE:  {{ today|date:"d-m-Y" }}, HORA: {{hour|date:"H:i"}}</b> <br>
 </p>
 <table id="invoice">
     <thead>

@@ -18,6 +18,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 import datetime
+from datetime import datetime
 from django.utils.dateparse import parse_date
 from datetime import timedelta, date
 
@@ -109,36 +110,6 @@ class MovimientosVacunas(LoginRequiredMixin,View):
 		return JsonResponse(data, safe=False)
 
 # REPORTES 
-def link_callback(uri, rel):
-	"""
-	Convert HTML URIs to absolute system paths so xhtml2pdf can access those
-	resources
-	"""
-	result = finders.find(uri)
-	if result:
-		if not isinstance(result, (list, tuple)):
-			result = [result]
-		result = list(os.path.realpath(path) for path in result)
-		path=result[0]
-	else:
-		sUrl = settings.STATIC_URL        # Typically /static/
-		sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
-		mUrl = settings.MEDIA_URL         # Typically /media/
-		mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
-
-		if uri.startswith(mUrl):
-			path = os.path.join(mRoot, uri.replace(mUrl, ""))
-		elif uri.startswith(sUrl):
-			path = os.path.join(sRoot, uri.replace(sUrl, ""))
-		else:
-			return uri
-
-	# make sure that file exists
-	if not os.path.isfile(path):
-		raise Exception(
-			'media URI must start with %s or %s' % (sUrl, mUrl)
-		)
-	return path
 
 # SALIDA DE VACUNAS
 @login_required(redirect_field_name='login')
@@ -146,6 +117,7 @@ def link_callback(uri, rel):
 def SalidaVacunas(request, fecha1, fecha2):
 	template_path= 'vacunas/reportes/salida_vacunas.html'
 	today = timezone.now()
+	now = datetime.now()
 	fecha1 = parse_date(fecha1)
 	fecha2 = parse_date(fecha2)
 	fecha2 = fecha2 + timedelta(days=1)
@@ -154,6 +126,9 @@ def SalidaVacunas(request, fecha1, fecha2):
 	context = {
 		'obj':vac,
 		'today':today,
+		'hour': now,
+		'fecha1': fecha1,
+		'fecha2': fecha2,
 		'request':request
 	}
 
@@ -162,7 +137,7 @@ def SalidaVacunas(request, fecha1, fecha2):
 	template = get_template(template_path)
 	html = template.render(context)
 
-	pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+	pisaStatus = pisa.CreatePDF(html, dest=response)
 	if pisaStatus.err:
 	   return HttpResponse('We had some errors <pre>' + html + '</pre>')
 	return response
@@ -173,6 +148,7 @@ def SalidaVacunas(request, fecha1, fecha2):
 def IngresoVacunas(request, fecha1, fecha2):
 	template_path= 'vacunas/reportes/ingreso_vacunas.html'
 	today = timezone.now()
+	now = datetime.now()
 	fecha1 = parse_date(fecha1)
 	fecha2 = parse_date(fecha2)
 	fecha2 = fecha2 + timedelta(days=1)
@@ -181,6 +157,9 @@ def IngresoVacunas(request, fecha1, fecha2):
 	context = {
 		'obj':vac,
 		'today':today,
+		'hour': now,
+		'fecha1': fecha1,
+		'fecha2': fecha2,
 		'request':request
 	}
 
