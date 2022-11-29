@@ -82,4 +82,5 @@ class RepososViews(LoginRequiredMixin,Perms_Check, TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(RepososViews, self).get_context_data(**kwargs)
 		context['form'] = ReposoForm()
+		context['personal'] = Personal.objects.filter(status = "Activo")
 		return context

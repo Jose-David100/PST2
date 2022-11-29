@@ -81,7 +81,12 @@
 						<div class="row ">
 							<div class="col">
 								<label>Solicitante</label>
-								{{form.personal|add_class:'form-control'|attr:'required'}}
+								<select name="personal" id="id_personal" class="form-control" required>
+									<option value="">Seleccione un Encargado</option>
+									{% for x in personal %}
+										<option value="{{x.id}}">{{x.cedula}} | {{x.nombre}} {{x.apellido}}</option>
+									{% endfor %}
+								</select>
 							</div>
 						</div>
 						<!-- /.row -->

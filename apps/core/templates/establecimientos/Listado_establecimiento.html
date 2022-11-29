@@ -85,7 +85,12 @@
 						<div class="row mt-2 div delete">
 							<div class="col">
 								<label>Encargado del Establecimiento</label>
-								{{encargado.encargado|add_class:'form-control'|attr:'id:id_encargado'|attr:'required'}}
+								<select name="encargado" id="id_encargado" class="form-control" required>
+									<option value="">Seleccione un Encargado</option>
+									{% for x in encargado %}
+										<option value="{{x.id}}">{{x.cedula}} | {{x.nombre}} {{x.apellido}}</option>
+									{% endfor %}
+								</select>
 							</div>
 						</div>
 					</div>

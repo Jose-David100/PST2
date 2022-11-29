@@ -82,7 +82,7 @@
                                 <select id="per_responsable" name="personal" class="form-control" required autocomplete="off">
                                     <option value="">Seleccione el Personal</option>
                                     {% for x in per %}
-                                        <option value="{{x.cedula}}">{{x.cedula}}</option>
+                                        <option value="{{x.cedula}}">{{x.cedula}} | {{x.nombre}} {{x.apellido}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

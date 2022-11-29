@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Reporte de salidas de vacunas</title>
 <style>
+    @page {
+        size: a4 portrait;
+        margin: 3.5cm 2.0cm 2.5cm 2.0cm;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: -70pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+    }
     .head {
         text-align: center;
         text-transform: uppercase;
@@ -40,11 +56,14 @@
 
 </style>
 <body>
-<p class="head">
-    <b style="font-size: 20px;">ASIC EL PROGRESO</b> <br>
-</p>
+    <div id="header_content">
+        <p class="head">
+            <b style="font-size: 20px;">ASIC EL PROGRESO</b> <br>
+        </p>
+    </div>
+
 <p>
-    <b style="font-size: 20px;">Reporte de salidas de vacunas</b> <br>
+    <b style="font-size: 18px;">Reporte de salidas de vacunas</b> <br> <br>
     <b>FECHA DEL REPORTE:  {{ today|date:"d-m-Y" }}</b> <br>
 </p>
 <table id="invoice">
@@ -52,10 +71,11 @@
         <tr>
             <th class="cosa">Vacuna</th>
             <th class="cosa">Presentación</th>
-            <th class="cosa">lote</th>
+            <th class="cosa">Lote</th>
             <th class="cosa">Fecha V.</th>
             <th class="cosa">Cantidad</th>
             <th class="cosa">Fecha S.</th>
+            <th class="cosa">Establecimiento</th>
             <th class="cosa">Personal R.</th>
         </tr>
     </thead>
@@ -68,10 +88,15 @@
             <td class="cosa">{{ x.fecha_vencimiento|date:"d-m-Y"}}</td>
             <td class="cosa">{{ x.cantidad}}</td>
             <td class="cosa">{{ x.salida.fecha_salida|date:"d-m-Y"}}</td>
+            <td class="cosa">{{ x.salida.establecimiento}}</td>
             <td class="cosa">{{ x.salida.personal.nombre}} {{ x.salida.personal.apellido}}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+
+<div id="footer_content">Pág. <pdf:pagenumber>
+    de <pdf:pagecount>
+</div>
 </body>
 </html>

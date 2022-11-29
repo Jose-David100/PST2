@@ -43,7 +43,8 @@ class EstablecimientosViews(LoginRequiredMixin,Perms_Check, TemplateView):
 
 			elif action == 'editar_establecimiento':
 				perms = ('core.change_establecimiento',)
-				if request.user.has_perms(perms):	
+				if request.user.has_perms(perms):
+					print(request.POST)	
 					esta = Establecimiento.objects.get(nombre = request.POST.get('nombre'))
 					esta.direccion = request.POST.get('direccion')
 					esta.encargado = Encargado.objects.get(id = request.POST.get('encargado'))
@@ -58,5 +59,5 @@ class EstablecimientosViews(LoginRequiredMixin,Perms_Check, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(EstablecimientosViews, self).get_context_data(**kwargs)
-		context['encargado'] = EstablecimientoForm()
+		context['encargado'] = Encargado.objects.all()
 		return context

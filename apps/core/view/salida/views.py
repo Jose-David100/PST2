@@ -118,6 +118,7 @@ class SalidasForm(LoginRequiredMixin, Perms_Check, TemplateView):
 		context = super(SalidasForm, self).get_context_data(**kwargs)
 		context['form'] = DetalleSalidaForm()
 		context['form2'] = SalidaForm()
+		context['personal'] = Personal.objects.filter(status = "Activo", rol_sistema__in=['Enfermero/a coordinador/a PAI', 'Coordinador/a de cuarto frio', 'Coordinador/a de division estrategica']).exclude(rol_sistema = "Transcriptor")
 		return context
 
 
